@@ -1,0 +1,5 @@
+@import "../../shared/theme.css";
+
+@theme {
+  --color-geyser: #deddd4;
+}
