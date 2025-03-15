@@ -1,6 +1,7 @@
 import {
   ApplicationConfig,
   provideExperimentalZonelessChangeDetection,
+  isDevMode,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
