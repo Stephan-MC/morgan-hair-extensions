@@ -1,1 +1,67 @@
 @import "tailwindcss";
+
+@plugin "./src/lib/plugins/tailwindcss/icons.ts";
+
+@layer base {
+  @font-face {
+    font-family: "Diotima LT Std";
+    src: url("./src/lib/fonts/DiotimaLTStd-Roman.eot");
+    src:
+      url("./src/lib/fonts/DiotimaLTStd-Roman.eot?#iefix")
+        format("embedded-opentype"),
+      url("./src/lib/fonts/DiotimaLTStd-Roman.woff2") format("woff2"),
+      url("./src/lib/fonts/DiotimaLTStd-Roman.woff") format("woff"),
+      url("./src/lib/fonts/DiotimaLTStd-Roman.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  html,
+  body {
+    scroll-behavior: smooth;
+  }
+
+  [role="button"],
+  button {
+    cursor: pointer;
+  }
+}
+
+@utility animation-delay-* {
+  /* prettier-ignore */
+  animation-delay: --value(integer)ms;
+}
+
+@utility animation-duration-* {
+  /* prettier-ignore */
+  animation-duration: --value(integer)ms;
+}
+
+@utility scrollbar-hidden {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer components {
+  .animate-bounce {
+    position: relative;
+
+    @variant after {
+      position: absolute;
+      bottom: -0.5rem; /* -2 in Tailwind terms */
+      left: 50%;
+      width: 40%; /* 32px */
+      aspect-ratio: 1/1;
+      background-color: --alpha(var(--color-gray-500) / 50%);
+      border-radius: 9999px; /* Full rounding */
+      transform: translateX(-50%) translateY(125%);
+      animation: var(--animate-bounce-shadow);
+      animation-duration: inherit;
+      z-index: -1;
+    }
+  }
+}
+
+@custom-variant supports-dvw (@supports (width: 100dvw));
+@custom-variant supports-dvh (@supports (height: 100dvh));
