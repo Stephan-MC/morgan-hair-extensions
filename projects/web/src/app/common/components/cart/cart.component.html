@@ -1,0 +1,42 @@
+<div class="size-full flex flex-col gap-6">
+  <div class="shrink-0 flex justify-between items-center px-2">
+    <span class="font-bolder text-xl">Your Cart</span>
+    <!-- TODO: Add button to close cart here  -->
+    <span (click)="cart.close()" class="text-red-500 text-lg" role="button"
+      >x</span
+    >
+  </div>
+  <div
+    class="grow space-y-6 overflow-y-auto overflow-x-hidden scrollbar-hidden"
+  >
+    @for (product of cart.productsEntities(); track product.id) {
+      <web-cart-item [product]="product" />
+      @if (!$last) {
+        <hr class="border-gray-300" />
+      }
+    } @empty {
+      <div class="flex">
+        <span class="text-lg font-bold grow text-center">No item in cart</span>
+      </div>
+    }
+  </div>
+
+  <div class="shrink-0">
+    <div class="flex justify-between flex-wrap gap-y-6">
+      @if (cart.productsEntities().length) {
+        <span class="first-letter:uppercase font-bold">total</span>
+        <span>{{ cart.total() | currency }}</span>
+        <div class="basis-full">
+          <a
+            [routerLink]="['/checkout']"
+            (click)="cart.close()"
+            class="rounded-full flex justify-center items-center px-3 py-1.5 bg-amber-200"
+            >Checkout</a
+          >
+        </div>
+      } @else {
+        <span class="mx-auto">No Item in cart</span>
+      }
+    </div>
+  </div>
+</div>

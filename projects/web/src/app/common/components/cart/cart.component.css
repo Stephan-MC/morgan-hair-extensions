@@ -1,0 +1,13 @@
+@reference "../../../../styles.css";
+
+:host {
+  @apply backdrop-blur opacity-0;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: min(-350px, -10%);
+  background-color: --alpha(var(--color-white) / 30%);
+  width: min(350px, 90%);
+  padding: calc(var(--spacing) * 3);
+  padding-top: calc(var(--spacing) * 15);
+}
