@@ -1,0 +1,139 @@
+<section class="h-screen supports-dvh:h-[100dvh] relative">
+  <div class="size-full overflow-hidden">
+    <img
+      src="/assets/images/D_B.N on X.jpg"
+      alt=""
+      class="object-cover object-center size-full"
+    />
+  </div>
+  <div class="absolute left-1/2 -translate-x-1/2 bottom-10">
+    <button
+      class="animate-bounce animation-duration-5000 size-square size-12 bg-primary text-black rounded-full flex items-center justify-center"
+      (click)="viewPortScroller.scrollToAnchor('categories')"
+    >
+      <span
+        class="icon-[garden--chevron-double-down-stroke-16]"
+        role="img"
+        aria-hidden="true"
+      ></span>
+    </button>
+  </div>
+  <!-- <div class="rounded-t-4xl bg-blue-200 h-20 absolute inset-x-0 bottom-0"></div> -->
+</section>
+
+<!-- <section class="supports-dvh:h-[100dvh] bg-primary pt-16"> -->
+<!--   <div class="h-full flex flex-col max-w-screen-lg mx-auto"> -->
+<!--     <div -->
+<!--       class="grid grid-cols-4 grid-rows-2 gap-3 *:bg-red-200 *:rounded-lg basis-[60%]" -->
+<!--     > -->
+<!--       <div class="col-span-2 row-span-2"></div> -->
+<!--       <div></div> -->
+<!--       <div></div> -->
+<!--       <div class="col-span-2"></div> -->
+<!--     </div> -->
+<!--   </div> -->
+<!-- </section> -->
+
+<section class="supports-dvh:h-[100dvh] bg-white pt-16 pb-6" id="categories">
+  <div class="h-full max-w-screen-lg mx-auto max-h-full">
+    <div class="grid grid-cols-2 grid-rows-5 gap-3 h-full group/container">
+      @for (category of categories.value(); track category.id) {
+      <div
+        class="group relative rounded-lg first:row-span-2 last:row-span-2 not-first:row-span-3 not-last:row-span-3 overflow-hidden group/item"
+      >
+        <img
+          [src]="category.thumbnail.url"
+          class="size-full object-cover object-top group-hover:scale-105 duration-500"
+        />
+        <div
+          class="absolute inset-0 transition-all duration-500 overlay group-hover/item:bg-white/10 group-has-hover/container:backdrop-blur-[2px] group-hover/item:!backdrop-blur-none"
+        >
+          <div class="size-full relative">
+            <span
+              class="ps-2 absolute inset-x-0 opacity-30 -top-[10%] group-hover/item:opacity-100 group-hover/item:top-[20%] transition-all duration-500 text-2xl font-bold"
+              >{{ category.name }}</span
+            >
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="supports-dvh:h-[100dvh] bg-primary pt-16" id="featured-section">
+  <div class="max-w-screen-lg mx-auto space-y-9">
+    <h3
+      class="max-w-screen-lg mx-auto text-3xl tracking-widest font-black text-center"
+    >
+      Featured Wigs
+    </h3>
+
+    <div class="grid grid-cols-4 gap-6 py-3">
+      <div
+        class="flex justify-center items-center gap-3 mt-3 font-medium col-span-full py-3"
+      >
+        <button>New</button>
+        <button>Best Selling</button>
+        <button>Popular</button>
+      </div>
+      @for (product of products.value(); track product.id;) {
+      <web-product-card [product]="product" (like)="product.liked = $event" />
+      }
+    </div>
+
+    <div class="flex justify-center">
+      <a
+        [routerLink]="['/products']"
+        class="rounded-full bg-amber-200 text-black px-3 py-1.5 mx-auto"
+      >
+        View More
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="bg-white pt-16">
+  <div class="grid grid-cols-4 max-w-screen-lg mx-auto gap-9 *:justify-center">
+    <div class="flex gap-3">
+      <span
+        class="icon-[fa-solid--shipping-fast] self-center text-4xl text-blue-400"
+        role="img"
+        aria-hidden="true"
+      ></span>
+      <div class="flex flex-col justify-center gap-2">
+        <span class="font-bold">Free Shipping</span>
+        <span class="text-sm">On all Orders over 99$</span>
+      </div>
+    </div>
+    <div class="flex gap-3">
+      <span
+        class="icon-[majesticons--money-hand-line] self-center text-5xl text-blue-400"
+        role="img"
+        aria-hidden="true"
+      ></span>
+      <div class="flex flex-col justify-center gap-2">
+        <span class="font-bold">Secure payment</span>
+        <span class="text-sm">On all Orders over 99$</span>
+      </div>
+    </div>
+    <div class="flex gap-3">
+      <span></span>
+      <div class="flex flex-col justify-center gap-2">
+        <span class="font-bold">100% Money Back</span>
+        <span class="text-sm">30 days return policy</span>
+      </div>
+    </div>
+    <div class="flex gap-3">
+      <span
+        class="icon-[streamline--interface-help-customer-support-2-customer-headphones-headset-help-microphone-phone-person-support] self-center text-4xl text-blue-400"
+        role="img"
+        aria-hidden="true"
+      ></span>
+      <div class="flex flex-col justify-center gap-2">
+        <span class="font-bold">Online Support</span>
+        <span class="text-sm">24/7 Dedicated Support</span>
+      </div>
+    </div>
+  </div>
+</section>
