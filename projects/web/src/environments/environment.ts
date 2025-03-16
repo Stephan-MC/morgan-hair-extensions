@@ -1,1 +1,5 @@
-export const environment = {};
+export const environment = {
+  url: {
+    api: 'https://api.morganhairextensions.com',
+  },
+};
