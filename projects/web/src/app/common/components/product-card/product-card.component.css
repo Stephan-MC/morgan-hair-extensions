@@ -1,0 +1,17 @@
+@reference "../../../../styles.css";
+
+:host {
+  @apply block rounded-lg overflow-hidden pb-2 relative duration-200 transition-transform;
+
+  @variant hover {
+    @apply scale-101 shadow;
+  }
+
+  &.out {
+    @apply grayscale-80 opacity-70;
+  }
+
+  .price-tag {
+    @apply bg-amber-200 rounded-sm px-1.5 py-0.5 relative;
+  }
+}
