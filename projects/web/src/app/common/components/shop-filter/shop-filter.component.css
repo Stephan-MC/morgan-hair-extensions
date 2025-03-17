@@ -1,0 +1,10 @@
+@reference "../../../../styles.css";
+
+:host {
+  @apply block overflow-hidden h-[calc(100vh_-_calc(--spacing(18)+--spacing(3)))] supports-dvh:h-[calc(100dvh_-_calc(--spacing(18)+--spacing(3)))] fixed z-10 bg-gray-200/80 tablet:bg-geyser/20 backdrop-blur rounded-lg space-y-6 p-3 *:space-y-3 scrollbar-hidden overflow-y-auto;
+  width: min(300px, 90vw);
+
+  @variant supports-dvw {
+    width: min(300px, 90dvw);
+  }
+}

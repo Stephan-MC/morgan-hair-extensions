@@ -1,0 +1,144 @@
+<div class="">
+  <div
+    class="size-full flex justify-center items-center gap-3"
+    role="button"
+    (click)="show() ? closeFilters() : openFilters()"
+  >
+    <span
+      class="icon-[mingcute--settings-6-line]"
+      role="img"
+      aria-hidden="true"
+    ></span>
+    <span>
+      @if (show()) {
+        close
+      }
+      filters</span
+    >
+  </div>
+</div>
+
+@if (show()) {
+  <div class="">
+    <h4 class="text-lg font-bold">Search</h4>
+    <div
+      class="border border-gray-800/50 focus-within:outline px-3 py-1 bg-white/70 rounded-full flex"
+    >
+      <input type="text" class="outline-none grow" [(ngModel)]="filters.q" />
+    </div>
+  </div>
+
+  <div class="">
+    <h4 class="text-lg font-bold">Filters</h4>
+    <div class="flex justify-end items-center gap-3">
+      <button
+        class="px-3 py-1 bg-amber-200 rounded-full"
+        (click)="applyFilters()"
+      >
+        Apply Filters
+      </button>
+      <button
+        class="px-3 py-1 bg-red-400 text-white rounded-full"
+        (click)="[closeFilters()]"
+      >
+        Clear Filters
+      </button>
+    </div>
+  </div>
+
+  <div class="">
+    <div class="flex flex-wrap gap-1.5">
+      @for (cat of ["all", "in-stock", "discount"]; track $index) {
+        <web-chip
+          [selected]="filters.cat == cat || (filters.cat == '' && cat == 'all')"
+          (select)="
+            updateFilter('cat', (filters.cat = cat == 'all' ? '' : cat))
+          "
+        >
+          {{ cat }}
+        </web-chip>
+      }
+    </div>
+  </div>
+
+  <div class="">
+    <h4 class="text-lg font-bold">Categories</h4>
+    <div class="flex flex-wrap gap-1.5">
+      <web-chip
+        [selected]="filters.category == ''"
+        (select)="filters.category = ''"
+      >
+        all
+      </web-chip>
+      @for (category of categories.value(); track category.id) {
+        <web-chip
+          [selected]="category.name == filters.category"
+          (select)="filters.category = category.name"
+        >
+          {{ category.name }}
+        </web-chip>
+      }
+    </div>
+  </div>
+
+  <div class="">
+    <h4 class="text-lg font-bold">Color</h4>
+    <div class="flex flex-wrap gap-1.5">
+      @for (color of colors; track color) {
+        <web-chip
+          [selected]="
+            filters.color == color || (filters.color == '' && color == 'all')
+          "
+          (select)="
+            updateFilter('color', (filters.color = color == 'all' ? '' : color))
+          "
+        >
+          {{ color }}
+        </web-chip>
+      }
+    </div>
+  </div>
+
+  <div class="">
+    <h4 class="text-lg font-bold">Length</h4>
+    <div class="flex flex-wrap gap-1.5">
+      @for (length of ["any", "short", "medium", "long"]; track length) {
+        <web-chip
+          [selected]="
+            filters.length == length ||
+            (filters.length == '' && length == 'any')
+          "
+          (select)="
+            updateFilter(
+              'length',
+              (filters.length = length == 'any' ? '' : length)
+            )
+          "
+        >
+          {{ length }}
+        </web-chip>
+      }
+    </div>
+  </div>
+
+  <div class="">
+    <h4 class="text-lg font-bold">Style</h4>
+    <div class="flex flex-wrap gap-1.5">
+      @for (
+        style of ["any", "curly", "straigt", "bone-straign", "pony tail"];
+        track style
+      ) {
+        <web-chip
+          [selected]="
+            filters.style == style || (filters.style == '' && style == 'any')
+          "
+          (select)="
+            updateFilter('style', (filters.style = style == 'any' ? '' : style))
+          "
+        >
+          {{ style }}
+        </web-chip>
+      }
+    </div>
+  </div>
+}
