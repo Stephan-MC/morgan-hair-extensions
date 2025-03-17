@@ -14,6 +14,7 @@ import {
   withEntities,
 } from '@ngrx/signals/entities';
 import { Product } from '../types/product';
+import { ProductHelper } from '../helpers/product.helper';
 
 export interface CartProduct
   extends Pick<Product, 'id' | 'name' | 'price' | 'discounts' | 'thumbnail'> {
@@ -45,7 +46,9 @@ export const CartStore = signalStore(
   withComputed(({ productsEntities }) => ({
     total: computed(() =>
       productsEntities().reduce(
-        (subtotal, product) => product.price * product.quantity + subtotal,
+        (subtotal, product) =>
+          new ProductHelper(product).discountedPrice() * product.quantity +
+          subtotal,
         0,
       ),
     ),
