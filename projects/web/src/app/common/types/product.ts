@@ -16,3 +16,14 @@ export interface Product extends Model {
   discounts: Array<Discount>;
   liked: boolean;
 }
+
+export interface ProductFilters {
+  q?: string;
+  category?: string;
+  order?: string;
+  sort?: string;
+  color?: string;
+  length?: string;
+  style?: string;
+  cat?: string;
+}
