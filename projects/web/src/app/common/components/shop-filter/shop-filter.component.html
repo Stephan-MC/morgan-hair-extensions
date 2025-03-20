@@ -39,7 +39,7 @@
       </button>
       <button
         class="px-3 py-1 bg-red-400 text-white rounded-full"
-        (click)="[closeFilters()]"
+        (click)="[clearFilters(), closeFilters()]"
       >
         Clear Filters
       </button>
@@ -47,35 +47,35 @@
   </div>
 
   <div class="">
-    <div class="flex flex-wrap gap-1.5">
-      @for (cat of ["all", "in-stock", "discount"]; track $index) {
-        <web-chip
-          [selected]="filters.cat == cat || (filters.cat == '' && cat == 'all')"
-          (select)="
-            updateFilter('cat', (filters.cat = cat == 'all' ? '' : cat))
-          "
-        >
-          {{ cat }}
-        </web-chip>
-      }
-    </div>
+    <!-- <div class="flex flex-wrap gap-1.5"> -->
+    <!--   @for (cat of ["all", "in-stock", "discount"]; track $index) { -->
+    <!--     <web-chip -->
+    <!--       [selected]="filters.cat == cat || (filters.cat == '' && cat == 'all')" -->
+    <!--       (select)=" -->
+    <!--         updateFilter('cat', (filters.cat = cat == 'all' ? '' : cat)) -->
+    <!--       " -->
+    <!--     > -->
+    <!--       {{ cat }} -->
+    <!--     </web-chip> -->
+    <!--   } -->
+    <!-- </div> -->
   </div>
 
   <div class="">
-    <h4 class="text-lg font-bold">Categories</h4>
+    <h4 class="text-lg font-bold">hair type</h4>
     <div class="flex flex-wrap gap-1.5">
       <web-chip
-        [selected]="filters.category == ''"
-        (select)="filters.category = ''"
+        [selected]="!filters.hair_type || filters.hair_type == ''"
+        (select)="filters.hair_type = ''"
       >
         all
       </web-chip>
-      @for (category of categories.value(); track category.id) {
+      @for (hairType of hairTypes.value(); track hairType.id) {
         <web-chip
-          [selected]="category.name == filters.category"
-          (select)="filters.category = category.name"
+          [selected]="hairType.name == filters.hair_type"
+          (select)="updateFilter('hair_type', hairType.name)"
         >
-          {{ category.name }}
+          {{ hairType.name }}
         </web-chip>
       }
     </div>
@@ -84,38 +84,38 @@
   <div class="">
     <h4 class="text-lg font-bold">Color</h4>
     <div class="flex flex-wrap gap-1.5">
-      @for (color of colors; track color) {
+      <web-chip
+        [selected]="!filters.color || filters.color == ''"
+        (select)="updateFilter('color', (filters.color = ''))"
+      >
+        all
+      </web-chip>
+      @for (color of colors.value(); track color.id) {
         <web-chip
-          [selected]="
-            filters.color == color || (filters.color == '' && color == 'all')
-          "
-          (select)="
-            updateFilter('color', (filters.color = color == 'all' ? '' : color))
-          "
+          [selected]="filters.color == color.name"
+          (select)="updateFilter('color', color.name)"
         >
-          {{ color }}
+          {{ color.name }}
         </web-chip>
       }
     </div>
   </div>
 
   <div class="">
-    <h4 class="text-lg font-bold">Length</h4>
+    <h4 class="text-lg font-bold">Length (inches)</h4>
     <div class="flex flex-wrap gap-1.5">
-      @for (length of ["any", "short", "medium", "long"]; track length) {
+      <web-chip
+        [selected]="!filters.length || filters.length == ''"
+        (select)="updateFilter('length', '')"
+      >
+        all
+      </web-chip>
+      @for (length of lengths.value(); track length.id) {
         <web-chip
-          [selected]="
-            filters.length == length ||
-            (filters.length == '' && length == 'any')
-          "
-          (select)="
-            updateFilter(
-              'length',
-              (filters.length = length == 'any' ? '' : length)
-            )
-          "
+          [selected]="filters.length == length.value"
+          (select)="updateFilter('length', length.value)"
         >
-          {{ length }}
+          {{ length.value }}
         </web-chip>
       }
     </div>
@@ -124,19 +124,58 @@
   <div class="">
     <h4 class="text-lg font-bold">Style</h4>
     <div class="flex flex-wrap gap-1.5">
-      @for (
-        style of ["any", "curly", "straigt", "bone-straign", "pony tail"];
-        track style
-      ) {
+      <web-chip
+        [selected]="!filters.texture || filters.texture == ''"
+        (select)="filters.texture = ''"
+      >
+        all
+      </web-chip>
+      @for (texture of textures.value(); track texture.id) {
         <web-chip
-          [selected]="
-            filters.style == style || (filters.style == '' && style == 'any')
-          "
-          (select)="
-            updateFilter('style', (filters.style = style == 'any' ? '' : style))
-          "
+          [selected]="filters.texture == texture.name"
+          (select)="updateFilter('texture', texture.name)"
         >
-          {{ style }}
+          {{ texture.name }}
+        </web-chip>
+      }
+    </div>
+  </div>
+
+  <div class="">
+    <h4 class="text-lg font-bold">Lace type</h4>
+    <div class="flex flex-wrap gap-1.5">
+      <web-chip
+        [selected]="!filters.lace || filters.lace == ''"
+        (select)="filters.lace = ''"
+      >
+        all
+      </web-chip>
+      @for (lace of laces.value(); track lace.id) {
+        <web-chip
+          [selected]="filters.lace == lace.name"
+          (select)="updateFilter('lace', lace.name)"
+        >
+          {{ lace.name }}
+        </web-chip>
+      }
+    </div>
+  </div>
+
+  <div class="">
+    <h4 class="text-lg font-bold">Source</h4>
+    <div class="flex flex-wrap gap-1.5">
+      <web-chip
+        [selected]="!filters.source || filters.source == ''"
+        (select)="filters.source = ''"
+      >
+        all
+      </web-chip>
+      @for (source of sources.value(); track source.id) {
+        <web-chip
+          [selected]="filters.source == source.name"
+          (select)="updateFilter('source', source.name)"
+        >
+          {{ source.name }}
         </web-chip>
       }
     </div>

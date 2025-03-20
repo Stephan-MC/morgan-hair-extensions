@@ -1,11 +1,15 @@
 <div class="flex flex-col">
-  <img
-    [src]="product().thumbnail.url"
-    [alt]="
-      product().thumbnail.alt != '' ? product().thumbnail.alt : product().name
-    "
-    class="aspect-[300/400] object-cover object-center"
-  />
+  <div class="aspect-300/400 overflow-hidden relative">
+    <img
+      [ngSrc]="product().thumbnail.url"
+      [alt]="
+        product().thumbnail.alt != '' ? product().thumbnail.alt : product().name
+      "
+      fill
+      [priority]="thumbnailLoadingPriority()"
+      class="object-cover object-center"
+    />
+  </div>
 
   <div class="mt-3 px-px flex flex-col gap-3">
     <a
@@ -16,38 +20,52 @@
       <span class="absolute inset-0"></span>
     </a>
 
-    <div class="flex justify-between items-center px-3">
+    <div
+      class="flex flex-col tablet-sm:flex-row tablet-sm:justify-between tablet-sm:items-center px-3"
+    >
       <div class="flex gap-1 items-center">
-        @if (hasDiscount()) {
+        @if (productHelper.hasDiscount()) {
           <del class="text-sm">{{ product().price | currency }}</del>
         }
         <sup>
-          <span class="text-sm" [class.price-tag]="hasDiscount()">{{
-            discountedPrice() | currency
-          }}</span>
+          <span
+            class="text-sm"
+            [class.price-tag]="productHelper.hasDiscount()"
+            >{{ productHelper.discountedPrice() | currency }}</span
+          >
         </sup>
       </div>
 
-      <button (click)="cart.add(product())" class="z-10">
-        @if (cart.has(product())) {
-          <span
-            class="icon-[solar--cart-check-bold]"
-            role="img"
-            aria-hidden="true"
-          ></span>
-        } @else {
-          <span
-            class="icon-[solar--cart-plus-linear]"
-            role="img"
-            aria-hidden="true"
-          ></span>
+      <button
+        (click)="cart.add(product())"
+        class="z-auto text-lg max-tablet-sm:ms-auto"
+        [title]="
+          !productHelper.canBeAddedToCart(cart, product())
+            ? 'Product cannont be added to cart'
+            : ''
+        "
+      >
+        @if (productHelper.canBeAddedToCart(cart, product())) {
+          @if (cart.has(product())) {
+            <span
+              class="icon-[solar--cart-check-bold]"
+              role="img"
+              aria-hidden="true"
+            ></span>
+          } @else {
+            <span
+              class="icon-[solar--cart-plus-linear]"
+              role="img"
+              aria-hidden="true"
+            ></span>
+          }
         }
       </button>
     </div>
   </div>
 
   <span
-    class="absolute top-2 right-2 text-lg z-10 cursor-pointer"
+    class="absolute top-5 right-5 text-3xl z-auto cursor-pointer text-amber-300"
     (click)="likeProduct()"
     [class]="[
       product().liked ? 'icon-[iconoir--heart-solid]' : 'icon-[iconoir--heart]',
@@ -56,12 +74,13 @@
     aria-hidden="true"
   ></span>
 
-  @if (activeDiscount(); as discount) {
-    @if (discount.type == "percentage") {
-      <span
-        class="absolute top-2 left-2 rounded-full px-1 flex items-center bg-amber-200 aspect-square animate-pulse"
-        >- {{ discount.value / 100 | percent }}</span
-      >
-    }
+  @if (productHelper.activeDiscount(); as discount) {
+    <span
+      class="absolute top-2 left-2 rounded-full px-1 flex items-center bg-amber-200 aspect-square animate-pulse"
+    >
+      @if (discount.type == "percentage") {
+        - {{ discount.value / 100 | percent }}
+      }
+    </span>
   }
 </div>

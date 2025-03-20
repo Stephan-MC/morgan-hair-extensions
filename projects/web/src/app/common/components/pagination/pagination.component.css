@@ -1,0 +1,22 @@
+@reference "../../../../styles.css";
+@reference "../../../../theme.css";
+
+:host {
+  @apply block px-3 py-1;
+
+  .wrapper {
+    @apply flex gap-3 justify-center;
+  }
+
+  .pagination-link {
+    @apply px-3 border border-amber-200 bg-amber-300 rounded;
+
+    &.active {
+      @apply text-white;
+    }
+
+    @variant hover {
+      @apply bg-geyser/30 text-black;
+    }
+  }
+}

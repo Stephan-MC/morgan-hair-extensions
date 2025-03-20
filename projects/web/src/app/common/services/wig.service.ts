@@ -40,6 +40,10 @@ export class WigService {
     this._params.set(filters);
   }
 
+  getFilter() {
+    return this._params();
+  }
+
   like(wig: Wig | Wig['id']) {
     fetch(
       `${environment.url.api}/wig/${typeof wig == 'string' ? wig : wig.id}/like`,

@@ -1,6 +1,7 @@
 import { Discount } from './discount';
 import { Media } from './media';
 import { Model } from './model';
+import { Wig } from './wig';
 
 export interface Product extends Model {
   category_id: string;
@@ -23,7 +24,7 @@ export interface ProductFilters {
   order?: string;
   sort?: string;
   color?: string;
-  length?: string;
+  length?: Wig.Length['id'] | Wig.Length['value'];
   style?: string;
   cat?: string;
 }

@@ -2,6 +2,14 @@
   --color-primary: #d6d6d6;
   --animate-bounce-shadow: bounce-shadow 1s infinite;
 
+  /* CSS break points for resposive design  */
+  --breakpoint-mobile: 300px;
+  --breakpoint-tablet-sm: 480px;
+  --breakpoint-tablet: 520px;
+  --breakpoint-tablet-lg: 768px;
+  --breakpoint-laptop: 1280px;
+  --breakpoint-desktop: 1980px;
+
   @keyframes bounce-shadow {
     0%,
     100% {

@@ -28,6 +28,7 @@ export class ProductService {
     Object.keys(filters).forEach((key) => {
       const k = key as keyof ProductFilters;
 
+      /** @ts-ignore */
       if (filters[k] != '') newFilters[k] = filters[k];
     });
 
@@ -37,6 +38,13 @@ export class ProductService {
   like(product: Product | Product['id']) {
     fetch(
       `${environment.url.api}/product/${typeof product == 'string' ? product : product.id}/like`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      },
     ).then((res) => res.json());
   }
 

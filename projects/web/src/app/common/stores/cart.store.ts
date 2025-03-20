@@ -29,10 +29,14 @@ export interface CartItem
 interface CartStoreInterface {
   /** Determines wherether the card component should be displayed or not */
   show: boolean;
+
+  /** When set to true, the cart will show when ever something is added to it */
+  showCartOnAdd: true;
 }
 
 const initialState: CartStoreInterface = {
   show: false,
+  showCartOnAdd: true,
 };
 
 const CART_STORE = new InjectionToken<CartStoreInterface>('cart', {
@@ -56,18 +60,18 @@ const CART_STORE = new InjectionToken<CartStoreInterface>('cart', {
   },
 });
 
-const productEntity = entityConfig({
+const wigEntity = entityConfig({
   entity: type<CartItem>(),
-  collection: 'products',
+  collection: 'wig',
 });
 
 export const CartStore = signalStore(
   { providedIn: 'root' },
   withState(() => inject(CART_STORE)),
-  withEntities(productEntity),
-  withComputed(({ productsEntities }) => ({
+  withEntities<CartItem>(),
+  withComputed(({ entities }) => ({
     total: computed(() =>
-      productsEntities().reduce(
+      entities().reduce(
         (subtotal, product) =>
           new ProductHelper(product).discountedPrice() * product.quantity +
           subtotal,
@@ -75,13 +79,13 @@ export const CartStore = signalStore(
       ),
     ),
 
-    count: computed(() => productsEntities().length),
+    count: computed(() => entities().length),
   })),
 
   withMethods((store) => ({
     add: (product: CartItem | Product | Wig) => {
       const newProduct: CartItem = store
-        .productsEntities()
+        .entities()
         .find((p) => p.id == product.id) ?? {
         id: product.id,
         name: product.name,
@@ -93,12 +97,12 @@ export const CartStore = signalStore(
 
       ++newProduct.quantity;
 
-      patchState(store, setEntity(newProduct, productEntity), { show: true });
+      patchState(store, setEntity(newProduct), { show: true });
     },
 
     reduce: (product: CartItem | Product) => {
       const newProduct: CartItem = store
-        .productsEntities()
+        .entities()
         .find((p) => p.id == product.id) ?? {
         id: product.id,
         name: product.name,
@@ -113,18 +117,19 @@ export const CartStore = signalStore(
       patchState(
         store,
         newProduct.quantity <= 0
-          ? removeEntity(newProduct.id, productEntity)
-          : setEntity(newProduct, productEntity),
+          ? removeEntity(newProduct.id)
+          : setEntity(newProduct),
+        store.showCartOnAdd() ? { show: true } : {},
       );
     },
 
     remove: (product: Product | CartItem) => {
-      patchState(store, removeEntity(product.id, productEntity));
+      patchState(store, removeEntity(product.id));
     },
 
     has: (product: Product | CartItem | Product['id'] | Wig) => {
       return store
-        .productsEntities()
+        .entities()
         .some((p) =>
           typeof product == 'string'
             ? p.id == product
@@ -138,7 +143,7 @@ export const CartStore = signalStore(
       }
 
       const newProduct: CartItem = store
-        .productsEntities()
+        .entities()
         .find((p) => p.id == product.id) ?? {
         id: product.id,
         name: product.name,
@@ -150,7 +155,7 @@ export const CartStore = signalStore(
 
       newProduct.quantity = quantity;
 
-      patchState(store, setEntity(newProduct, productEntity));
+      patchState(store, setEntity(newProduct));
     },
 
     /** Close the cart component */
@@ -165,20 +170,36 @@ export const CartStore = signalStore(
 
     return {
       onInit: () => {
+        if (isPlatformBrowser(platformId)) {
+          const localState = localStorage.getItem('cart');
+
+          if (localState) {
+            const parsedState = JSON.parse(localState);
+
+            const entities = Object.values(
+              parsedState.entityMap,
+            ) as Array<CartItem>;
+
+            delete parsedState.enitityMap;
+            delete parsedState.ids;
+
+            patchState(store, setAllEntities(entities), { ...parsedState });
+          }
+        }
+
         watchState(store, (state) => {
           if (isPlatformBrowser(platformId)) {
-            const localState = localStorage.getItem('cart');
+            const localState = localStorage.getItem('cart') ?? '{}';
 
-            if (localState) {
-              const parsedState = JSON.parse(localState);
+            const parsedState = JSON.parse(localState);
 
-              parsedState.entities = {
-                ...(parsedState.entities ?? {}),
-                products: store.productsEntities(),
-              };
+            parsedState.entities = {
+              ...(parsedState.entities ?? {}),
+              ...state,
+              wigs: store.entities(),
+            };
 
-              localStorage.setItem('cart', JSON.stringify(parsedState));
-            }
+            localStorage.setItem('cart', JSON.stringify({ ...state }));
           }
         });
       },

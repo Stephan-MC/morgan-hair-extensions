@@ -1,23 +1,31 @@
 import {
-  Component,
-  inject,
-  input,
-  linkedSignal,
-  output,
-  signal,
-} from '@angular/core';
-import { CategoryService } from '../../services/category.service';
-import { ChipComponent } from '../chip/chip.component';
-import { ProductService } from '../../services/product.service';
-import {
   animate,
   state,
   style,
   transition,
   trigger,
 } from '@angular/animations';
-import { ProductFilters } from '../../types/product';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  linkedSignal,
+  output,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CategoryService } from '../../services/category.service';
+import { WigService } from '../../services/wig.service';
+import { ColorService } from '../../services/wig/color.service';
+import { LengthService } from '../../services/wig/length.service';
+import { ProductFilters } from '../../types/product';
+import { ChipComponent } from '../chip/chip.component';
+import { WigFilter } from '../../types/wig';
+import { HairTypeService } from '../../services/wig/hair-type.service';
+import { TextureService } from '../../services/wig/texture.service';
+import { LaceService } from '../../services/wig/lace.service';
+import { SourceService } from '../../services/wig/source.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'web-shop-filter',
@@ -47,38 +55,55 @@ import { FormsModule } from '@angular/forms';
   host: {
     '[@openClose]': 'show() ? "open" : "close"',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShopFilterComponent {
-  productService = inject(ProductService);
+  private _wigService = inject(WigService);
+  private _router = inject(Router);
   categories = inject(CategoryService).categoryResource;
-  colors = ['all', 'ox-blood', 'gold', 'black', 'violet'];
-  filterChange = output<ProductFilters>();
+  colors = inject(ColorService).colorsResource;
+  laces = inject(LaceService).lacesResource;
+  sources = inject(SourceService).sourcesResource;
+  hairTypes = inject(HairTypeService).hairTypesResource;
+  lengths = inject(LengthService).lengthsResource;
+  textures = inject(TextureService).texturesResource;
+  filterChange = output<WigFilter>();
   open = input(false);
   show = linkedSignal(() => this.open());
   _open = output({ alias: 'open' });
   _close = output({ alias: 'close' });
 
-  filters: ProductFilters = {
+  filters: WigFilter = {
     q: '',
     color: '',
-    category: '',
+    lace: '',
+    source: '',
     length: '',
-    style: '',
-    cat: '',
+    hair_type: '',
+    texture: '',
+    page: 1,
   };
 
-  updateFilter<K extends keyof ProductFilters>(
-    key: K,
-    value: ProductFilters[K],
-  ) {
+  updateFilter<K extends keyof WigFilter>(key: K, value: WigFilter[K]) {
     if (this.filters[key] == value) return;
 
     this.filters[key] = value;
   }
 
   applyFilters() {
+    this.filters.page = 1;
     this.filterChange.emit(this.filters);
-    this.productService.setFilters(this.filters);
+    this._wigService.setFilter(this.filters);
+  }
+
+  clearFilters() {
+    Object.keys(this.filters).forEach((key) => {
+      const k = key as keyof WigFilter;
+
+      delete this.filters[k];
+    });
+
+    this._router.navigate(['/shop']);
   }
 
   openFilters() {

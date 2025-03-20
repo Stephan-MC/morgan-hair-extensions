@@ -1,13 +1,56 @@
-<div class="py-1 px-2 flex items-center justify-between">
-  <div class="flex items-center gap-2 flex-1 px-2">
-    <a href="">Home</a>
-    <a href="">Shop</a>
-    <a href="">About</a>
-    <a href="">Contact</a>
+<div class="relative py-1 px-2 flex items-center justify-between">
+  <div
+    class="flex items-center gap-3 flex-1 px-2 *:font-bold max-tablet-lg:hidden"
+  >
+    <a [routerLink]="['/']">Home</a>
+    <a [routerLink]="['/shop']">Shop</a>
+    <a [routerLink]="['/about']">About</a>
+    <a [routerLink]="['/contact']">Contact</a>
   </div>
-  <div class="bg-white rounded-full h-10 aspect-square shrink-0"></div>
-  <div class="flex items-center justify-end gap-2 flex-1 px-2">
-    <span class="">A</span>
-    <span class="">B</span>
+  <div class="flex-1 tablet-lg:hidden ps-2">
+    <button (click)="showMobileMenu = !showMobileMenu">
+      <span
+        class="icon-[material-symbols-light--menu]"
+        role="img"
+        aria-hidden="true"
+      ></span>
+    </button>
+  </div>
+
+  <div
+    class="bg-white rounded-full h-10 aspect-square shrink-0 overflow-hidden"
+  >
+    <img src="/assets/images/logo.jpg" alt="Morgan Hair" />
+  </div>
+  <div class="flex items-center justify-end gap-6 flex-1 px-2">
+    <div class="flex items-center">
+      <web-badge
+        role="button"
+        class="flex items-center"
+        [routerLink]="['/cart']"
+        [value]="cart.count() > 0 ? cart.count() : undefined"
+      >
+        <span
+          class="icon-[solar--cart-4-linear] text-lg"
+          role="img"
+          aria-hidden="true"
+        >
+        </span>
+      </web-badge>
+    </div>
+    <div class="rounded-full aspect-square bg-amber-200 size-10"></div>
+  </div>
+
+  <div class="absolute inset-x-0 top-[112%] tablet-lg:hidden px-6">
+    <div
+      class="flex flex-col gap-3 flex-1 px-2 *:font-bold bg-gradient-to-br from-white/90 to-geyser/80 backdrop-blur-sm p-5 rounded-lg overflow-hidden"
+      [@openClose]="showMobileMenu ? 'open' : 'close'"
+      (click)="showMobileMenu = false"
+    >
+      <a [routerLink]="['/']">Home</a>
+      <a [routerLink]="['/shop']">Shop</a>
+      <a [routerLink]="['/about']">About</a>
+      <a [routerLink]="['/contact']">Contact</a>
+    </div>
   </div>
 </div>

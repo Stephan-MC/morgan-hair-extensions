@@ -1,0 +1,15 @@
+<div class="wrapper">
+  @for (link of meta().links; track link.label) {
+    @if (!$first && !$last) {
+      <button
+        class="pagination-link"
+        [routerLink]="page() == link.label ? null : ['./']"
+        [class.active]="page() == link.label"
+        [queryParams]="{ page: link.label }"
+        queryParamsHandling="merge"
+      >
+        {{ link.label }}
+      </button>
+    }
+  }
+</div>

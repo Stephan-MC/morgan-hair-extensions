@@ -1,7 +1,3 @@
-import { CurrencyPipe } from '@angular/common';
-import { Component, effect, inject } from '@angular/core';
-import { CartProduct, CartStore } from '../../stores/cart.store';
-import { CartItemComponent } from '../cart-item/cart-item.component';
 import {
   animate,
   state,
@@ -9,8 +5,17 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { CurrencyPipe } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  effect,
+  inject,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { getState } from '@ngrx/signals';
+import { CartStore } from '../../stores/cart.store';
+import { CartItemComponent } from '../cart-item/cart-item.component';
 
 @Component({
   selector: 'web-cart',
@@ -34,7 +39,16 @@ import { getState } from '@ngrx/signals';
   host: {
     '[@openClose]': 'cart.show() ? "open" : "close"',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartComponent {
+  private _cdr = inject(ChangeDetectorRef);
   protected readonly cart = inject(CartStore);
+
+  constructor() {
+    effect(() => {
+      this.cart.entities();
+      this._cdr.detectChanges();
+    });
+  }
 }

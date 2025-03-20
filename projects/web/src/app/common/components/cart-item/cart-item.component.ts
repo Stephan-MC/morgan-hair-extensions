@@ -6,11 +6,13 @@ import {
   effect,
   inject,
   input,
+  linkedSignal,
+  output,
+  SimpleChanges,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProductHelper } from '../../helpers/product.helper';
-import { CartProduct, CartStore } from '../../stores/cart.store';
-import { getState } from '@ngrx/signals';
+import { CartItem, CartStore } from '../../stores/cart.store';
 
 @Component({
   selector: 'web-cart-item',
@@ -21,38 +23,28 @@ import { getState } from '@ngrx/signals';
 })
 export class CartItemComponent {
   private _cdr = inject(ChangeDetectorRef);
-  product = input.required<CartProduct>();
-  cart = inject(CartStore);
+  product = input.required<CartItem>();
+  increment = output();
+  decrement = output();
+  remove = output();
+  private __oldProduct!: CartItem;
   protected productHelper!: ProductHelper;
-
-  constructor() {
-    effect(() => {
-      this.cart.productsEntities();
-      this._cdr.markForCheck();
-    });
-  }
 
   ngOnInit() {
     this.productHelper = new ProductHelper(this.product());
+  }
+
+  ngDoCheck() {
+    if (this.__oldProduct?.quantity != this.product().quantity) {
+      this._cdr.detectChanges();
+
+      this.__oldProduct = { ...this.product() };
+    }
   }
 
   calculateInputWidth() {
     return Math.ceil(
       this.product().quantity.toString().length * (4 * 3) + 4 * 6,
     );
-  }
-
-  increment() {
-    this.cart.add({
-      ...this.product(),
-      price: this.productHelper.discountedPrice(),
-    });
-  }
-
-  reduce() {
-    this.cart.reduce({
-      ...this.product(),
-      price: this.productHelper.discountedPrice(),
-    });
   }
 }

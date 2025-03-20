@@ -1,0 +1,79 @@
+<div class="flex flex-col">
+  <div class="aspect-300/400 overflow-hidden relative">
+    <img
+      [ngSrc]="wig().thumbnail.url"
+      [alt]="wig().thumbnail.alt != '' ? wig().thumbnail.alt : wig().name"
+      fill
+      [priority]="thumbnailLoadingPriority()"
+      class="object-cover object-top group-hover/wig-card:scale-105 duration-300 transition-transform"
+    />
+  </div>
+
+  <div class="mt-3 px-px flex flex-col gap-3">
+    <a class="first-letter:uppercase" [routerLink]="['/wig()', wig().id]">
+      {{ wig().name }}
+      <span class="absolute inset-0"></span>
+    </a>
+
+    <div
+      class="flex flex-col tablet-sm:flex-row tablet-sm:justify-between tablet-sm:items-center px-3"
+    >
+      <div class="flex gap-1 items-center">
+        @if (wigHelper.hasDiscount()) {
+          <del class="text-sm">{{ wig().price | currency }}</del>
+        }
+        <sup>
+          <span class="text-sm" [class.price-tag]="wigHelper.hasDiscount()">{{
+            wigHelper.discountedPrice() | currency
+          }}</span>
+        </sup>
+      </div>
+
+      <button
+        (click)="cart.add(wig())"
+        class="z-auto text-lg max-tablet-sm:ms-auto"
+        [title]="
+          !wigHelper.canBeAddedToCart(cart, wig())
+            ? 'wig cannont be added to cart'
+            : 'Add to cart'
+        "
+      >
+        @if (wigHelper.canBeAddedToCart(cart, wig())) {
+          @if (cart.has(wig())) {
+            <span
+              class="icon-[solar--cart-check-bold]"
+              role="img"
+              aria-hidden="true"
+            ></span>
+          } @else {
+            <span
+              class="icon-[solar--cart-plus-linear]"
+              role="img"
+              aria-hidden="true"
+            ></span>
+          }
+        }
+      </button>
+    </div>
+  </div>
+
+  <span
+    class="absolute top-5 right-5 text-2xl z-auto cursor-pointer text-amber-400"
+    (click)="likeWig()"
+    [class]="[
+      wig().liked ? 'icon-[iconoir--heart-solid]' : 'icon-[iconoir--heart]',
+    ]"
+    role="img"
+    aria-hidden="true"
+  ></span>
+
+  @if (wigHelper.activeDiscount(); as discount) {
+    <span
+      class="absolute top-2 left-2 rounded-full px-1 flex items-center bg-amber-200 aspect-square animate-pulse"
+    >
+      @if (discount.type == "percentage") {
+        - {{ discount.value / 100 | percent }}
+      }
+    </span>
+  }
+</div>

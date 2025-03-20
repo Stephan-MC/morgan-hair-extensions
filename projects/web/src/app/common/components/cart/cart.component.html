@@ -9,8 +9,13 @@
   <div
     class="grow space-y-6 overflow-y-auto overflow-x-hidden scrollbar-hidden"
   >
-    @for (product of cart.productsEntities(); track product.id) {
-      <web-cart-item [product]="product" />
+    @for (item of cart.entities(); track item.id) {
+      <web-cart-item
+        [product]="item"
+        (increment)="cart.add(item)"
+        (decrement)="cart.reduce(item)"
+        (remove)="cart.remove(item)"
+      />
       @if (!$last) {
         <hr class="border-gray-300" />
       }
@@ -23,15 +28,15 @@
 
   <div class="shrink-0">
     <div class="flex justify-between flex-wrap gap-y-6">
-      @if (cart.productsEntities().length) {
+      @if (cart.entities().length) {
         <span class="first-letter:uppercase font-bold">total</span>
         <span>{{ cart.total() | currency }}</span>
         <div class="basis-full">
           <a
-            [routerLink]="['/checkout']"
+            [routerLink]="['/cart']"
             (click)="cart.close()"
             class="rounded-full flex justify-center items-center px-3 py-1.5 bg-amber-200"
-            >Checkout</a
+            >View Cart</a
           >
         </div>
       } @else {

@@ -2,5 +2,6 @@
 
 @theme {
   --color-geyser: #deddd4;
+  --color-skeleton: var(--color-gray-200);
   --default-font-family: "Diotima LT Std";
 }

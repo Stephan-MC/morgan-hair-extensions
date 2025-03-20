@@ -1,4 +1,4 @@
-import { CurrencyPipe, PercentPipe } from '@angular/common';
+import { CurrencyPipe, NgOptimizedImage, PercentPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,14 +8,14 @@ import {
   output,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CartStore } from '../../stores/cart.store';
-import { DiscountType } from '../../types/discount';
-import { Product } from '../../types/product';
+import { ProductHelper } from '../../helpers/product.helper';
 import { ProductService } from '../../services/product.service';
+import { CartStore } from '../../stores/cart.store';
+import { Product } from '../../types/product';
 
 @Component({
   selector: 'web-product-card',
-  imports: [CurrencyPipe, PercentPipe, RouterLink],
+  imports: [CurrencyPipe, NgOptimizedImage, PercentPipe, RouterLink],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.css',
   host: {
@@ -30,26 +30,12 @@ export class ProductCardComponent {
   private _productService = inject(ProductService);
   readonly cart = inject(CartStore);
   product = input.required<Product>();
+  thumbnailLoadingPriority = input<boolean>(false);
   like = output<boolean>();
+  productHelper!: ProductHelper;
 
-  hasDiscount() {
-    return this.product().discounts.length > 0 && this.activeDiscount();
-  }
-
-  activeDiscount() {
-    return this.product().discounts.find((discount) => discount.is_active);
-  }
-
-  discountedPrice() {
-    if (this.activeDiscount() == undefined) return this.product().price;
-
-    if (this.activeDiscount()!.type === DiscountType.PERCENTAGE) {
-      return (
-        ((100 - this.activeDiscount()!.value) * this.product().price) / 100
-      );
-    } else {
-      return this.product().price - this.activeDiscount()!.value;
-    }
+  ngOnInit() {
+    this.productHelper = new ProductHelper(this.product());
   }
 
   likeProduct() {

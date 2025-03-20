@@ -1,9 +1,11 @@
-import { CartProduct } from '../stores/cart.store';
+import { CartItem } from '../stores/cart.store';
 import { DiscountType } from '../types/discount';
 import { Product } from '../types/product';
+import { CartStore } from '../stores/cart.store';
+import { Wig } from '../types/wig';
 
 export class ProductHelper {
-  constructor(private product: CartProduct | Product) {}
+  constructor(private product: CartItem | Product | Wig) {}
   hasDiscount() {
     return this.product.discounts.length > 0 && this.activeDiscount();
   }
@@ -20,5 +22,13 @@ export class ProductHelper {
     } else {
       return this.product.price - this.activeDiscount()!.value;
     }
+  }
+
+  canBeAddedToCart(cart: InstanceType<typeof CartStore>, item: Wig | Product) {
+    if (cart.has(item)) {
+      return item.stock > cart.entityMap()[item.id].quantity;
+    }
+
+    return item.stock > 0;
   }
 }

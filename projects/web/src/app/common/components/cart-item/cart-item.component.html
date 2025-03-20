@@ -20,7 +20,7 @@
       </a>
       <span
         role="button"
-        (click)="cart.remove(product())"
+        (click)="remove.emit()"
         class="rounded-full flex items-center justify-center px-2 py-[0.5px] text-xs border border-gray-400 shrink-0 z-10"
         >remove</span
       >
@@ -38,7 +38,7 @@
     <div
       class="flex ms-auto border border-gray-300 gap-3 rounded px-2 py-0.5 text-xs z-10"
     >
-      <button (click)="cart.reduce(product())">-</button>
+      <button (click)="decrement.emit()">-</button>
       <input
         type="number"
         [readOnly]="true"
@@ -46,7 +46,7 @@
         class="grow-0 outline-none text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         [style.width.px]="calculateInputWidth()"
       />
-      <button (click)="cart.add(product())">+</button>
+      <button (click)="increment.emit()">+</button>
     </div>
   </div>
 </div>
