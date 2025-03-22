@@ -28,4 +28,8 @@ export const routes: Routes = [
     path: 'cart',
     loadComponent: () => import('./cart/cart.page').then((m) => m.CartPage),
   },
+  {
+    path: 'wig/:slug',
+    loadComponent: () => import('./wig/wig.page').then((m) => m.WigPage),
+  },
 ];
