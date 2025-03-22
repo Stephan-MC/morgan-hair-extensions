@@ -55,4 +55,7 @@ export interface WigFilter {
   texture?: Wig.Texture['name'] | Wig.Texture['id'];
 
   page?: number;
+
+  /** Indicates whether only the featured products should be selected or not */
+  featured?: boolean;
 }

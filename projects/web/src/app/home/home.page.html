@@ -79,11 +79,14 @@
         <button>Best Selling</button>
         <button>Popular</button>
       </div>
-      @if (products.isLoading()) { @for (product of [1, 2, 3, 4]; track $index)
-      {
+      @if (products.isLoading()) {
+      <!-- ! -->
+      @for (product of [1, 2, 3, 4]; track $index) {
       <web-product-card-skeleton />
-      } } @else { @for (product of products.value(); track product.id) {
-      <web-product-card [product]="product" (like)="product.liked = $event" />
+      }
+      <!-- ! -->
+      } @else { @for (wig of products.value(); track product.id) {
+      <web-wig-card [wig]="wig" (like)="product.liked = $event" />
       }}
     </div>
 
