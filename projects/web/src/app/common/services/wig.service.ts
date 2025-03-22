@@ -15,6 +15,10 @@ export class WigService {
     params: new HttpParams({ fromObject: { page: 1, ...this._params() } }),
   }));
 
+  featuredWigsResource = httpResource(() => ({
+    url: `${environment.url.api}/wigs/featured`,
+  }));
+
   patchFilter(params: WigFilter) {
     Object.keys(params).forEach((k) => {
       const key = k as keyof WigFilter;
