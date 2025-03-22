@@ -43,7 +43,7 @@
           class="col-span-full"
           [meta]="wigs.value()!.meta"
           [page]="page() ?? wigs.value()!.meta.current_page"
-          (pageChange)="patchFilters({ page: $event })"
+          (pageChange)="this.page.set($event)"
         />
         }
       </div>
