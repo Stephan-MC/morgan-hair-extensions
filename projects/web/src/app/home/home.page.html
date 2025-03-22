@@ -81,12 +81,19 @@
       </div>
       @if (products.isLoading()) {
       <!-- ! -->
-      @for (product of [1, 2, 3, 4]; track $index) {
+      @for (wig of [1, 2, 3, 4]; track $index) {
+
       <web-product-card-skeleton />
       }
       <!-- ! -->
-      } @else { @for (wig of products.value(); track product.id) {
-      <web-wig-card [wig]="wig" (like)="product.liked = $event" />
+      } @else { @for (wig of products.value(); track wig.id) {
+      <web-wig-card
+        [wig]="wig"
+        (like)="wig.liked = $event"
+        [class.max-tablet-lg:hidden!]="$index > 3"
+        [class.max-laptop:hidden!]="$index > 5"
+      />
+
       }}
     </div>
 

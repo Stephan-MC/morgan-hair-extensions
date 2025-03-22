@@ -15,7 +15,7 @@ export class WigService {
     params: new HttpParams({ fromObject: { page: 1, ...this._params() } }),
   }));
 
-  featuredWigsResource = httpResource(() => ({
+  featuredWigsResource = httpResource<Array<Wig>>(() => ({
     url: `${environment.url.api}/wigs/featured`,
   }));
 
