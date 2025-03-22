@@ -5,8 +5,11 @@
       [alt]="wig().thumbnail.alt != '' ? wig().thumbnail.alt : wig().name"
       fill
       [priority]="thumbnailLoadingPriority()"
-      class="object-cover object-top group-hover/wig-card:scale-105 duration-300 transition-transform"
+      class="object-cover object-top group-hover/wig-card:scale-105 duration-300 transition-transform group-[.out]/wig-card:grayscale"
     />
+
+    <!-- out of stock  -->
+    <div class="out-of-stock hidden">Out of stock</div>
   </div>
 
   <div class="mt-3 px-px flex flex-col gap-3">

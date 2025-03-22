@@ -8,10 +8,22 @@
   }
 
   &.out {
-    @apply grayscale-80 opacity-70;
+    /* @apply grayscale-80; */
+
+    .out-of-stock {
+      @apply absolute bottom-3 w-[80%] mx-auto block! px-3 py-1 text-center isolate left-1/2 -translate-x-1/2 text-red-400 shadow drop-shadow-sm grayscale-0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+      background: repeating-linear-gradient(
+        45deg,
+        #000000,
+        #000000 20px,
+        #ffff00 20px,
+        #ffff00 40px
+      );
+    }
   }
 
   .price-tag {
-    @apply bg-amber-200 rounded-sm px-1.5 py-0.5 relative;
+    @apply bg-amber-200 rounded-sm px-1.5 py-0.5 relative isolate;
   }
 }
