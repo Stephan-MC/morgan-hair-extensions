@@ -27,7 +27,7 @@
       <web-badge
         role="button"
         class="flex items-center"
-        [routerLink]="['/cart']"
+        (click)="cart.open()"
         [value]="cart.count() > 0 ? cart.count() : undefined"
       >
         <span
