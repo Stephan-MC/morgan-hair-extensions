@@ -10,6 +10,8 @@
   --breakpoint-laptop: 1280px;
   --breakpoint-desktop: 1980px;
 
+  --aspect-thumbnail: 4/3;
+
   @keyframes bounce-shadow {
     0%,
     100% {

@@ -27,6 +27,12 @@
   }
 }
 
+@layer components {
+  .skeleton {
+    @apply bg-gray-200 animate-pulse rounded;
+  }
+}
+
 @utility animation-delay-* {
   /* prettier-ignore */
   animation-delay: --value(integer)ms;
@@ -41,6 +47,27 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+@utility clip-star-8 {
+  clip-path: polygon(
+    50% 0%,
+    67.5% 25%,
+    85% 15%,
+    75% 42.5%,
+    100% 50%,
+    75% 57.5%,
+    85% 85%,
+    67.5% 75%,
+    50% 100%,
+    32.5% 75%,
+    15% 85%,
+    25% 57.5%,
+    0% 50%,
+    25% 42.5%,
+    15% 15%,
+    32.5% 25%
+  );
 }
 
 @layer components {
