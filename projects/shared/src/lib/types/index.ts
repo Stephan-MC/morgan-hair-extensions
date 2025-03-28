@@ -37,3 +37,16 @@ export interface Paginated<T = any> {
     }>;
   };
 }
+
+export interface PaginatedWithExtra<T = any, E = any> extends Paginated<T> {
+  extra?: E;
+}
+
+export * from './environment';
+export * from './wig';
+export * from './category';
+export * from './discount';
+export * from './media';
+export * from './model';
+export * from './order';
+export * from './user';

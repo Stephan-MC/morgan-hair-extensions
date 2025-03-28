@@ -16,13 +16,12 @@ import {
   setEntity,
   withEntities,
 } from '@ngrx/signals/entities';
-import { Product } from '../types/product';
 import { ProductHelper } from '../helpers/product.helper';
 import { isPlatformBrowser } from '@angular/common';
-import { Wig } from '../types/wig';
+import { Wig } from 'shared';
 
 export interface CartItem
-  extends Pick<Product, 'id' | 'name' | 'price' | 'discounts' | 'thumbnail'> {
+  extends Pick<Wig, 'id' | 'name' | 'price' | 'discounts' | 'thumbnail'> {
   quantity: number;
 }
 
@@ -83,7 +82,10 @@ export const CartStore = signalStore(
   })),
 
   withMethods((store) => ({
-    add: (product: CartItem | Product | Wig) => {
+    add: (
+      product: CartItem | Wig,
+      openCart: boolean = store.showCartOnAdd(),
+    ) => {
       const newProduct: CartItem = store
         .entities()
         .find((p) => p.id == product.id) ?? {
@@ -97,10 +99,13 @@ export const CartStore = signalStore(
 
       ++newProduct.quantity;
 
-      patchState(store, setEntity(newProduct), { show: true });
+      patchState(store, setEntity(newProduct), { show: openCart });
     },
 
-    reduce: (product: CartItem | Product) => {
+    reduce: (
+      product: CartItem | Wig,
+      openCart: boolean = store.showCartOnAdd(),
+    ) => {
       const newProduct: CartItem = store
         .entities()
         .find((p) => p.id == product.id) ?? {
@@ -119,38 +124,37 @@ export const CartStore = signalStore(
         newProduct.quantity <= 0
           ? removeEntity(newProduct.id)
           : setEntity(newProduct),
-        store.showCartOnAdd() ? { show: true } : {},
+        { show: openCart },
       );
     },
 
-    remove: (product: Product | CartItem) => {
+    remove: (product: CartItem) => {
       patchState(store, removeEntity(product.id));
     },
 
-    has: (product: Product | CartItem | Product['id'] | Wig) => {
+    has: (item: CartItem | Wig | Wig['id']) => {
       return store
         .entities()
         .some((p) =>
-          typeof product == 'string'
-            ? p.id == product
-            : p.id == (product as Product).id,
+          typeof item == 'string' ? p.id == item : p.id == (item as Wig).id,
         );
     },
 
-    setQuantity: (product: Product | CartItem, quantity: number) => {
+    get: (item: Wig['id']) => store.entities().find((p) => p.id == item),
+    setQuantity: (item: Wig | CartItem, quantity: number) => {
       if (quantity < 1) {
         return;
       }
 
       const newProduct: CartItem = store
         .entities()
-        .find((p) => p.id == product.id) ?? {
-        id: product.id,
-        name: product.name,
+        .find((p) => p.id == item.id) ?? {
+        id: item.id,
+        name: item.name,
         quantity: 0,
-        price: product.price,
-        discounts: product.discounts,
-        thumbnail: product.thumbnail,
+        price: item.price,
+        discounts: item.discounts,
+        thumbnail: item.thumbnail,
       };
 
       newProduct.quantity = quantity;

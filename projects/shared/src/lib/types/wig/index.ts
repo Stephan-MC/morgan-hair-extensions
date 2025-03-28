@@ -27,6 +27,7 @@ export interface Wig extends Model {
   stock: number;
 
   thumbnail: Media;
+  gallery: Array<Media>;
 
   discounts: Array<Discount>;
   hair_type: Wig.HairType;

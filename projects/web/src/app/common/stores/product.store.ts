@@ -6,7 +6,7 @@ import {
   withState,
 } from '@ngrx/signals';
 import { entityConfig, withEntities } from '@ngrx/signals/entities';
-import { Product } from '../types/product';
+import { Product } from 'shared';
 import { inject } from '@angular/core';
 import { ProductService } from '../services/product.service';
 
