@@ -1,0 +1,61 @@
+<div class="max-w-screen-lg">
+  <form class="" [formGroup]="form" (ngSubmit)="handleSubmit()">
+    <div class="grid gap-6 tablet:gap-6 grid-cols-2 p-3">
+      <div class="flex flex-col col-span-full">
+        <span>Thumbnail</span>
+        <file-input
+          formControlName="thumbnail"
+          class="relative group/thumbnail"
+        >
+          <thumbnail
+            class="aspect-thumbnail w-full grow"
+            [src]="thumbnail()"
+            [priority]="true"
+          />
+          <span
+            class="absolute inset-0 bg-gray-600/80 group-hover/thumbnail:opacity-0 transition duration-500 flex items-center justify-center text-white"
+          >
+            Click on image to modify
+          </span>
+        </file-input>
+      </div>
+      <div class="flex flex-col col-span-full">
+        <span>Gallery</span>
+        <div class="grid tablet-sm:grid-cols-2 tablet:grid-cols-3">
+          @for (i of form.controls.gallery.controls; track $index) {
+          <thumbnail
+            class="aspect-thumbnail w-full grow"
+            [src]="thumbnail()"
+            [priority]="true"
+          />
+          }
+          <button type="button" class="rounded bg-amber-200 h-10">+</button>
+          <file-input accept="image/*, video/*" class="hidden" #gallery />
+      </div>
+      <div class="flex flex-col col-span-full">
+        <span>name</span>
+        <text-input formControlName="name" />
+      </div>
+      <div class="flex flex-col col-span-full">
+        <span class="">Description</span>
+        <form-input formControlName="description" />
+      </div>
+      <div class="flex flex-col">
+        <span>Stock</span>
+        <number-input formControlName="stock" />
+      </div>
+      <div class="flex flex-col">
+        <span>Price </span>
+        <number-input formControlName="price" [step]="5" />
+      </div>
+      <form-input formControlName="length_id" />
+      <form-input formControlName="hair_type_id" />
+      <form-select
+        [options]="lengths.value()"
+        optionLabel="value"
+        optionValue="value"
+      />
+      <button type="submit" class="col-span-full bg-amber-200">Update</button>
+    </div>
+  </form>
+</div>

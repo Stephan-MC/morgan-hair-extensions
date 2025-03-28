@@ -1,0 +1,108 @@
+<div class="max-w-screen-lg mx-auto">
+  <form class="" [formGroup]="form" (ngSubmit)="handleSubmit()">
+    <div class="grid gap-6 tablet:gap-6 grid-cols-2 p-3">
+      <div class="flex flex-col col-span-full">
+        <span>Thumbnail</span>
+        <file-input
+          formControlName="thumbnail"
+          class="relative group/thumbnail"
+          accept="image/*"
+        >
+          <thumbnail
+            class="aspect-thumbnail w-full grow"
+            [src]="thumbnail()"
+            [priority]="true"
+          />
+          <span
+            class="absolute inset-0 bg-gray-600/80 group-hover/thumbnail:opacity-0 transition duration-500 flex items-center justify-center text-white"
+          >
+            Click on image to modify
+          </span>
+        </file-input>
+      </div>
+      <div class="flex flex-col col-span-full">
+        <span>Gallery</span>
+        <div class="grid gap-3 grid-cols-2 tablet:grid-cols-3">
+          @for (image of gallery(); track image.id) {
+          <div class="aspect-thumbnail relative">
+            <thumbnail class="size-full grow" [src]="image"></thumbnail>
+            <button
+              type="button"
+              (click)="removeImageFromGallery(image.id)"
+              class="absolute rotate-45 right-3 top-3 h-3 tablet:h-5 bg-red-500 text-white rounded-full aspect-square flex items-center justify-center text-xs tablet:text-base"
+            >
+              +
+            </button>
+          </div>
+          }
+          <!-- ~ -->
+          @for (i of form.controls.gallery.controls; track i) {
+          <div class="aspect-thumbnail relative">
+            <thumbnail
+              class="size-full grow"
+              [src]="form.controls.gallery.controls.at($index)?.getRawValue()"
+            ></thumbnail>
+            <button
+              type="button"
+              (click)="form.controls.gallery.removeAt($index)"
+              class="absolute rotate-45 right-3 top-3 h-5 bg-red-500 text-white rounded-full aspect-square flex items-center justify-center"
+            >
+              +
+            </button>
+          </div>
+          }
+          <button
+            type="button"
+            class="rounded bg-amber-200 aspect-thumbnail"
+            (click)="galleryInput.click()"
+          >
+            +
+          </button>
+          <input
+            type="file"
+            accept="image/*, video/*"
+            (change)="handleGalleryChange($event)"
+            multiple
+            class="hidden"
+            #galleryInput
+          />
+        </div>
+      </div>
+      <div class="flex flex-col col-span-full">
+        <span>name</span>
+        <text-input formControlName="name" />
+      </div>
+      <div class="flex flex-col col-span-full">
+        <span class="">Description</span>
+        <text-input formControlName="description" />
+      </div>
+      <div class="flex flex-col max-tablet-sm:col-span-full">
+        <span>Stock</span>
+        <number-input formControlName="stock" />
+      </div>
+      <div class="flex flex-col max-tablet-sm:col-span-full">
+        <span>Price </span>
+        <number-input formControlName="price" [step]="5">
+          <span ngProjectAs="error">
+            @if (form.hasError('price')) { @if (form.errors?.['price'].length) {
+            {{ form.errors?.['price'][0] }} } }
+          </span>
+        </number-input>
+      </div>
+      <form-input
+        formControlName="length_id"
+        class="max-tablet-sm:col-span-full"
+      />
+      <form-input
+        formControlName="hair_type_id"
+        class="max-tablet-sm:col-span-full"
+      />
+      <form-select
+        [options]="lengths.value()"
+        optionLabel="value"
+        optionValue="value"
+      />
+      <button type="submit" class="col-span-full bg-amber-200">Update</button>
+    </div>
+  </form>
+</div>

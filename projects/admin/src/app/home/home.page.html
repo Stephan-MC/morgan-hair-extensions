@@ -1,0 +1,18 @@
+<div class="grid tablet-sm:grid-cols-2 p-3 gap-3">
+  <div class="rounded bg-amber-200/50 p-2">
+    <h3 class="text-xl font-bold">Wigs</h3>
+    <span>Total: </span>
+    <span>{{ wigs.value()?.meta?.total }} </span>
+  </div>
+  <div class="rounded bg-amber-200/50 p-2">
+    <h3 class="text-xl font-bold">Orders</h3>
+    <div class="flex">
+      <span>Total: </span>
+      <span>{{ orders.value()?.meta?.total }} </span>
+    </div>
+    <div class="flex">
+      <span class="shrink-0">Pending: </span>
+      <span class="grow">{{ orders.value()?.extra?.pending_count }} </span>
+    </div>
+  </div>
+</div>
