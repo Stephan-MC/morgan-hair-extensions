@@ -1,0 +1,16 @@
+<div class="left">
+  <ng-content select="left"></ng-content>
+</div>
+<input
+  [type]="type()"
+  [value]="value()"
+  (blur)="handleChange($event)"
+  (input)="handleChange($event)"
+  (change)="handleChange($event)"
+  [attr.placeholder]="placeholder()"
+  class="grow"
+  #input
+/>
+<div class="right">
+  <ng-content select="right"></ng-content>
+</div>

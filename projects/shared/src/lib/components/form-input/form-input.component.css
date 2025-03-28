@@ -1,0 +1,25 @@
+:host {
+  padding: calc(var(--spacing) * 1) calc(var(--spacing) * 2);
+
+  &:focus-within {
+    outline: 1px;
+  }
+
+  @variant hover {
+    @apply border-gray-200/40;
+  }
+
+  .left,
+  .right {
+    @apply shrink-0;
+  }
+
+  input,
+  select {
+    border: 0;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

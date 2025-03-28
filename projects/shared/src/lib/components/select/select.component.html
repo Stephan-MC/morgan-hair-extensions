@@ -1,0 +1,15 @@
+<div class="form-input--wrapper">
+  <select (change)="handleChange($event)" #select>
+    @for (option of options(); track $index) {
+      <option
+        [selected]="
+          selected()[optionLabel()] === option[optionLabel()] &&
+          selected()[optionValue()] === option[optionValue()]
+        "
+        [value]="option[optionLabel()]"
+      >
+        {{ option[optionLabel()] }}
+      </option>
+    }
+  </select>
+</div>

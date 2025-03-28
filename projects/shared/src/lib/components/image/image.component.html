@@ -1,0 +1,15 @@
+@if (this.type() == "default") {
+  <img
+    class="object-cover object-center"
+    [ngSrc]="src()"
+    [alt]="alt()"
+    fill
+    [priority]="priority()"
+  />
+} @else {
+  <img
+    class="object-cover object-center size-full"
+    [src]="src()"
+    [alt]="alt()"
+  />
+}

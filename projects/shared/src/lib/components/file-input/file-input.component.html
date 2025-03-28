@@ -1,0 +1,17 @@
+<div class="form-input--wrapper">
+  <ng-content>
+    <button class="rounded px-3 py-1 text-center bg-amber-200 text-nowrap">
+      Select File
+    </button>
+  </ng-content>
+</div>
+<input
+  [type]="type()"
+  [multiple]="this.multiple()"
+  [accept]="this.accept()"
+  (blur)="handleChange($event)"
+  (input)="handleChange($event)"
+  (change)="handleChange($event)"
+  class="grow text-center hidden absolute"
+  #input
+/>
