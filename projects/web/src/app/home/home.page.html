@@ -1,9 +1,11 @@
 <section class="h-screen supports-dvh:h-[100dvh] relative">
   <div class="size-full overflow-hidden">
     <img
-      src="/assets/images/D_B.N on X.jpg"
+      ngSrc="/assets/images/3178d28f2451fedefcbbecf960f16fbd.jpg"
       alt=""
-      class="object-cover object-center size-full"
+      class="object-cover object-top!"
+      priority
+      fill
     />
   </div>
   <div class="absolute left-1/2 -translate-x-1/2 bottom-10">
@@ -20,25 +22,14 @@
   </div>
 </section>
 
-<!-- <section class="supports-dvh:h-[100dvh] bg-primary pt-16"> -->
-<!--   <div class="h-full flex flex-col max-w-screen-lg mx-auto"> -->
-<!--     <div -->
-<!--       class="grid grid-cols-4 grid-rows-2 gap-3 *:bg-red-200 *:rounded-lg basis-[60%]" -->
-<!--     > -->
-<!--       <div class="col-span-2 row-span-2"></div> -->
-<!--       <div></div> -->
-<!--       <div></div> -->
-<!--       <div class="col-span-2"></div> -->
-<!--     </div> -->
-<!--   </div> -->
-<!-- </section> -->
-
 <section class="supports-dvh:h-[100dvh] bg-white pt-16 pb-6" id="categories">
-  <div class="h-full max-w-screen-lg mx-auto max-h-full">
-    <div class="grid grid-cols-2 grid-rows-5 gap-3 h-full group/container">
+  <div class="h-full max-w-screen-lg mx-auto max-h-full px-3 lg:px-0">
+    <div
+      class="grid columns-2 grid-cols-2 grid-rows-5 gap-3 h-full group/container"
+    >
       @for (hair_type of hairTypes.value(); track hair_type.id) {
       <div
-        class="group relative rounded-lg first:row-span-2 last:row-span-2 not-first:row-span-3 not-last:row-span-3 overflow-hidden group/item"
+        class="group relative rounded-lg first:row-span-2 last:row-span-2 not-first:not-last:row-span-3 overflow-hidden group/item"
       >
         <img
           [src]="hair_type.thumbnail.url"
