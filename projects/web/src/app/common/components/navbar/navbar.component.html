@@ -1,13 +1,13 @@
-<div class="relative py-1 px-2 flex items-center justify-between">
-  <div
+<header class="relative py-1 px-2 flex items-center justify-between">
+  <nav
     class="flex items-center gap-3 flex-1 px-2 *:font-bold max-tablet-lg:hidden"
   >
     <a [routerLink]="['/']">Home</a>
     <a [routerLink]="['/shop']">Shop</a>
     <a [routerLink]="['/about']">About</a>
     <a [routerLink]="['/contact']">Contact</a>
-  </div>
-  <div class="flex-1 tablet-lg:hidden ps-2">
+  </nav>
+  <div class="flex-1 tablet-lg:hidden ps-2 dark:text-amber-500">
     <button (click)="showMobileMenu = !showMobileMenu">
       <span
         class="icon-[material-symbols-light--menu]"
@@ -17,11 +17,12 @@
     </button>
   </div>
 
-  <div
-    class="bg-white rounded-full h-10 aspect-square shrink-0 overflow-hidden"
+  <a
+    routerLink="/"
+    class="block bg-white rounded-full h-10 aspect-square shrink-0 overflow-hidden relative"
   >
-    <img src="/assets/images/logo.jpg" alt="Morgan Hair" />
-  </div>
+    <img ngSrc="/assets/images/logo.jpg" alt="Morgan Hair logo" priority fill />
+  </a>
   <div class="flex items-center justify-end gap-6 flex-1 px-2">
     <div class="flex items-center">
       <web-badge
@@ -38,11 +39,13 @@
         </span>
       </web-badge>
     </div>
-    <div class="rounded-full aspect-square bg-amber-200 size-10"></div>
+    <div
+      class="rounded-full aspect-square bg-amber-200 dark:bg-amber-500 size-10"
+    ></div>
   </div>
 
   <div class="absolute inset-x-0 top-[112%] tablet-lg:hidden px-6">
-    <div
+    <nav
       class="flex flex-col gap-3 flex-1 px-2 *:font-bold bg-gradient-to-br from-white/90 to-geyser/80 backdrop-blur-sm p-5 rounded-lg overflow-hidden"
       [@openClose]="showMobileMenu ? 'open' : 'close'"
       (click)="showMobileMenu = false"
@@ -51,6 +54,6 @@
       <a [routerLink]="['/shop']">Shop</a>
       <a [routerLink]="['/about']">About</a>
       <a [routerLink]="['/contact']">Contact</a>
-    </div>
+    </nav>
   </div>
-</div>
+</header>

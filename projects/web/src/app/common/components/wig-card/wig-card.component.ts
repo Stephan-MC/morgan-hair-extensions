@@ -4,10 +4,11 @@ import {
   Component,
   inject,
   input,
+  linkedSignal,
   output,
   SimpleChanges,
 } from '@angular/core';
-import { Wig } from '../../types/wig';
+import { Wig } from 'shared';
 import { WigService } from '../../services/wig.service';
 import { CartStore } from '../../stores/cart.store';
 import { ProductHelper } from '../../helpers/product.helper';
@@ -33,6 +34,10 @@ export class WigCardComponent {
   wig = input.required<Wig>();
   thumbnailLoadingPriority = input<boolean>(false);
   like = output<boolean>();
+  length = linkedSignal(
+    () =>
+      this.wig().lengths.find((l) => l.default) ?? this.wig().lengths.at(0)!,
+  );
   wigHelper!: ProductHelper;
 
   ngOnInit() {

@@ -1,5 +1,5 @@
+import { environment as sharedEnvironment } from '../../../shared/src/lib/environments/environment';
+
 export const environment = {
-  url: {
-    api: 'https://api.morganhairextensions.com',
-  },
+  ...sharedEnvironment,
 };

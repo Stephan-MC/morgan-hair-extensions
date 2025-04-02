@@ -1,34 +1,31 @@
-import { CartItem } from '../stores/cart.store';
-import { DiscountType } from '../types/discount';
-import { Product } from '../types/product';
-import { CartStore } from '../stores/cart.store';
-import { Wig } from '../types/wig';
+import { DiscountType, Wig } from 'shared';
+import { CartItem, CartStore } from '../stores/cart.store';
 
 export class ProductHelper {
-  constructor(private product: CartItem | Product | Wig) {}
-  hasDiscount() {
-    return this.product.discounts.length > 0 && this.activeDiscount();
-  }
+  price = 1;
 
-  activeDiscount() {
-    return this.product.discounts.find((discount) => discount.is_active);
+  constructor(private item: CartItem | Wig) {
+    this.price =
+      (this.item as Wig)?.length?.price ?? (this.item as CartItem)?.price;
+  }
+  hasDiscount() {
+    return !!this.item.discount;
   }
 
   discountedPrice() {
-    if (this.activeDiscount() == undefined) return this.product.price;
+    if (!this.item.discount) return this.price;
 
-    if (this.activeDiscount()!.type === DiscountType.PERCENTAGE) {
-      return ((100 - this.activeDiscount()!.value) * this.product.price) / 100;
+    if (this.item.discount!.type === DiscountType.PERCENTAGE) {
+      return ((100 - this.item.discount!.value) * this.price) / 100;
     } else {
-      return this.product.price - this.activeDiscount()!.value;
+      return this.price - this.item.discount!.value;
     }
   }
 
-  canBeAddedToCart(cart: InstanceType<typeof CartStore>, item: Wig | Product) {
-    if (cart.has(item)) {
-      return item.stock > cart.entityMap()[item.id].quantity;
-    }
-
-    return item.stock > 0;
+  canBeAddedToCart(cart: InstanceType<typeof CartStore>, item: Wig) {
+    return (
+      (cart.has(item) && item.stock > cart.entityMap()[item.id].quantity) ||
+      item.stock > 0
+    );
   }
 }

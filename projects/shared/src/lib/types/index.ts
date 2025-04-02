@@ -43,10 +43,13 @@ export interface PaginatedWithExtra<T = any, E = any> extends Paginated<T> {
 }
 
 export * from './environment';
-export * from './wig';
+export * from './comment';
 export * from './category';
 export * from './discount';
 export * from './media';
 export * from './model';
 export * from './order';
 export * from './user';
+export * from './review';
+export * from './testimonial';
+export * from './wig';

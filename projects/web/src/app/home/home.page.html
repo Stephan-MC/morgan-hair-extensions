@@ -22,7 +22,10 @@
   </div>
 </section>
 
-<section class="supports-dvh:h-[100dvh] bg-white pt-16 pb-6" id="categories">
+<section
+  class="supports-dvh:h-[100dvh] pt-16 pb-6 bg-primary dark:bg-primary/30"
+  id="categories"
+>
   <div class="h-full max-w-screen-lg mx-auto max-h-full px-3 lg:px-0">
     <div
       class="grid columns-2 grid-cols-2 grid-rows-5 gap-3 h-full group/container"
@@ -39,10 +42,17 @@
           class="absolute inset-0 transition-all duration-500 overlay group-hover/item:bg-white/10 group-has-hover/container:backdrop-blur-[2px] group-hover/item:!backdrop-blur-none"
         >
           <div class="size-full relative">
-            <span
-              class="ps-2 absolute inset-x-0 opacity-30 -top-[10%] group-hover/item:opacity-100 group-hover/item:top-[20%] transition-all duration-500 text-2xl font-bold"
-              >{{ hair_type.name }}</span
+            <a
+              [routerLink]="['/shop']"
+              [queryParams]="{hair_type: hair_type.name}"
+              class=""
             >
+              <span
+                class="ps-2 absolute inset-x-0 opacity-30 -top-[10%] group-hover/item:opacity-100 group-hover/item:top-[20%] transition-all duration-500 text-2xl font-bold"
+                >{{ hair_type.name }}</span
+              >
+              <span class="absolute inset-0"></span>
+            </a>
           </div>
         </div>
       </div>
@@ -51,10 +61,7 @@
   </div>
 </section>
 
-<section
-  class="supports-dvh:min-h-[100dvh] bg-primary pt-18 pb-9"
-  id="featured-section"
->
+<section class="supports-dvh:min-h-[100dvh] pt-18 pb-9" id="featured-section">
   <div class="max-w-screen-lg mx-auto space-y-9">
     <h3 class="text-3xl tracking-widest font-black text-center">
       Featured Wigs
@@ -99,7 +106,7 @@
   </div>
 </section>
 
-<section class="bg-white pt-16">
+<section class="pt-16">
   <div class="grid grid-cols-4 max-w-screen-lg mx-auto gap-9 *:justify-center">
     <div class="flex gap-3">
       <span

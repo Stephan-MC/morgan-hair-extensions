@@ -15,15 +15,11 @@
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
       background: repeating-linear-gradient(
         45deg,
-        #000000,
-        #000000 20px,
-        #ffff00 20px,
-        #ffff00 40px
+        --alpha(var(--color-black) / 15%),
+        --alpha(var(--color-black) / 15%) 20px,
+        --alpha(#ffff00 / 15%) 20px,
+        --alpha(#ffff00 / 15%) 40px
       );
     }
-  }
-
-  .price-tag {
-    @apply bg-amber-200 rounded-sm px-1.5 py-0.5 relative isolate;
   }
 }

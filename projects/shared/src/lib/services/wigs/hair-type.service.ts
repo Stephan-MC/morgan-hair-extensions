@@ -8,7 +8,7 @@ import { Wig } from '../../types';
 })
 export class HairTypeService {
   environment = inject(Environment);
-  hairTypesResources = httpResource<Wig.HairType>(
+  hairTypesResources = httpResource<Array<Wig.HairType>>(
     `${this.environment.url.api}/hair-types`,
   );
 }

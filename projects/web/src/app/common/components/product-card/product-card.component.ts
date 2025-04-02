@@ -11,7 +11,7 @@ import { RouterLink } from '@angular/router';
 import { ProductHelper } from '../../helpers/product.helper';
 import { ProductService } from '../../services/product.service';
 import { CartStore } from '../../stores/cart.store';
-import { Product } from '../../types/product';
+import { Product } from 'shared';
 
 @Component({
   selector: 'web-product-card',

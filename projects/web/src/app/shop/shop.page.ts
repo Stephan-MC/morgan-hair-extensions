@@ -14,7 +14,7 @@ import { ShopFilterComponent } from '../common/components/shop-filter/shop-filte
 import { WigCardComponent } from '../common/components/wig-card/wig-card.component';
 import { WigService } from '../common/services/wig.service';
 import { CartStore } from '../common/stores/cart.store';
-import { WigFilter } from '../common/types/wig';
+import { WigFilter } from 'shared';
 
 @Component({
   selector: 'web-shop',
@@ -48,10 +48,6 @@ export class ShopPage {
         this.patchFilters({ page: this.page() });
       }
     });
-  }
-
-  ngAfterViewInit() {
-    console.log('what the fuck');
   }
 
   hasFilters() {

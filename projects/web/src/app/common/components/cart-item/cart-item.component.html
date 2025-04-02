@@ -1,9 +1,7 @@
 <div class="aspect-3/4 rounded overflow-hidden">
   <img
     [src]="product().thumbnail.url"
-    [alt]="
-      product().thumbnail.alt != '' ? product().thumbnail.alt : product().name
-    "
+    [alt]="product().thumbnail.alt ? product().thumbnail.alt : product().name"
     class="object-cover object-center"
   />
 </div>

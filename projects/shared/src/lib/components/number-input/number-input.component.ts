@@ -39,6 +39,7 @@ export class NumberInputComponent extends InputComponent {
       );
     });
   }
+
   decrement() {
     this.value.update((value) => {
       if (typeof value == 'number' && !Number.isNaN(value)) {

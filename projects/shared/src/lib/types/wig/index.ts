@@ -7,6 +7,7 @@ import * as length from './length';
 import * as source from './source';
 import type { Discount } from '../discount';
 import type { Media } from '../media';
+import { Review } from '../review';
 
 export namespace Wig {
   export interface Color extends color.Color {}
@@ -22,18 +23,20 @@ export interface Wig extends Model {
   slug: string;
   description: string;
   featured: string;
-  liked: boolean;
-  price: number;
   stock: number;
 
+  discount: Discount;
+  liked: boolean;
+  length: Wig.Length & { price: number; default: boolean };
   thumbnail: Media;
   gallery: Array<Media>;
 
+  lengths: Array<Wig.Length & { price: number; default: boolean }>;
+  reviews: Array<Review>;
   discounts: Array<Discount>;
   hair_type: Wig.HairType;
   color: Wig.Color;
   lace: Wig.Lace;
-  length: Wig.Length;
   source: Wig.Source;
   texture: Wig.Texture;
 }

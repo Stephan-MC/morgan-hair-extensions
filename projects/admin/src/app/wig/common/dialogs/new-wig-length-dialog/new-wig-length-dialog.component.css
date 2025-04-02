@@ -1,0 +1,5 @@
+@reference "../../../../../styles.css";
+
+:host {
+  @apply block rounded-lg bg-white p-4;
+}

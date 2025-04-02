@@ -10,11 +10,9 @@ import { environment } from '../environments/environment.development';
 import { Environment } from '../types/environment';
 import { Paginated, Wig, WigFilter } from '../types';
 import { toFormData } from '../helpers/form';
-import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
-  deps: [Environment],
 })
 export class WigService {
   currentWig = signal<string>('');

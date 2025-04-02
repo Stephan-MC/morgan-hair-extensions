@@ -36,10 +36,15 @@
         <span class="grow">{{ wig.texture.name }}</span>
       </div>
       <div class="flex gap-3">
-        <span class="shink-0">Length</span>
-        <span class="grow">{{ wig.length.value }} inches</span>
+        <span class="shink-0">Sizes</span>
+        <span class="grow">{{ wig.lengths.length }}</span>
       </div>
     </div>
   </div>
   }
 </div>
+<a
+  routerLink="/wig"
+  class="bg-amber-300 size-10 flex items-center justify-center right-3 bottom-3 tablet:bottom-8 tablet:right-10 lg:right-[10%] tablet:size-15 fixed text-2xl tablet:text-4xl rounded-full animate-bounce animation-duration-2000!"
+  >+</a
+>

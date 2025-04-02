@@ -1,8 +1,8 @@
+import { isPlatformBrowser } from '@angular/common';
 import { computed, inject, InjectionToken, PLATFORM_ID } from '@angular/core';
 import {
   patchState,
   signalStore,
-  type,
   watchState,
   withComputed,
   withHooks,
@@ -10,19 +10,18 @@ import {
   withState,
 } from '@ngrx/signals';
 import {
-  entityConfig,
   removeEntity,
   setAllEntities,
   setEntity,
   withEntities,
 } from '@ngrx/signals/entities';
+import { Discount, Wig } from 'shared';
 import { ProductHelper } from '../helpers/product.helper';
-import { isPlatformBrowser } from '@angular/common';
-import { Wig } from 'shared';
 
-export interface CartItem
-  extends Pick<Wig, 'id' | 'name' | 'price' | 'discounts' | 'thumbnail'> {
+export interface CartItem extends Pick<Wig, 'id' | 'name' | 'thumbnail'> {
   quantity: number;
+  price: number;
+  discount?: Discount;
 }
 
 interface CartStoreInterface {
@@ -59,11 +58,6 @@ const CART_STORE = new InjectionToken<CartStoreInterface>('cart', {
   },
 });
 
-const wigEntity = entityConfig({
-  entity: type<CartItem>(),
-  collection: 'wig',
-});
-
 export const CartStore = signalStore(
   { providedIn: 'root' },
   withState(() => inject(CART_STORE)),
@@ -82,19 +76,16 @@ export const CartStore = signalStore(
   })),
 
   withMethods((store) => ({
-    add: (
-      product: CartItem | Wig,
-      openCart: boolean = store.showCartOnAdd(),
-    ) => {
+    add: (wig: CartItem | Wig, openCart: boolean = store.showCartOnAdd()) => {
       const newProduct: CartItem = store
         .entities()
-        .find((p) => p.id == product.id) ?? {
-        id: product.id,
-        name: product.name,
+        .find((p) => p.id == wig.id) ?? {
+        id: wig.id,
+        name: wig.name,
         quantity: 0,
-        price: product.price,
-        discounts: product.discounts,
-        thumbnail: product.thumbnail,
+        price: (wig as CartItem).price ?? (wig as Wig).length.price,
+        discount: wig.discount,
+        thumbnail: wig.thumbnail,
       };
 
       ++newProduct.quantity;
@@ -103,18 +94,18 @@ export const CartStore = signalStore(
     },
 
     reduce: (
-      product: CartItem | Wig,
+      wig: CartItem | Wig,
       openCart: boolean = store.showCartOnAdd(),
     ) => {
       const newProduct: CartItem = store
         .entities()
-        .find((p) => p.id == product.id) ?? {
-        id: product.id,
-        name: product.name,
+        .find((p) => p.id == wig.id) ?? {
+        id: wig.id,
+        name: wig.name,
         quantity: 0,
-        price: product.price,
-        discounts: product.discounts,
-        thumbnail: product.thumbnail,
+        price: (wig as CartItem).price ?? (wig as Wig).length.price,
+        discount: wig.discount,
+        thumbnail: wig.thumbnail,
       };
 
       --newProduct.quantity;
@@ -141,6 +132,8 @@ export const CartStore = signalStore(
     },
 
     get: (item: Wig['id']) => store.entities().find((p) => p.id == item),
+
+    /** Manually set the quantity of an item in cart */
     setQuantity: (item: Wig | CartItem, quantity: number) => {
       if (quantity < 1) {
         return;
@@ -152,8 +145,8 @@ export const CartStore = signalStore(
         id: item.id,
         name: item.name,
         quantity: 0,
-        price: item.price,
-        discounts: item.discounts,
+        price: (item as CartItem).price ?? (item as Wig).length.price,
+        discount: item.discount,
         thumbnail: item.thumbnail,
       };
 

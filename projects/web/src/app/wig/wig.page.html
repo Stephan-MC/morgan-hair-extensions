@@ -1,1 +1,177 @@
-{{ wig.value()?.name }}
+<div class="spacy-y-3 max-w-screen-lg mx-auto">
+  @let wig = this.wig.value();
+  <!-- ! -->
+
+  @if (wig) {
+  <div class="aspect-thumbnail relative">
+    <img
+      [ngSrc]="wig!.thumbnail.url"
+      [alt]="wig!.thumbnail.alt ? wig!.thumbnail.alt : wig!.name"
+      priority
+      fill
+    />
+  </div>
+  <swiper-container #gallerySwipe init="false" class="py-3">
+    <swiper-slide>
+      <thumbnail [src]="wig.thumbnail.url" class="aspect-video" />
+    </swiper-slide>
+    @for (image of wig.gallery; track image.id) {
+    <swiper-slide>
+      <thumbnail [src]="image.url" class="aspect-video" />
+    </swiper-slide>
+    }
+  </swiper-container>
+  <div class="flex flex-col gap-6 px-3 py-6">
+    <h2 class="text-3xl tracking-wide font-bold uppercase">{{ wig?.name }}</h2>
+    <div class="flex gap-1 items-center">
+      @if (wig?.discount) {
+      <del class="text-sm">{{ wig!.length.price | currency }}</del>
+      }
+      <sup>
+        <span class="text-sm" [class.price-tag]="wig?.discount"
+          >{{ discountedPrice() | currency }}</span
+        >
+      </sup>
+    </div>
+
+    <div class="grid grid-cols-10 tablet:grid-cols-15 gap-3">
+      <h4 class="col-span-full">Choose you preferred length</h4>
+      @for (length of wig.lengths; track length.id) {
+      <span
+        (click)="selectLength(length)"
+        class="border-2 border-doubled border-amber-500 text-center cursor-pointer"
+        [class]="length.id == wig.length.id ? 'bg-amber-500 dark:text-slate-800' : 'bg-transparent'"
+        >{{ length.value }}</span
+      >
+      }
+    </div>
+
+    <div class="flex gap-3">
+      <div
+        class="flex border border-gray-300 gap-3 rounded px-2 py-0.5 text-xs z-10"
+      >
+        <button (click)="cart.reduce(wig!, false)">-</button>
+        <input
+          type="number"
+          [readOnly]="true"
+          [value]="cart.get(wig!.id)?.quantity || 0"
+          class="grow-0 outline-none text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          [style.width.px]="30"
+        />
+        <button (click)="cart.add(wig!, false)">+</button>
+      </div>
+
+      <a
+        (click)="viewportScroller.scrollToPosition([0, 0])"
+        routerLink="/cart"
+        class="grow bg-amber-200 dark:bg-amber-500 dark:text-slate-800 px-3 py-1 text-center"
+        >View cart</a
+      >
+    </div>
+
+    <div class="">
+      <h4 class="font-bold text-2xl my-5">Description</h4>
+      <div class="flex flex-col gap-3 *:*:first:basis-2/5">
+        <p>{{ wig!.description }}</p>
+
+        <div class="flex gap-3">
+          <span class="">color:</span>
+          <div class="flex items-center gap-2">
+            <span
+              class="rounded-full size-3"
+              [style.background]="wig!.color.code"
+            ></span>
+            <span>{{ wig!.color.name }}</span>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <span class="">length:</span>
+          <span>{{ wig!.length.value }} (inches)</span>
+        </div>
+        <div class="flex gap-3">
+          <span class="">hair type:</span>
+          <span>{{ wig!.hair_type.name }} </span>
+        </div>
+        <div class="flex gap-3">
+          <span class="">lace</span>
+          <span>{{ wig!.lace.name }} </span>
+        </div>
+        <div class="flex gap-3">
+          <span class="">texture</span>
+          <span>{{ wig!.texture.name }} </span>
+        </div>
+        <div class="flex gap-3">
+          <span class="">source</span>
+          <span>{{ wig!.source.name }} </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="">
+      <h4 class="text-xl font-bold mb-3">You may also like</h4>
+
+      <swiper-container #swiper init="false">
+        @for (recommended of recommendedWigs.value(); track recommended.id) {
+        <swiper-slide lazy="true">
+          <div class="relative">
+            <div class="relative aspect-thumbnail">
+              <img
+                [ngSrc]="recommended.thumbnail.url"
+                [alt]="recommended.thumbnail.alt ? recommended.thumbnail.alt : recommended.name"
+                [priority]="$first"
+                fill
+              />
+            </div>
+            <a [routerLink]="['/wig', recommended.slug]">
+              {{ recommended.name }}
+              <span class="absolute inset-0"></span>
+            </a>
+          </div>
+        </swiper-slide>
+        }
+      </swiper-container>
+    </div>
+
+    <section>
+      <h4 class="font-bold text-2xl my-5">Reviews</h4>
+
+      <div class="flex flex-col gap-3">
+        @for (review of wig.reviews; track review.id) {
+        <div class="">
+          <div class="flex gap-2">
+            <thumbnail
+              [src]="review.client.id"
+              [alt]="`${review.client.first_name} ${review.client.last_name}`"
+              class="size-10 aspect-square"
+            />
+            <span class="">
+              {{ `${review.client.first_name} ${review.client.last_name}` }}
+            </span>
+          </div>
+
+          <div class="">{{ review.comment.body }}</div>
+        </div>
+        } @empty {
+        <span>Be the first to leave a review for this product</span>
+        }
+      </div>
+      <text-area />
+    </section>
+  </div>
+  } @else {
+  <div class="skeleton aspect-thumbnail"></div>
+  <div class="flex flex-col gap-6 px-3 py-6">
+    <span class="skeleton h-8 w-[75%] my-3"></span>
+    <div class="flex gap-1 items-center">
+      <del class="skeleton w-20 h-3"></del>
+      <sup class="skeleton h-3"></sup>
+    </div>
+    <div class="flex gap-3">
+      <div class="flex gap-3 rounded px-2 py-0.5 text-xs z-10">
+        <span class="skeleton w-7 h-8"></span>
+        <span class="skeleton grow h-8"></span>
+      </div>
+    </div>
+  </div>
+  }
+</div>

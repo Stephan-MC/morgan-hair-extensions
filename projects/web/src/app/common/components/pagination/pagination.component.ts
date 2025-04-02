@@ -1,6 +1,6 @@
 import { Component, input, model } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { Paginated } from '../../types';
+import { Paginated } from 'shared';
 
 @Component({
   selector: 'web-pagination',

@@ -54,9 +54,7 @@
                 "input": "projects/web/public"
               }
             ],
-            "styles": [
-              "projects/web/src/styles.css"
-            ],
+            "styles": ["projects/web/src/styles.css"],
             "scripts": [],
             "server": "projects/web/src/main.server.ts",
             "outputMode": "server",
@@ -120,9 +118,7 @@
                 "input": "projects/web/public"
               }
             ],
-            "styles": [
-              "projects/web/src/styles.css"
-            ],
+            "styles": ["projects/web/src/styles.css"],
             "scripts": []
           }
         }
@@ -149,9 +145,7 @@
                 "input": "projects/admin/public"
               }
             ],
-            "styles": [
-              "projects/admin/src/styles.css"
-            ],
+            "styles": ["projects/admin/src/styles.css"],
             "scripts": [],
             "server": "projects/admin/src/main.server.ts",
             "outputMode": "server",
@@ -215,9 +209,7 @@
                 "input": "projects/admin/public"
               }
             ],
-            "styles": [
-              "projects/admin/src/styles.css"
-            ],
+            "styles": ["projects/admin/src/styles.css"],
             "scripts": []
           }
         }

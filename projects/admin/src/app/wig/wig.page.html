@@ -1,6 +1,6 @@
 <div class="max-w-screen-lg mx-auto">
   <form class="" [formGroup]="form" (ngSubmit)="handleSubmit()">
-    <div class="grid gap-6 tablet:gap-6 grid-cols-2 p-3">
+    <div class="grid gap-6 gap-x-3 tablet:gap-9 tablet:gap-x-6 grid-cols-2 p-3">
       <div class="flex flex-col col-span-full">
         <span>Thumbnail</span>
         <file-input
@@ -22,7 +22,9 @@
       </div>
       <div class="flex flex-col col-span-full">
         <span>Gallery</span>
-        <div class="grid gap-3 grid-cols-2 tablet:grid-cols-3">
+        <div
+          class="grid gap-3 grid-cols-2 tablet-sm:grid-cols-3 tablet-lg:grid-cols-4 laptop:grid-cols-5"
+        >
           @for (image of gallery(); track image.id) {
           <div class="aspect-thumbnail relative">
             <thumbnail class="size-full grow" [src]="image"></thumbnail>
@@ -73,8 +75,51 @@
         <text-input formControlName="name" />
       </div>
       <div class="flex flex-col col-span-full">
+        <span class=""> Color @if (color$()) { ({{ color$() }}) } </span>
+        <div
+          class="grid grid-cols-6 tablet-sm:grid-cols-9 tablet:grid-cols-12 tablet-lg:grid-cols-15 gap-1.5"
+        >
+          @for (color of colors.value(); track color.id) {
+          <div
+            [class.selected]="color.id === form.controls.color_id.getRawValue()"
+            class="flex flex-col rounded cursor-pointer group/color"
+            (click)="form.controls.color_id.setValue(color.id)"
+          >
+            <span
+              class="aspect-thumbnail group-[.selected]/color:scale-130 animation-duration-2500! group-hover/color:scale-120 transition duration-300"
+              [style.background]="color.code"
+            ></span>
+            @if (color.id === form.controls.color_id.getRawValue()) {
+            <ng-template #colorTemplate>
+              <span class="" #colorTemplate> {{ color.name }} </span>
+            </ng-template>
+            }
+          </div>
+          }
+        </div>
+      </div>
+      <div class="flex flex-col col-span-full">
+        <span class="">Hair Type</span>
+        <div
+          class="grid grid-cols-2 tablet-sm:grid-cols-2 tablet:grid-cols-3 tablet-lg:grid-cols-5 gap-4"
+        >
+          @for (hair_type of hairTypes.value(); track hair_type.id) {
+          <div
+            [class.selected]="hair_type.id === form.controls.hair_type_id.getRawValue()"
+            class="flex flex-col rounded cursor-pointer group/hair-type border-transparent border-8 [&.selected]:border-amber-200"
+            (click)="form.controls.hair_type_id.setValue(hair_type.id)"
+          >
+            <thumbnail
+              [src]="hair_type.thumbnail"
+              class="aspect-thumbnail group-hover/hair-type:scale-110 transition duration-400"
+            />
+          </div>
+          }
+        </div>
+      </div>
+      <div class="flex flex-col col-span-full">
         <span class="">Description</span>
-        <text-input formControlName="description" />
+        <text-area formControlName="description" />
       </div>
       <div class="flex flex-col max-tablet-sm:col-span-full">
         <span>Stock</span>
@@ -89,19 +134,60 @@
           </span>
         </number-input>
       </div>
-      <form-input
-        formControlName="length_id"
-        class="max-tablet-sm:col-span-full"
-      />
-      <form-input
-        formControlName="hair_type_id"
-        class="max-tablet-sm:col-span-full"
-      />
-      <form-select
-        [options]="lengths.value()"
-        optionLabel="value"
-        optionValue="value"
-      />
+      <div class="flex flex-col">
+        <span>Source</span>
+        <form-select
+          formControlName="source_id"
+          [options]="sources.value() ?? []"
+          optionLabel="name"
+          optionValue="id"
+        />
+      </div>
+      <div class="flex flex-col">
+        <span>Lace</span>
+        <form-select
+          formControlName="lace_id"
+          [options]="laces.value() ?? []"
+          optionLabel="name"
+          optionValue="id"
+        />
+      </div>
+      <div class="flex flex-col">
+        <span>Texture</span>
+        <form-select
+          formControlName="lace_id"
+          [options]="textures.value() ?? []"
+          optionLabel="name"
+          optionValue="id"
+        />
+      </div>
+      <div class="flex flex-col col-span-full">
+        <span class="">Lengths</span>
+        <div
+          class="grid grid-cols-2 tablet-sm:grid-cols-3 tablet:grid-cols-4 tablet-lg:grid-cols-5 gap-3"
+        >
+          @for (length of form.controls.lengths.controls | keyvalue; track
+          length.key) {
+          <div class="flex flex-col p-1 rounded bg-amber-100 dark:text-black">
+            <span
+              >{{ lengths.value().find(find(length.key))?.value }} inches</span
+            >
+            <span class="">
+              {{ length.value.controls['price'].getRawValue() | currency }}
+            </span>
+          </div>
+          } @empty {
+          <h5 class="text-center [grid-column:1_/_-2]">No length added yet</h5>
+          }
+          <button
+            type="button"
+            class="bg-amber-200 flex items-center justify-center tablet-sm:text-4xl aspect-thumbnail"
+            (click)="openNewLengthDialog()"
+          >
+            +
+          </button>
+        </div>
+      </div>
       <button type="submit" class="col-span-full bg-amber-200">Update</button>
     </div>
   </form>

@@ -1,6 +1,10 @@
+import { Media } from './media';
 import { Model } from './model';
 
 export interface User extends Model {
+  first_name: string;
+  last_name: string;
+  profile: Media;
   email: string;
 }
 

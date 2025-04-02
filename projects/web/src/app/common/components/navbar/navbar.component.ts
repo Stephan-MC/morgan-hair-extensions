@@ -1,4 +1,8 @@
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import {
+  isPlatformBrowser,
+  isPlatformServer,
+  NgOptimizedImage,
+} from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -20,7 +24,7 @@ import {
 
 @Component({
   selector: 'web-navbar',
-  imports: [RouterLink, BadgeComponent],
+  imports: [NgOptimizedImage, RouterLink, BadgeComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
   animations: [
@@ -60,10 +64,14 @@ export class NavbarComponent {
         window.scrollY || document.documentElement.scrollTop;
 
       if (scrollPosition > 10) {
-        this._renderer.addClass(this.elementRef.nativeElement, '!shadow-2xs');
+        this._renderer.addClass(this.elementRef.nativeElement, 'shadow-2xs!');
         this._renderer.addClass(
           this.elementRef.nativeElement,
-          '!bg-[#d6d6d6]/50',
+          'bg-[#d6d6d6]/50!',
+        );
+        this._renderer.addClass(
+          this.elementRef.nativeElement,
+          'dark:bg-slate-800/80!',
         );
       }
     }
@@ -74,16 +82,24 @@ export class NavbarComponent {
     const scrollPosition = window.scrollY || document.documentElement.scrollTop;
 
     if (scrollPosition > 10) {
-      this._renderer.addClass(this.elementRef.nativeElement, '!shadow-2xs');
+      this._renderer.addClass(this.elementRef.nativeElement, 'shadow-2xs!');
       this._renderer.addClass(
         this.elementRef.nativeElement,
-        '!bg-[#d6d6d6]/50',
+        'bg-[#d6d6d6]/50!',
+      );
+      this._renderer.addClass(
+        this.elementRef.nativeElement,
+        'dark:bg-slate-800/80!',
       );
     } else {
-      this._renderer.removeClass(this.elementRef.nativeElement, '!shadow-2xs');
+      this._renderer.removeClass(this.elementRef.nativeElement, 'shadow-2xs!');
       this._renderer.removeClass(
         this.elementRef.nativeElement,
-        '!bg-[#d6d6d6]/50',
+        'bg-[#d6d6d6]/50!',
+      );
+      this._renderer.removeClass(
+        this.elementRef.nativeElement,
+        'dark:bg-slate-800/80!',
       );
     }
   }

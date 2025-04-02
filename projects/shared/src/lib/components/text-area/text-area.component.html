@@ -1,1 +1,15 @@
-<p>text-area works!</p>
+<div class="form-input--wrapper">
+  <div class="left">
+    <ng-content select="left"></ng-content>
+  </div>
+  <textarea
+    class="p-1"
+    [value]="value()"
+    (input)="onTouched()"
+    [rows]="rows()"
+    [cols]="cols()"
+  ></textarea>
+  <div class="right">
+    <ng-content select="right"></ng-content>
+  </div>
+</div>

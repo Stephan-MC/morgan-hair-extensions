@@ -3,16 +3,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  effect,
   inject,
   input,
-  linkedSignal,
   output,
-  SimpleChanges,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProductHelper } from '../../helpers/product.helper';
-import { CartItem, CartStore } from '../../stores/cart.store';
+import { CartItem } from '../../stores/cart.store';
 
 @Component({
   selector: 'web-cart-item',

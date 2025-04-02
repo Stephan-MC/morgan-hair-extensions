@@ -1,11 +1,17 @@
 <div class="grid tablet-sm:grid-cols-2 p-3 gap-3">
-  <div class="rounded bg-amber-200/50 p-2">
-    <h3 class="text-xl font-bold">Wigs</h3>
+  <div class="rounded bg-amber-200/50 p-2 relative">
+    <a routerLink="/wigs" class="text-xl font-bold block">
+      Wigs
+      <span class="absolute inset-0"></span>
+    </a>
     <span>Total: </span>
     <span>{{ wigs.value()?.meta?.total }} </span>
   </div>
-  <div class="rounded bg-amber-200/50 p-2">
-    <h3 class="text-xl font-bold">Orders</h3>
+  <div class="rounded bg-amber-200/50 p-2 relative">
+    <a routerLink="/orders" class="text-xl font-bold">
+      Orders
+      <span class="absolute inset-0"></span>
+    </a>
     <div class="flex">
       <span>Total: </span>
       <span>{{ orders.value()?.meta?.total }} </span>

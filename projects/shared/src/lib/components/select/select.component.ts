@@ -39,6 +39,7 @@ export class SelectComponent extends SelectControlValueAccessor {
   private _onTouch: VoidFunction = () => {};
 
   options = input<Array<{ label: string; value: any }> | Array<any>>([]);
+  multiple = input<boolean>(false);
   _selected = input<{ label: string; value: any } | any>(undefined, {
     alias: 'selected',
   });
@@ -56,11 +57,9 @@ export class SelectComponent extends SelectControlValueAccessor {
     super(renderer, elementRef);
   }
 
-  handleChange(option: { label: string; value: any } | Event) {
-    console.log(option);
-    console.log('selecting');
+  handleChange(event: Event) {
     this._onTouch();
-    this.change.emit(option);
+    this.change.emit((event.target as HTMLSelectElement).value);
   }
 
   isSelected(option: any) {

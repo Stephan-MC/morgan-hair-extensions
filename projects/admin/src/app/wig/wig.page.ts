@@ -1,3 +1,6 @@
+import { Dialog, DialogModule } from '@angular/cdk/dialog';
+import { Overlay } from '@angular/cdk/overlay';
+import { CurrencyPipe, KeyValuePipe, NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   DestroyRef,
@@ -6,34 +9,47 @@ import {
   input,
   linkedSignal,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import {
+  FormBuilder,
+  FormControl,
+  FormRecord,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { EMPTY, Observable } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import {
   ColorService,
   FileInputComponent,
   FormInputComponent,
   HairTypeService,
   ImageComponent,
+  LaceService,
   LengthService,
   Media,
   MediaService,
   NumberInputComponent,
   SelectComponent,
   SourceService,
+  TextAreaComponent,
   TextInputComponent,
+  TextureService,
   Wig,
   WigService,
 } from 'shared';
+import { NewWigLengthDialogComponent } from './common/dialogs/new-wig-length-dialog/new-wig-length-dialog.component';
 
 @Component({
   selector: 'web-wig',
   imports: [
+    CurrencyPipe,
+    DialogModule,
+    KeyValuePipe,
     ReactiveFormsModule,
     TextInputComponent,
+    TextAreaComponent,
     FileInputComponent,
-    FormInputComponent,
     SelectComponent,
     NumberInputComponent,
     ImageComponent,
@@ -46,6 +62,9 @@ export class WigPage {
   private _wigService = inject(WigService);
   private _mediaService = inject(MediaService);
   private _destroyRef = inject(DestroyRef);
+  private _overlay = inject(Overlay);
+  private _dialog = inject(Dialog);
+
   slug = input.required<Wig['slug']>();
   wig = this._wigService.wig(this.slug);
 
@@ -70,7 +89,20 @@ export class WigPage {
     length_id: this._fb.control<string>('', {
       nonNullable: true,
     }),
+    lengths: this._fb.record<FormRecord<FormControl<number>>>(
+      {},
+      { validators: [Validators.required, Validators.minLength(1)] },
+    ),
     source_id: this._fb.control<string>('', {
+      nonNullable: true,
+    }),
+    color_id: this._fb.control<string>('', {
+      nonNullable: true,
+    }),
+    texture_id: this._fb.control<string>('', {
+      nonNullable: true,
+    }),
+    lace_id: this._fb.control<string>('', {
       nonNullable: true,
     }),
     hair_type_id: this._fb.control<string>('', {
@@ -81,28 +113,49 @@ export class WigPage {
       nonNullable: true,
       validators: [Validators.min(0)],
     }),
-    price: this._fb.control<number>(0.0, { nonNullable: true }),
   });
 
   lengths = inject(LengthService).lengthsResource;
+  textures = inject(TextureService).texturesResource;
   hairTypes = inject(HairTypeService).hairTypesResources;
   sources = inject(SourceService).sourcesResource;
   colors = inject(ColorService).colorsResource;
+  laces = inject(LaceService).lacesResource;
+
+  color$ = toSignal(
+    this.form.controls.color_id.valueChanges.pipe(
+      map((id) => this.colors.value()?.find((color) => color.id === id)?.name),
+    ),
+  );
 
   constructor() {
     effect(() => {
       if (this.wig.value()) {
-        const wig = this.wig.value();
+        const wig = this.wig.value()!;
 
         this.form.patchValue({
           name: wig?.name,
           description: wig?.description,
-          price: wig?.price,
           stock: wig?.stock,
+          color_id: wig.color.id,
+          lace_id: wig.lace.id,
+          texture_id: wig.texture.id,
           length_id: wig?.length.id,
           source_id: wig?.source.id,
           hair_type_id: wig?.hair_type.id,
         });
+
+        wig.lengths.forEach((length) =>
+          this.form.controls.lengths.addControl(
+            length.id,
+            this._fb.record({
+              price: this._fb.control(length.price, {
+                nonNullable: true,
+                validators: [Validators.required, Validators.min(10)],
+              }),
+            }),
+          ),
+        );
       }
     });
 
@@ -113,7 +166,7 @@ export class WigPage {
 
   handleSubmit() {
     if (this.form.invalid) {
-      return;
+      // return;
     }
 
     var observer: Observable<any>;
@@ -172,6 +225,51 @@ export class WigPage {
             values.filter((value) => value.id !== id),
           ),
         ),
+      )
+      .subscribe();
+  }
+
+  find(id: Wig.Length['id']) {
+    return (l: Wig.Length) => l.id == id;
+  }
+
+  openNewLengthDialog() {
+    const dialogRef = this._dialog.open<{ price: number; length_id: string }>(
+      NewWigLengthDialogComponent,
+      {
+        positionStrategy: this._overlay
+          .position()
+          .global()
+          .centerVertically()
+          .centerHorizontally(),
+        data: {
+          price: new Number(),
+          length_id: '',
+          lengths: this.lengths
+            .value()
+            .filter(
+              (length) => !this.form.controls.lengths.getRawValue()[length.id],
+            ),
+        },
+      },
+    );
+
+    dialogRef.closed
+      .pipe(
+        tap((value) => {
+          if (Number(value?.price) > 0 && value?.length_id) {
+            this.form.controls.lengths.addControl(
+              value.length_id,
+              this._fb.record({
+                price: this._fb.control(value.price, {
+                  nonNullable: true,
+                  validators: [Validators.required, Validators.min(10)],
+                }),
+              }),
+            );
+          }
+        }),
+        takeUntilDestroyed(this._destroyRef),
       )
       .subscribe();
   }

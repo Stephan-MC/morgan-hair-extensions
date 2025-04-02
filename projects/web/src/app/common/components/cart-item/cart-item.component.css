@@ -2,8 +2,4 @@
 
 :host {
   @apply grid grid-cols-5 gap-3 relative;
-
-  .price-tag {
-    @apply bg-amber-200 rounded-sm px-1.5 py-0.5 relative;
-  }
 }

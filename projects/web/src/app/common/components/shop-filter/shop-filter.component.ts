@@ -14,18 +14,17 @@ import {
   output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CategoryService } from '../../services/category.service';
 import { WigService } from '../../services/wig.service';
 import { ColorService } from '../../services/wig/color.service';
 import { LengthService } from '../../services/wig/length.service';
-import { ProductFilters } from '../../types/product';
 import { ChipComponent } from '../chip/chip.component';
-import { WigFilter } from '../../types/wig';
+import { WigFilter } from 'shared';
 import { HairTypeService } from '../../services/wig/hair-type.service';
 import { TextureService } from '../../services/wig/texture.service';
 import { LaceService } from '../../services/wig/lace.service';
 import { SourceService } from '../../services/wig/source.service';
 import { Router } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'web-shop-filter',
@@ -60,7 +59,7 @@ import { Router } from '@angular/router';
 export class ShopFilterComponent {
   private _wigService = inject(WigService);
   private _router = inject(Router);
-  categories = inject(CategoryService).categoryResource;
+  private _viewPortScroller = inject(ViewportScroller);
   colors = inject(ColorService).colorsResource;
   laces = inject(LaceService).lacesResource;
   sources = inject(SourceService).sourcesResource;
@@ -94,6 +93,9 @@ export class ShopFilterComponent {
     this.filters.page = 1;
     this.filterChange.emit(this.filters);
     this._wigService.setFilter(this.filters);
+    this._viewPortScroller.scrollToPosition([0, 0]);
+
+    this.closeFilters();
   }
 
   clearFilters() {

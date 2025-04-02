@@ -1,6 +1,7 @@
 @theme {
   --color-primary: #d6d6d6;
   --animate-bounce-shadow: bounce-shadow 1s infinite;
+  --default-font-family: "Diotima LT Std";
 
   /* CSS break points for resposive design  */
   --breakpoint-mobile: 300px;

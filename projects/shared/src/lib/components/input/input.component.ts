@@ -93,6 +93,7 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   handleChange(event: Event) {
+    console.log(event);
     if (event.type == 'input') {
       this._onTouch();
     }
