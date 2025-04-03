@@ -1,0 +1,10 @@
+@reference "../../../../../styles.css";
+
+:host {
+  @apply relative flex gap-2 px-6 bg-radial;
+  @apply from-gray-200/10 via-gray-400/20 to-geyser/30;
+
+  @variant dark {
+    @apply from-slate-700 via-slate-950 to-slate-800;
+  }
+}
