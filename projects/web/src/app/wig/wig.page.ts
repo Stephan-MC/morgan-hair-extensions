@@ -28,6 +28,7 @@ import { CartStore } from '../common/stores/cart.store';
 import { DiscountType, ImageComponent, TextAreaComponent, Wig } from 'shared';
 import { Meta, Title } from '@angular/platform-browser';
 import { ReviewListComponent } from '../common/components/review-list/review-list.component';
+import { RecommendWigListComponent } from '../common/components/recommend-wig-list/recommend-wig-list.component';
 
 @Component({
   selector: 'web-wig',
@@ -38,6 +39,7 @@ import { ReviewListComponent } from '../common/components/review-list/review-lis
     ImageComponent,
     TextAreaComponent,
     ReviewListComponent,
+    RecommendWigListComponent,
   ],
   templateUrl: './wig.page.html',
   styleUrl: './wig.page.css',
@@ -46,10 +48,6 @@ import { ReviewListComponent } from '../common/components/review-list/review-lis
 export class WigPage {
   private _wigService = inject(WigService);
   private _platformId = inject(PLATFORM_ID);
-  private _swiperElementRef =
-    viewChild<
-      ElementRef<SwiperContainer & Record<'passedParams', SwiperOptions>>
-    >('swiper');
   private _gallerySwipeElementRef =
     viewChild<
       ElementRef<SwiperContainer & Record<'passedParams', SwiperOptions>>
@@ -58,9 +56,9 @@ export class WigPage {
   viewportScroller = inject(ViewportScroller);
   slug = input.required<string>();
   cart = inject(CartStore);
+  recommendedWigs = this._wigService.recommended(this.slug);
 
   wig = this._wigService.wig(this.slug);
-  recommendedWigs = this._wigService.recommended(this.slug);
 
   wigHelper = computed(() =>
     this.wig.value() ? new ProductHelper(this.wig.value()!) : undefined,
@@ -82,39 +80,6 @@ export class WigPage {
 
     return 0;
   });
-
-  swiperParams: SwiperOptions = {
-    modules: [Autoplay],
-    navigation: false,
-    pagination: false,
-    autoplay: {
-      delay: 4500,
-      disableOnInteraction: false,
-      pauseOnMouseEnter: false,
-    },
-    loop: true,
-    centeredSlides: true,
-    spaceBetween: 5,
-    slidesPerView: 1,
-    breakpoints: {
-      400: {
-        slidesPerView: 2.1,
-        spaceBetween: 15,
-      },
-      520: {
-        slidesPerView: 2.5,
-        spaceBetween: 20,
-      },
-      768: {
-        slidesPerView: 3.4,
-        spaceBetween: 24,
-      },
-      1280: {
-        slidesPerView: 3.8,
-        spaceBetween: 33,
-      },
-    },
-  };
 
   gallerySwipeParams: SwiperOptions = {
     modules: [Autoplay],
@@ -155,25 +120,6 @@ export class WigPage {
     effect(() => {
       if (
         isPlatformBrowser(this._platformId) &&
-        this._swiperElementRef()?.nativeElement
-      ) {
-        if (
-          !Object.values(
-            this._swiperElementRef()?.nativeElement.passedParams ?? {},
-          ).length
-        ) {
-          Object.assign(
-            this._swiperElementRef()?.nativeElement ?? {},
-            this.swiperParams,
-          );
-
-          this._swiperElementRef()?.nativeElement.initialize();
-          this._cdr.detectChanges();
-        }
-      }
-
-      if (
-        isPlatformBrowser(this._platformId) &&
         this._gallerySwipeElementRef()?.nativeElement
       ) {
         if (
@@ -183,7 +129,7 @@ export class WigPage {
         ) {
           Object.assign(
             this._gallerySwipeElementRef()?.nativeElement ?? {},
-            this.swiperParams,
+            this.gallerySwipeParams,
           );
 
           this._gallerySwipeElementRef()?.nativeElement.initialize();

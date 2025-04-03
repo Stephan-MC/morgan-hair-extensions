@@ -1,24 +1,24 @@
 <div class="spacy-y-3 max-w-screen-lg mx-auto">
   @if (!this.wig.isLoading()) {
+  <!-- ! -->
 
+  @if (wig.hasValue()) {
   <!-- ! -->
   @let wig = this.wig.value()!;
 
-  <div class="aspect-thumbnail relative">
-    <img
-      [ngSrc]="wig!.thumbnail.url"
-      [alt]="wig!.thumbnail.alt ? wig!.thumbnail.alt : wig!.name"
-      priority
-      fill
-    />
-  </div>
+  <thumbnail
+    class="aspect-thumbnail"
+    [src]="wig!.thumbnail.url"
+    [alt]="wig!.thumbnail.alt ? wig!.thumbnail.alt : wig!.name"
+    fill
+  />
   <swiper-container #gallerySwipe init="false" class="py-3">
-    <swiper-slide>
-      <thumbnail [src]="wig.thumbnail.url" class="aspect-video" />
+    <swiper-slide class="aspect-video">
+      <thumbnail [src]="wig.thumbnail.url" class="size-full" />
     </swiper-slide>
     @for (image of wig.gallery; track image.id) {
-    <swiper-slide>
-      <thumbnail [src]="image.url" class="aspect-video" />
+    <swiper-slide class="aspect-video">
+      <thumbnail [src]="image.url" class="size-full" />
     </swiper-slide>
     }
   </swiper-container>
@@ -160,7 +160,7 @@
       <text-area class="mx-3 mt-6" />
     </section>
   </div>
-  } @else {
+  } } @else {
   <div class="skeleton aspect-thumbnail"></div>
   <div class="flex flex-col gap-6 px-3 py-6">
     <span class="skeleton h-8 w-[75%] my-3"></span>
