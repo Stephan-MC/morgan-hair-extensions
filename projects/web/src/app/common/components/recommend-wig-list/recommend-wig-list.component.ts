@@ -25,6 +25,9 @@ import { SwiperOptions } from 'swiper/types';
   styleUrl: './recommend-wig-list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  host: {
+    ngSkipHydration: 'true',
+  },
 })
 export class RecommendWigListComponent {
   private _platformId = inject(PLATFORM_ID);
@@ -73,10 +76,7 @@ export class RecommendWigListComponent {
     register();
 
     effect(() => {
-      if (
-        isPlatformBrowser(this._platformId) &&
-        this._swiperElementRef()?.nativeElement
-      ) {
+      if (this._swiperElementRef()?.nativeElement) {
         if (
           !Object.values(
             this._swiperElementRef()?.nativeElement.passedParams ?? {},
