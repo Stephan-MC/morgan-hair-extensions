@@ -1,0 +1,19 @@
+<div class="flex gap-3">
+  <thumbnail
+    [src]="''"
+    [alt]="`${review().client.first_name} ${review().client.last_name}`"
+    class="size-8 aspect-square rounded-full overflow-hidden shrink-0"
+    title="{{ `${review().client.first_name} ${review().client.last_name}` }}"
+  />
+  <div class="grow flex flex-col gap-1">
+    <div class="flex justify-between">
+      <span class="text-sm text-navajo-white truncate font-semibold">
+        {{ `${review().client.first_name} ${review().client.last_name}` }}
+      </span>
+      <div class="shrink-0">
+        <rating [value]="review().rating.rate * review().rating.type.mass" [readonly]="true" />
+      </div>
+    </div>
+    <p class="">{{ review().comment.body }}</p>
+  </div>
+</div>

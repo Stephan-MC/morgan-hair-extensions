@@ -1,5 +1,6 @@
 import {
   CurrencyPipe,
+  DecimalPipe,
   isPlatformBrowser,
   NgOptimizedImage,
   ViewportScroller,
@@ -26,15 +27,17 @@ import { WigService } from '../common/services/wig.service';
 import { CartStore } from '../common/stores/cart.store';
 import { DiscountType, ImageComponent, TextAreaComponent, Wig } from 'shared';
 import { Meta, Title } from '@angular/platform-browser';
+import { ReviewListComponent } from '../common/components/review-list/review-list.component';
 
 @Component({
   selector: 'web-wig',
   imports: [
     CurrencyPipe,
-    NgOptimizedImage,
+    DecimalPipe,
     RouterLink,
     ImageComponent,
     TextAreaComponent,
+    ReviewListComponent,
   ],
   templateUrl: './wig.page.html',
   styleUrl: './wig.page.css',

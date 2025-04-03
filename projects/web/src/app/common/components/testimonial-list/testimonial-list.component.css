@@ -1,0 +1,10 @@
+@import "swiper/css";
+@import "swiper/element/css/autoplay";
+@import "swiper/element/css/effect-coverflow";
+@import "swiper/element/css/effect-fade";
+@import "swiper/element/css/pagination";
+@import "../../../../styles.css";
+
+:host {
+  @apply block;
+}

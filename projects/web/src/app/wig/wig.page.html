@@ -1,8 +1,9 @@
 <div class="spacy-y-3 max-w-screen-lg mx-auto">
-  @let wig = this.wig.value();
-  <!-- ! -->
+  @if (!this.wig.isLoading()) {
 
-  @if (wig) {
+  <!-- ! -->
+  @let wig = this.wig.value()!;
+
   <div class="aspect-thumbnail relative">
     <img
       [ngSrc]="wig!.thumbnail.url"
@@ -23,15 +24,34 @@
   </swiper-container>
   <div class="flex flex-col gap-6 px-3 py-6">
     <h2 class="text-3xl tracking-wide font-bold uppercase">{{ wig?.name }}</h2>
-    <div class="flex gap-1 items-center">
-      @if (wig?.discount) {
-      <del class="text-sm">{{ wig!.length.price | currency }}</del>
-      }
-      <sup>
-        <span class="text-sm" [class.price-tag]="wig?.discount"
-          >{{ discountedPrice() | currency }}</span
-        >
-      </sup>
+    <div class="flex justify-between">
+      <div class="flex gap-1 items-center">
+        @if (wig?.discount) {
+        <del class="text-sm">{{ wig!.length.price | currency }}</del>
+        }
+        <sup>
+          <span class="text-sm" [class.price-tag]="wig?.discount"
+            >{{ discountedPrice() | currency }}</span
+          >
+        </sup>
+      </div>
+
+      <div class="flex gap-6">
+        <div class="flex gap-1 items-center">
+          rating:
+          <span class="">
+            {{ (wig?.rating?.weight ?? 0) / (wig?.rating?.count ?? 1) | number :
+            "1.1-1" }}
+          </span>
+        </div>
+
+        <div class="flex gap-1 items-center">
+          <span
+            class="icon-[iconoir--heart-solid] text-amber-200 dark:text-amber-500"
+          ></span>
+          {{ wig?.loves?.count ?? 0 }}
+        </div>
+      </div>
     </div>
 
     <div class="grid grid-cols-10 tablet:grid-cols-15 gap-3">
@@ -107,55 +127,37 @@
       </div>
     </div>
 
-    <div class="">
+    <section class="py-6 tablet:py-12" #recommendedWigsSection>
       <h4 class="text-xl font-bold mb-3">You may also like</h4>
 
-      <swiper-container #swiper init="false">
-        @for (recommended of recommendedWigs.value(); track recommended.id) {
-        <swiper-slide lazy="true">
-          <div class="relative">
-            <div class="relative aspect-thumbnail">
-              <img
-                [ngSrc]="recommended.thumbnail.url"
-                [alt]="recommended.thumbnail.alt ? recommended.thumbnail.alt : recommended.name"
-                [priority]="$first"
-                fill
-              />
-            </div>
-            <a [routerLink]="['/wig', recommended.slug]">
-              {{ recommended.name }}
-              <span class="absolute inset-0"></span>
-            </a>
-          </div>
-        </swiper-slide>
-        }
-      </swiper-container>
-    </div>
-
-    <section>
-      <h4 class="font-bold text-2xl my-5">Reviews</h4>
-
-      <div class="flex flex-col gap-3">
-        @for (review of wig.reviews; track review.id) {
-        <div class="">
-          <div class="flex gap-2">
-            <thumbnail
-              [src]="review.client.id"
-              [alt]="`${review.client.first_name} ${review.client.last_name}`"
-              class="size-10 aspect-square"
-            />
-            <span class="">
-              {{ `${review.client.first_name} ${review.client.last_name}` }}
-            </span>
-          </div>
-
-          <div class="">{{ review.comment.body }}</div>
+      @defer (on interaction; on viewport(recommendedWigsSection); on timer(1s))
+      {
+      <web-recommend-wig-list [wigs]="recommendedWigs.value()" />
+      } @placeholder (minimum 600ms) {
+      <div class="flex gap-3">
+        @for (i of [1,2,3,4,5]; track $index) {
+        <div
+          class="flex flex-col basis-[40vh] tablet-sm:basis-[30vh] tablet-lg:basis-[20vh]"
+        >
+          <div class="aspect-thumbnail skeleton mb-2"></div>
+          <span class="skeleton h-3 w-3/5"></span>
         </div>
-        } @empty {
-        <span>Be the first to leave a review for this product</span>
         }
       </div>
-      <text-area />
+      }
+    </section>
+    <!-- ! -->
+
+    <section #reviewsSection class="py-6 tablet:py-12">
+      <h4 class="font-bold text-2xl my-5">Reviews</h4>
+
+      @defer (on viewport(reviewsSection)) {
+      <web-review-list [reviews]="wig.reviews" />
+      } @loading (after 3000ms; minimum 1500ms) {
+      <div class="flex flex-col gap-6 aspect-thumbnail skeleton"></div>
+      }
+
+      <text-area class="mx-3 mt-6" />
     </section>
   </div>
   } @else {
