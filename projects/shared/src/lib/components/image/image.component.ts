@@ -1,5 +1,10 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component, input, linkedSignal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  linkedSignal,
+} from '@angular/core';
 import { Media } from '../../types/media';
 
 @Component({
@@ -7,9 +12,9 @@ import { Media } from '../../types/media';
   imports: [NgOptimizedImage],
   templateUrl: './image.component.html',
   styleUrl: './image.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageComponent {
-  // _type = input<'preview' | 'default'>('default', { alias: 'type' });
   src = input.required<string, Media | File | string | undefined | null>({
     transform: (src) =>
       typeof src == 'string' && src != ''
