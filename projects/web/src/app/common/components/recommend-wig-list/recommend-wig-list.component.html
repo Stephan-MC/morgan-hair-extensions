@@ -1,0 +1,22 @@
+<swiper-container #swiper init="false">
+  @for (recommended of wigs(); track recommended.id) {
+    <swiper-slide lazy="true">
+      <div class="relative">
+        <thumbnail
+          [src]="recommended.thumbnail.url"
+          [alt]="
+            recommended.thumbnail.alt
+              ? recommended.thumbnail.alt
+              : recommended.name
+          "
+          fill
+          class="relative aspect-thumbnail"
+        />
+        <a [routerLink]="['/wig', recommended.slug]">
+          {{ recommended.name }}
+          <span class="absolute inset-0"></span>
+        </a>
+      </div>
+    </swiper-slide>
+  }
+</swiper-container>
