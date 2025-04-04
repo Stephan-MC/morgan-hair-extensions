@@ -1,6 +1,19 @@
 <section
-  class="h-screen supports-dvh:h-[60dvh] bg-amber-200 backdrop-blur-sm"
-></section>
+  class="bg-amber-200 dark:bg-amber-500 dark:text-slate-800 backdrop-blur-sm"
+>
+  <div class="pt-20 pb-15 px-6 max-w-screen-tablet-lg mx-auto">
+    <h3 class="text-4xl font-bold text-center mb-6">Disclaimer</h3>
+
+    <p class="text-justify font-semibold text-lg">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto asperiores
+      ab quis aperiam harum rem excepturi quibusdam corporis enim. Aut animi
+      esse veniam repellendus id fuga eaque doloremque quia repellat quos. Quasi
+      exercitationem rerum alias voluptatibus nisi eligendi minima! Voluptates
+      atque, quas dignissimos maiores laborum neque ut harum suscipit dolorum,
+      officia incidunt molestias quia a qui esse? Expedita, dolor odit.
+    </p>
+  </div>
+</section>
 <section>
   <div class="max-w-screen-lg mx-auto p-6">
     <div class="grid grid-cols-8">
@@ -10,15 +23,15 @@
         @for (product of cart.entities(); track product.id) {
         <div class="flex gap-3 py-6 px-3">
           <div class="relative basis-1/5 aspect-3/4 overflow-hidden rounded-lg">
-            <img
-              [ngSrc]="product.thumbnail.url"
+            <thumbnail
+              [src]="product.thumbnail.url"
               [alt]="product.thumbnail.alt != '' ? product.thumbnail.alt :  product.name"
-              class="object-cover object-top"
+              class="size-full [&_img]:object-top!"
               fill
               [priority]="$first"
             />
           </div>
-          <div class="flex flex-col grow">
+          <div class="flex flex-col grow gap-2">
             <div class="flex justify-between">
               <span class="text-nowrap text-lg"> {{ product.name }} </span>
               <span
@@ -31,30 +44,33 @@
             </div>
 
             <div class="flex grow gap-1 items-center">
-              @if (!!product.discount) {
+              @if (product.discount) {
               <del class="text-sm">{{ product.price | currency }}</del>
-              }
               <sup>
-                <span class="text-sm" [class.price-tag]="!!product.discount"
-                  >{{ (product!.discount!.type == 'fixed' ? product.price -
+                <span class="text-sm" [class.price-tag]="!!product.discount">
+                  {{ (product.discount!.type == 'fixed' ? product.price -
                   product!.discount!.value: (100 - product!.discount!.value) *
-                  100 / product!.price ) | currency }}</span
-                >
+                  100 / product!.price ) | currency }}
+                </span>
               </sup>
+              } @else {
+              <span>{{ product.price | currency }}</span>
+              }
             </div>
+            <span>{{ product.length.value }} inches</span>
 
             <div class="flex justify-end py-3">
               <div
                 class="flex ms-auto border border-gray-300 gap-3 rounded px-2 py-0.5 z-10 max-w-20"
               >
-                <button (click)="cart.reduce(product)">-</button>
+                <button (click)="cart.reduce(product, false)">-</button>
                 <input
                   type="number"
                   [readOnly]="true"
                   [value]="product.quantity"
                   class="grow-0 outline-none text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-6"
                 />
-                <button (click)="cart.add(product)">+</button>
+                <button (click)="cart.add(product, false)">+</button>
               </div>
             </div>
           </div>
@@ -89,7 +105,7 @@
             </div>
             <div class="flex flex-col gap-3 py-6">
               <button
-                class="bg-amber-300 text-white rounded-lg py-3 px-1 text-lg font-bold"
+                class="bg-amber-200 dark:bg-amber-500 dark:text-slate-800 text-white rounded-lg py-3 px-1 text-lg font-bold"
               >
                 Checkout
               </button>
