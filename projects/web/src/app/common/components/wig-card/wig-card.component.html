@@ -2,12 +2,10 @@
 
 <div class="flex flex-col">
   <div class="aspect-300/400 overflow-hidden relative">
-    <img
-      [ngSrc]="wig.thumbnail.url"
+    <thumbnail
+      [src]="wig.thumbnail.url"
       [alt]="wig.thumbnail.alt ? wig.thumbnail.alt : wig.name"
-      fill
-      [priority]="thumbnailLoadingPriority()"
-      class="object-cover object-top group-hover/wig-card:scale-105 duration-300 transition-transform group-[.out]/wig-card:grayscale brightness-50"
+      class="size-full [&_img]:object-top! [&_img]:group-hover/wig-card:scale-105 [&_img]:duration-300 [&_img]:transition-transform group-[.out]/wig-card:grayscale brightness-50"
     />
 
     <!-- out of stock  -->
@@ -40,12 +38,13 @@
         (click)="cart.add(wig)"
         class="z-auto text-lg max-tablet-sm:ms-auto"
         [title]="
-          !wigHelper.canBeAddedToCart(cart, wig)
+          wig.stock < 1 ||
+          (cart.get(wig.id + ':' + wig.length.id)?.quantity ?? 0) >= wig.stock
             ? 'wig cannont be added to cart'
             : 'Add to cart'
         "
       >
-        @if (wigHelper.canBeAddedToCart(cart, wig)) {
+        @if (cart.canBeAdded(wig)) {
           @if (cart.has(wig)) {
             <span
               class="icon-[solar--cart-check-bold]"

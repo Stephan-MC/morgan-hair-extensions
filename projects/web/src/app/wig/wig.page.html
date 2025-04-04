@@ -23,7 +23,7 @@
     }
   </swiper-container>
   <div class="flex flex-col gap-6 px-3 py-6">
-    <h2 class="text-3xl tracking-wide font-bold uppercase">{{ wig?.name }}</h2>
+    <h2 class="text-3xl tracking-wide font-bold capitalize">{{ wig?.name }}</h2>
     <div class="flex justify-between">
       <div class="flex gap-1 items-center">
         @if (wig?.discount) {
@@ -49,12 +49,14 @@
           <span
             class="icon-[iconoir--heart-solid] text-amber-200 dark:text-amber-500"
           ></span>
-          {{ wig?.loves?.count ?? 0 }}
+          {{ wig?.love?.count ?? 0 }}
         </div>
       </div>
     </div>
 
-    <div class="grid grid-cols-10 tablet:grid-cols-15 gap-3">
+    <div
+      class="grid grid-cols-6 tablet-sm:grid-cols-9 tablet:grid-cols-12 tablet-lg:grid-cols-18 gap-3"
+    >
       <h4 class="col-span-full">Choose you preferred length</h4>
       @for (length of wig.lengths; track length.id) {
       <span
@@ -74,7 +76,7 @@
         <input
           type="number"
           [readOnly]="true"
-          [value]="cart.get(wig!.id)?.quantity || 0"
+          [value]="cart.get(wig!.id + ':' + wig!.length.id)?.quantity || 0"
           class="grow-0 outline-none text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           [style.width.px]="30"
         />
@@ -157,7 +159,18 @@
       <div class="flex flex-col gap-6 aspect-thumbnail skeleton"></div>
       }
 
-      <text-area class="mx-3 mt-6" />
+      <div class="flex flex-wrap gap-3 mx-3 mt-6">
+        <text-area class="basis-full" />
+        <div class="max-tablet-sm:order-first max-tablet-sm:basis-full">
+          Rating
+        </div>
+        <button
+          class="ms-auto py-1 px-3 bg-amber-200 dark:bg-amber-500 dark:text-slate-800"
+        >
+          <!-- TODO: Add Rating component here  -->
+          Review
+        </button>
+      </div>
     </section>
   </div>
   } } @else {

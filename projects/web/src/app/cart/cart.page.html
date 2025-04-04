@@ -31,16 +31,16 @@
             </div>
 
             <div class="flex grow gap-1 items-center">
-              <!--   @if (productHelper.hasDiscount()) { -->
-              <!--   <del class="text-sm">{{ product().price | currency }}</del> -->
-              <!--   } -->
-              <!--   <sup> -->
-              <!--     <span -->
-              <!--       class="text-sm" -->
-              <!--       [class.price-tag]="productHelper.hasDiscount()" -->
-              <!--       >{{ productHelper.discountedPrice() | currency }}</span -->
-              <!--     > -->
-              <!--   </sup> -->
+              @if (!!product.discount) {
+              <del class="text-sm">{{ product.price | currency }}</del>
+              }
+              <sup>
+                <span class="text-sm" [class.price-tag]="!!product.discount"
+                  >{{ (product!.discount!.type == 'fixed' ? product.price -
+                  product!.discount!.value: (100 - product!.discount!.value) *
+                  100 / product!.price ) | currency }}</span
+                >
+              </sup>
             </div>
 
             <div class="flex justify-end py-3">
