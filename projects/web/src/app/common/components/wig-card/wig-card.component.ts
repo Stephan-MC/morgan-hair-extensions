@@ -1,23 +1,21 @@
+import { CurrencyPipe, PercentPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   inject,
   input,
   linkedSignal,
   output,
-  SimpleChanges,
 } from '@angular/core';
-import { Wig } from 'shared';
+import { RouterLink } from '@angular/router';
+import { ImageComponent, Wig } from 'shared';
+import { ProductHelper } from '../../helpers/product.helper';
 import { WigService } from '../../services/wig.service';
 import { CartStore } from '../../stores/cart.store';
-import { ProductHelper } from '../../helpers/product.helper';
-import { CurrencyPipe, NgOptimizedImage, PercentPipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'web-wig-card',
-  imports: [CurrencyPipe, NgOptimizedImage, PercentPipe, RouterLink],
+  imports: [CurrencyPipe, PercentPipe, RouterLink, ImageComponent],
   templateUrl: './wig-card.component.html',
   styleUrl: './wig-card.component.css',
   host: {
@@ -29,7 +27,6 @@ import { RouterLink } from '@angular/router';
 })
 export class WigCardComponent {
   private _wigService = inject(WigService);
-  private _cdr = inject(ChangeDetectorRef);
   readonly cart = inject(CartStore);
   wig = input.required<Wig>();
   thumbnailLoadingPriority = input<boolean>(false);

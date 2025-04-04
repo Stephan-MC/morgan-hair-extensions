@@ -95,6 +95,11 @@ export class WigPage {
     spaceBetween: 5,
     slidesPerView: 1,
     breakpoints: {
+      0: {
+        slidesPerView: 2.7,
+        spaceBetween: 5,
+        centeredSlides: false,
+      },
       400: {
         slidesPerView: 2.1,
         spaceBetween: 15,

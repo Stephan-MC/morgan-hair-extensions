@@ -3,6 +3,7 @@ import { computed, inject, InjectionToken, PLATFORM_ID } from '@angular/core';
 import {
   patchState,
   signalStore,
+  type,
   watchState,
   withComputed,
   withHooks,
@@ -10,7 +11,9 @@ import {
   withState,
 } from '@ngrx/signals';
 import {
+  entityConfig,
   removeEntity,
+  SelectEntityId,
   setAllEntities,
   setEntity,
   withEntities,
@@ -20,6 +23,7 @@ import { ProductHelper } from '../helpers/product.helper';
 
 export interface CartItem extends Pick<Wig, 'id' | 'name' | 'thumbnail'> {
   quantity: number;
+  length: Pick<Wig.Length, 'id' | 'value'>;
   price: number;
   discount?: Discount;
 }
@@ -36,6 +40,10 @@ const initialState: CartStoreInterface = {
   show: false,
   showCartOnAdd: true,
 };
+
+const selectId: SelectEntityId<CartItem> = (wig) =>
+  wig.id + ':' + wig.length.id;
+const entity = entityConfig({ entity: type<CartItem>(), selectId });
 
 const CART_STORE = new InjectionToken<CartStoreInterface>('cart', {
   factory: (platformId = inject(PLATFORM_ID)) => {
@@ -76,21 +84,22 @@ export const CartStore = signalStore(
   })),
 
   withMethods((store) => ({
-    add: (wig: CartItem | Wig, openCart: boolean = store.showCartOnAdd()) => {
+    add: (item: CartItem | Wig, openCart: boolean = store.showCartOnAdd()) => {
       const newProduct: CartItem = store
         .entities()
-        .find((p) => p.id == wig.id) ?? {
-        id: wig.id,
-        name: wig.name,
+        .find((p) => p.id == item.id && p.length.id == item.length.id) ?? {
+        id: item.id,
+        name: item.name,
         quantity: 0,
-        price: (wig as CartItem).price ?? (wig as Wig).length.price,
-        discount: wig.discount,
-        thumbnail: wig.thumbnail,
+        price: (item as CartItem).price ?? (item as Wig).length.price,
+        length: item.length,
+        discount: item.discount,
+        thumbnail: item.thumbnail,
       };
 
       ++newProduct.quantity;
 
-      patchState(store, setEntity(newProduct), { show: openCart });
+      patchState(store, setEntity(newProduct, entity), { show: openCart });
     },
 
     reduce: (
@@ -104,6 +113,7 @@ export const CartStore = signalStore(
         name: wig.name,
         quantity: 0,
         price: (wig as CartItem).price ?? (wig as Wig).length.price,
+        length: wig.length,
         discount: wig.discount,
         thumbnail: wig.thumbnail,
       };
@@ -113,25 +123,36 @@ export const CartStore = signalStore(
       patchState(
         store,
         newProduct.quantity <= 0
-          ? removeEntity(newProduct.id)
-          : setEntity(newProduct),
+          ? removeEntity(newProduct.id + ':' + newProduct.length.id)
+          : setEntity(newProduct, entity),
         { show: openCart },
       );
     },
 
-    remove: (product: CartItem) => {
-      patchState(store, removeEntity(product.id));
+    remove: (item: CartItem) => {
+      patchState(store, removeEntity(`${item.id}:${item.length.id}`));
     },
 
-    has: (item: CartItem | Wig | Wig['id']) => {
+    has: (item: CartItem | Wig | string) => {
       return store
         .entities()
         .some((p) =>
-          typeof item == 'string' ? p.id == item : p.id == (item as Wig).id,
+          typeof item == 'string'
+            ? p.id + ':' + p.length.id == item
+            : p.id == (item as Wig).id &&
+              p.length.id == (item as Wig).length.id,
         );
     },
 
-    get: (item: Wig['id']) => store.entities().find((p) => p.id == item),
+    get: (item: CartItem | string) =>
+      store
+        .entities()
+        .find((p) =>
+          typeof item == 'string'
+            ? p.id + ':' + p.length.id == item
+            : p.id == (item as CartItem).id &&
+              p.length.id == (item as CartItem).length.id,
+        ),
 
     /** Manually set the quantity of an item in cart */
     setQuantity: (item: Wig | CartItem, quantity: number) => {
@@ -146,13 +167,24 @@ export const CartStore = signalStore(
         name: item.name,
         quantity: 0,
         price: (item as CartItem).price ?? (item as Wig).length.price,
+        length: item.length,
         discount: item.discount,
         thumbnail: item.thumbnail,
       };
 
       newProduct.quantity = quantity;
 
-      patchState(store, setEntity(newProduct));
+      patchState(store, setEntity(newProduct, entity));
+    },
+
+    canBeAdded: (item: Wig) => {
+      return (
+        item.stock >
+        (store
+          .entities()
+          .find((p) => p.id == item.id && p.length.id == item.length.id)
+          ?.quantity ?? 0)
+      );
     },
 
     /** Close the cart component */
@@ -180,7 +212,9 @@ export const CartStore = signalStore(
             delete parsedState.enitityMap;
             delete parsedState.ids;
 
-            patchState(store, setAllEntities(entities), { ...parsedState });
+            patchState(store, setAllEntities(entities, entity), {
+              ...parsedState,
+            });
           }
         }
 
