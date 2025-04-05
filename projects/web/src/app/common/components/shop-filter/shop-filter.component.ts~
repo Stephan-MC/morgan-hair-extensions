@@ -1,0 +1,118 @@
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  linkedSignal,
+  output,
+} from '@angular/core';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { WigService } from '../../services/wig.service';
+import { ColorService } from '../../services/wig/color.service';
+import { LengthService } from '../../services/wig/length.service';
+import { ChipComponent } from '../chip/chip.component';
+import { TextInputComponent, WigFilter } from 'shared';
+import { HairTypeService } from '../../services/wig/hair-type.service';
+import { TextureService } from '../../services/wig/texture.service';
+import { LaceService } from '../../services/wig/lace.service';
+import { SourceService } from '../../services/wig/source.service';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
+import { debounceTime, distinctUntilChanged, filter, map, startWith, tap, withLatestFrom } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+@Component({
+  selector: 'web-shop-filter',
+  imports: [ReactiveFormsModule, ChipComponent, TextInputComponent, RouterLink, RouterLinkActive],
+  templateUrl: './shop-filter.component.html',
+  styleUrl: './shop-filter.component.css',
+  animations: [
+    trigger('openClose', [
+      state(
+        'open',
+        style({
+          height: '*',
+          width: '*',
+        }),
+      ),
+      state(
+        'close',
+        style({
+          height: 'calc(var(--spacing) * 10)',
+          width: 'calc(var(--spacing) * 30)',
+        }),
+      ),
+      transition('open => close', animate('0.3s linear')),
+      transition('close => open', animate('0.3s linear')),
+    ]),
+  ],
+  host: {
+    '[@openClose]': 'show() ? "open" : "close"',
+  },
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class ShopFilterComponent {
+  private _wigService = inject(WigService);
+  private _router = inject(Router);
+  private _route = inject(ActivatedRoute)
+  protected viewportScroller = inject(ViewportScroller);
+  colors = inject(ColorService).colorsResource;
+  laces = inject(LaceService).lacesResource;
+  sources = inject(SourceService).sourcesResource;
+  hairTypes = inject(HairTypeService).hairTypesResource;
+  lengths = inject(LengthService).lengthsResource;
+  textures = inject(TextureService).texturesResource;
+  queryParams = this._route.snapshot.queryParams;
+  open = input(false);
+  show = linkedSignal(() => this.open());
+  _open = output({ alias: 'open' });
+  _close = output({ alias: 'close' });
+
+  q = new FormControl(this._route.snapshot.params['q'] || null);
+  filters: WigFilter = {
+    q: '',
+    color: '',
+    lace: '',
+    source: '',
+    length: '',
+    hair_type: '',
+    texture: '',
+    page: 1,
+  };
+
+  constructor() {
+    this.q.valueChanges
+      .pipe(
+        takeUntilDestroyed(),
+        tap(value => console.log('value is: ', value)),
+        filter(value => value !== null),
+        debounceTime(600),
+        distinctUntilChanged(),
+        map((value) => value?.trim()),
+        tap((value) => console.log('Search query changed to: ', value)),
+        startWith(null)
+      )
+      .subscribe((value) => (value != undefined || value != null) && this._router.navigate(['/shop'], { queryParamsHandling: 'merge', queryParams: { q: value } }));
+  }
+
+  openFilters() {
+    if (this.show()) return;
+
+    this._open.emit();
+    this.show.set(true);
+  }
+
+  closeFilters() {
+    if (!this.show()) return;
+
+    this._close.emit();
+    this.show.set(false);
+  }
+}
