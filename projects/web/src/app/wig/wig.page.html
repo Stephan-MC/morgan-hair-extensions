@@ -38,10 +38,12 @@
 
       <div class="flex gap-6">
         <div class="flex gap-1 items-center">
-          rating:
-          <span class="">
-            {{ (wig?.rating?.weight ?? 0) / (wig?.rating?.count ?? 1) | number :
-            "1.1-1" }}
+          <rating
+            [value]="(wig?.rating?.weight ?? 0) / (wig?.rating?.count ?? 1)"
+          />
+          <span>
+            ({{ (wig?.rating?.weight ?? 0) / (wig?.rating?.count ?? 1) | number
+            : '1.1-1' }})
           </span>
         </div>
 
@@ -162,7 +164,7 @@
       <div class="flex flex-wrap gap-3 mx-3 mt-6">
         <text-area class="basis-full" />
         <div class="max-tablet-sm:order-first max-tablet-sm:basis-full">
-          Rating
+          <rating [readonly]="false" />
         </div>
         <button
           class="ms-auto py-1 px-3 bg-amber-200 dark:bg-amber-500 dark:text-slate-800"

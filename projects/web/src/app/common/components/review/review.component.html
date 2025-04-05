@@ -11,10 +11,7 @@
         {{ `${review().client.first_name} ${review().client.last_name}` }}
       </span>
       <div class="shrink-0">
-        <rating
-          [value]="review().rating.rate * review().rating.type.mass"
-          [readonly]="true"
-        />
+        <rating [value]="review().rating.weight / review().rating.count" />
       </div>
     </div>
     <p class="">{{ review().comment.body }}</p>

@@ -25,7 +25,13 @@ import { SwiperOptions } from 'swiper/types';
 import { ProductHelper } from '../common/helpers/product.helper';
 import { WigService } from '../common/services/wig.service';
 import { CartStore } from '../common/stores/cart.store';
-import { DiscountType, ImageComponent, TextAreaComponent, Wig } from 'shared';
+import {
+  DiscountType,
+  ImageComponent,
+  RatingComponent,
+  TextAreaComponent,
+  Wig,
+} from 'shared';
 import { Meta, Title } from '@angular/platform-browser';
 import { ReviewListComponent } from '../common/components/review-list/review-list.component';
 import { RecommendWigListComponent } from '../common/components/recommend-wig-list/recommend-wig-list.component';
@@ -40,6 +46,7 @@ import { RecommendWigListComponent } from '../common/components/recommend-wig-li
     TextAreaComponent,
     ReviewListComponent,
     RecommendWigListComponent,
+    RatingComponent,
   ],
   templateUrl: './wig.page.html',
   styleUrl: './wig.page.css',
