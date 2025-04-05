@@ -1,10 +1,10 @@
 import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { ImageComponent, Review } from 'shared';
+import { ImageComponent, RatingComponent, Review } from 'shared';
 
 @Component({
   selector: 'web-review',
-  imports: [DecimalPipe, ImageComponent],
+  imports: [DecimalPipe, ImageComponent, RatingComponent],
   templateUrl: './review.component.html',
   styleUrl: './review.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

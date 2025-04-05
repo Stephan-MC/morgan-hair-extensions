@@ -1,6 +1,16 @@
-<p>rating works!</p>
-<div class="flex gap-px">
-  @for (star of [1, 2, 3, 4, 5]; track star) {
-    <span class="icon-[tdesign--star]" role="img" aria-hidden="true"></span>
-  }
-</div>
+@for (s of [1, 2, 3, 4, 5]; track $index) {
+  @let stop = s > star() && s - star() < 1 ? (s - star()) * 100 : 0;
+  <span
+    class="icon-[tdesign--star] cursor-pointer bg-gradient-to-r"
+    (mouseover)="!readonly() && star.set(s)"
+    [ngClass]="{
+      'from-amber-400': s <= star() || (s > star() && s < star() + 1),
+      'to-amber-400': s < star(),
+      'from-[currentColor]': s - star() > 1,
+      'to-[currentColor]': s > star(),
+    }"
+    [style.--tw-gradient-from-position.%]="100 - stop"
+    role="img"
+    aria-hidden="true"
+  ></span>
+}
