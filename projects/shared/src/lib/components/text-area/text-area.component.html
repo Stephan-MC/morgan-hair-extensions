@@ -1,15 +1,28 @@
 <div class="form-input--wrapper">
   <div class="left">
-    <ng-content select="left"></ng-content>
+    <ng-content select="left"> </ng-content>
   </div>
-  <textarea
-    class="p-1"
-    [value]="value()"
-    (input)="onTouched()"
-    [rows]="rows()"
-    [cols]="cols()"
-  ></textarea>
+  <div class="grow has-placeholder-shown:relative">
+    <textarea
+      class="p-1 peer w-full placeholder:capitalize placeholder-transparent"
+      [value]="value()"
+      (input)="onTouched()"
+      [rows]="rows()"
+      [cols]="cols()"
+      [placeholder]="placeholder()"
+      #input
+    ></textarea>
+    @if (label()) {
+      <label
+        for=""
+        (click)="input.focus()"
+        class="absolute left-1 -top-6 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-1 peer-placeholder-shown:p-1 transition-all duration-300"
+      >
+        {{ label() }}
+      </label>
+    }
+  </div>
   <div class="right">
-    <ng-content select="right"></ng-content>
+    <ng-content select="right"> </ng-content>
   </div>
 </div>
