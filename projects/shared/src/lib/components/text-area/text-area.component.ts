@@ -1,4 +1,4 @@
-import { Component, forwardRef, input } from '@angular/core';
+import { Component, forwardRef, input, linkedSignal } from '@angular/core';
 import { DefaultValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -18,9 +18,15 @@ import { DefaultValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   },
 })
 export class TextAreaComponent extends DefaultValueAccessor {
-  value = input<string>('', { alias: 'value' });
+  _value = input<string>('', { alias: 'value' });
+  value = linkedSignal(() => this._value());
+  placeholder = input<string>('');
+  label = input<string>();
   rows = input<number>(4);
   cols = input<number>(20);
 
-  ngOnInit() {}
+  override writeValue(value: any): void {
+    console.log('setting value to ', value);
+    this.value.set(value);
+  }
 }
