@@ -8,6 +8,7 @@ import {
   withComputed,
   withHooks,
   withMethods,
+  withProps,
   withState,
 } from '@ngrx/signals';
 import {
@@ -18,7 +19,7 @@ import {
   setEntity,
   withEntities,
 } from '@ngrx/signals/entities';
-import { Discount, Wig } from 'shared';
+import { DBInstance, DbService, Discount, Wig } from 'shared';
 import { ProductHelper } from '../helpers/product.helper';
 
 export interface CartItem extends Pick<Wig, 'id' | 'name' | 'thumbnail'> {
@@ -46,21 +47,8 @@ const selectId: SelectEntityId<CartItem> = (wig) =>
 const entity = entityConfig({ entity: type<CartItem>(), selectId });
 
 const CART_STORE = new InjectionToken<CartStoreInterface>('cart', {
-  factory: (platformId = inject(PLATFORM_ID)) => {
+  factory: (platformId = inject(PLATFORM_ID), db = inject(DbService)) => {
     if (isPlatformBrowser(platformId)) {
-      const savedState = localStorage.getItem('cart');
-
-      if (savedState) {
-        const parsedState = JSON.parse(savedState);
-
-        const entities = parsedState.entities ?? {};
-        const products = (entities.products ?? []) as Array<CartItem>;
-
-        if (products.length) {
-          /** ts-ignore */
-          // patchState(this, setAllEntities(products, productEntity));
-        }
-      }
     }
     return initialState;
   },
@@ -69,6 +57,18 @@ const CART_STORE = new InjectionToken<CartStoreInterface>('cart', {
 export const CartStore = signalStore(
   { providedIn: 'root' },
   withState(() => inject(CART_STORE)),
+  withProps((store, dbService = inject(DbService)) => ({
+    _db: dbService.open({
+      name: 'wigs',
+      version: 1,
+      stores: [
+        {
+          name: 'cart',
+          options: { keyPath: ['id', 'length.id'], autoIncrement: false },
+        },
+      ],
+    }) as Promise<DBInstance>,
+  })),
   withEntities<CartItem>(),
   withComputed(({ entities }) => ({
     total: computed(() =>
@@ -100,6 +100,7 @@ export const CartStore = signalStore(
       ++newProduct.quantity;
 
       patchState(store, setEntity(newProduct, entity), { show: openCart });
+      store._db.then((db) => db.update<CartItem>('cart', newProduct));
     },
 
     reduce: (
@@ -127,32 +128,30 @@ export const CartStore = signalStore(
           : setEntity(newProduct, entity),
         { show: openCart },
       );
+      store._db.then((db) =>
+        newProduct.quantity <= 0
+          ? db.delete('cart', newProduct.id)
+          : db.update<CartItem>('cart', newProduct),
+      );
     },
 
     remove: (item: CartItem) => {
       patchState(store, removeEntity(`${item.id}:${item.length.id}`));
+      store._db.then((db) => db.delete('cart', item.length.id));
     },
 
     has: (item: CartItem | Wig | string) => {
-      return store
-        .entities()
-        .some((p) =>
-          typeof item == 'string'
-            ? p.id + ':' + p.length.id == item
-            : p.id == (item as Wig).id &&
-              p.length.id == (item as Wig).length.id,
-        );
+      return !!store.entityMap()[
+        typeof item == 'string' ? item : `${item.id}:${item.length.id}`
+      ];
     },
 
-    get: (item: CartItem | string) =>
-      store
-        .entities()
-        .find((p) =>
-          typeof item == 'string'
-            ? p.id + ':' + p.length.id == item
-            : p.id == (item as CartItem).id &&
-              p.length.id == (item as CartItem).length.id,
-        ),
+    get: (item: CartItem | Wig | string): CartItem | undefined =>
+      store.entityMap()[
+        typeof item == 'string'
+          ? item
+          : (item as CartItem).id + ':' + (item as CartItem).length.id
+      ],
 
     /** Manually set the quantity of an item in cart */
     setQuantity: (item: Wig | CartItem, quantity: number) => {
@@ -160,9 +159,9 @@ export const CartStore = signalStore(
         return;
       }
 
-      const newProduct: CartItem = store
-        .entities()
-        .find((p) => p.id == item.id) ?? {
+      const newProduct: CartItem = store.entityMap()[
+        item.id + ':' + item.length.id
+      ] ?? {
         id: item.id,
         name: item.name,
         quantity: 0,
@@ -175,6 +174,7 @@ export const CartStore = signalStore(
       newProduct.quantity = quantity;
 
       patchState(store, setEntity(newProduct, entity));
+      store._db.then((db) => db.update<CartItem>('cart', newProduct));
     },
 
     canBeAdded: (item: Wig) => {
@@ -200,38 +200,15 @@ export const CartStore = signalStore(
     return {
       onInit: () => {
         if (isPlatformBrowser(platformId)) {
-          const localState = localStorage.getItem('cart');
-
-          if (localState) {
-            const parsedState = JSON.parse(localState);
-
-            const entities = Object.values(
-              parsedState.entityMap,
-            ) as Array<CartItem>;
-
-            delete parsedState.enitityMap;
-            delete parsedState.ids;
-
-            patchState(store, setAllEntities(entities, entity), {
-              ...parsedState,
-            });
-          }
+          store._db.then((db) =>
+            db.getAll<CartItem>('cart').then((items) => {
+              patchState(store, setAllEntities(items, entity));
+            }),
+          );
         }
 
         watchState(store, (state) => {
-          if (isPlatformBrowser(platformId)) {
-            const localState = localStorage.getItem('cart') ?? '{}';
-
-            const parsedState = JSON.parse(localState);
-
-            parsedState.entities = {
-              ...(parsedState.entities ?? {}),
-              ...state,
-              wigs: store.entities(),
-            };
-
-            localStorage.setItem('cart', JSON.stringify({ ...state }));
-          }
+          // Do something whenever state changes
         });
       },
     };

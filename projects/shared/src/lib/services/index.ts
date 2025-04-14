@@ -8,3 +8,5 @@ export * from './wigs/source.service';
 export * from './wigs/hair-type.service';
 export * from './wigs/color.service';
 export * from './wigs/source.service';
+export * from './testimonial.service';
+export * from './db.service';
