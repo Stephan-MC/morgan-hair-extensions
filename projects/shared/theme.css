@@ -3,6 +3,12 @@
   --animate-bounce-shadow: bounce-shadow 1s infinite;
   --default-font-family: "Diotima LT Std";
 
+  --color-navajo-white: #ffe1b3;
+  --color-thistle: #dfc8f2;
+  --color-periwinkle: #bac6ee;
+  --color-nyanza: #d9f2d4;
+  --color-tea-rose: #ffd2cf;
+
   /* CSS break points for resposive design  */
   --breakpoint-mobile: 300px;
   --breakpoint-tablet-sm: 480px;
