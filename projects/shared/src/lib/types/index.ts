@@ -50,6 +50,8 @@ export * from './media';
 export * from './model';
 export * from './order';
 export * from './user';
+export * from './reactions';
 export * from './review';
 export * from './testimonial';
 export * from './wig';
+export * from './auth';

@@ -33,6 +33,20 @@ export interface Wig extends Model {
 
   lengths: Array<Wig.Length & { price: number; default: boolean }>;
   reviews: Array<Review>;
+  rating: {
+    /** The total number of clients who rated the product */
+    count: number;
+
+    /** The total number of stars awarded by all clients who rated */
+    weight: number;
+  } & Omit<Model, 'id'>;
+  love: {
+    /** The total number of clients who rated the product */
+    count: number;
+
+    /** The total number of stars awarded by all clients who rated */
+    weight: number;
+  } & Omit<Model, 'id'>;
   discounts: Array<Discount>;
   hair_type: Wig.HairType;
   color: Wig.Color;

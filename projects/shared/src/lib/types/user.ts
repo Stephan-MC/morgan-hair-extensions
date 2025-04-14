@@ -8,6 +8,9 @@ export interface User extends Model {
   email: string;
 }
 
-export interface Client extends User {}
+export interface Client extends User {
+  purchases_count: number;
+  reviews_count: number;
+}
 
 export interface Admin extends User {}
