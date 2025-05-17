@@ -5,164 +5,171 @@
 @plugin "./src/lib/plugins/tailwindcss/icons.ts";
 
 @layer base {
-  @font-face {
-    font-family: "Diotima LT Std";
-    src: url("./src/lib/fonts/DiotimaLTStd-Roman.eot");
-    src:
-      url("./src/lib/fonts/DiotimaLTStd-Roman.eot?#iefix")
-        format("embedded-opentype"),
-      url("./src/lib/fonts/DiotimaLTStd-Roman.woff2") format("woff2"),
-      url("./src/lib/fonts/DiotimaLTStd-Roman.woff") format("woff"),
-      url("./src/lib/fonts/DiotimaLTStd-Roman.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
-  html,
-  body {
-    @apply scroll-smooth;
-    @variant dark {
-      @apply bg-slate-800 text-white;
-    }
-  }
+	@font-face {
+		font-family: "Diotima LT Std";
+		src: url("./src/lib/fonts/DiotimaLTStd-Roman.eot");
+		src: url("./src/lib/fonts/DiotimaLTStd-Roman.eot?#iefix")
+			format("embedded-opentype"),
+			url("./src/lib/fonts/DiotimaLTStd-Roman.woff2") format("woff2"),
+			url("./src/lib/fonts/DiotimaLTStd-Roman.woff") format("woff"),
+			url("./src/lib/fonts/DiotimaLTStd-Roman.ttf") format("truetype");
+		font-weight: normal;
+		font-style: normal;
+		font-display: swap;
+	}
+	html,
+	body {
+		@apply scroll-smooth;
+		@variant dark {
+			@apply bg-slate-800 text-white;
+		}
+	}
 
-  [role="button"],
-  button {
-    cursor: pointer;
-  }
+	[role="button"],
+	button {
+		cursor: pointer;
+	}
+
+	[disabled] {
+		cursor: not-allowed;
+	}
 }
 
 @layer components {
-  .skeleton {
-    @apply bg-gray-200 animate-pulse rounded;
-  }
+	.skeleton {
+		@apply bg-gray-200 animate-pulse rounded;
+	}
 
-  .form-input {
-    @apply block border border-transparent border-b-gray-300 dark:border-b-gray-700 py-px px-1 transition duration-300;
+	.form-input {
+		@apply block border-b border-b-gray-300 dark:border-b-gray-700 py-px px-1 transition duration-300 font-semibold;
 
-    & .form-input--wrapper {
-      @apply flex has-[.left_*,.right_*]:gap-3 *:flex-0;
-    }
+		& .form-input--wrapper {
+			@apply relative flex items-center *:flex-0 size-full;
+		}
 
-    @variant hover {
-      @apply border-gray-400/20 dark:border-gray-500/10 dark:border-b-gray-700 bg-gray-300/20 dark:bg-gray-500/20;
-    }
+		@variant hover {
+			@apply border-gray-400/20 dark:border-gray-500/10 dark:border-b-gray-700 bg-gray-300/20 dark:bg-gray-500/30;
+		}
 
-    @variant focus-within {
-      @apply border-gray-400/20 dark:border-gray-500/10 dark:border-b-gray-700 bg-gray-300/20 dark:bg-gray-500/20;
-    }
+		@variant focus-within {
+			@apply border-gray-400/20 dark:border-gray-500/10 dark:border-b-gray-700 bg-gray-300/20 dark:bg-gray-500/30;
+		}
 
-    &.ng-invalid.ng-touched,
-    .ng-submitted &.ng-invalid {
-      @apply border-red-300;
+		&.ng-invalid.ng-touched,
+		.ng-submitted &.ng-invalid {
+			@apply border-red-300;
 
-      @variant hover {
-        @apply border-red-400;
-      }
+			@variant hover {
+				@apply border-red-400;
+			}
 
-      @variant focus {
-        @apply border-red-400;
-      }
-    }
+			@variant focus {
+				@apply border-red-400;
+			}
+		}
 
-    &.ng-valid.ng-touched,
-    .ng-submitted &.ng-valid {
-      @apply border-lime-200 dark:border-lime-100;
+		&.ng-valid.ng-touched,
+		.ng-submitted &.ng-valid {
+			@apply border-lime-200 dark:border-lime-100;
 
-      @variant hover {
-        @apply border-lime-300 dark:border-lime-200;
-      }
+			@variant hover {
+				@apply border-lime-300 dark:border-lime-200;
+			}
 
-      @variant focus {
-        @apply border-lime-300 dark:border-lime-200;
-      }
-    }
+			@variant focus {
+				@apply border-lime-300 dark:border-lime-200;
+			}
+		}
 
-    .left,
-    .right {
-      @apply shrink-0;
+		.left,
+		.right {
+			@apply flex items-center shrink-0 first:me-3 last:ms-3;
 
-      [class^="icon-"] {
-        @apply text-gray-700;
-      }
-    }
+			[class^="icon-"] {
+				@apply text-gray-700 dark:text-gray-400;
+			}
 
-    input,
-    select,
-    textarea {
-      @apply border-none grow! shrink-0 dark:text-gray-300;
+			@variant empty {
+				@apply mx-0;
+			}
+		}
 
-      @variant focus {
-        @apply outline-none;
-      }
-    }
+		input,
+		select,
+		textarea {
+			@apply border-none grow! shrink-0 dark:text-gray-300;
 
-    input {
-      &[type="number"] {
-        @apply [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none;
-      }
-    }
+			@variant focus {
+				@apply outline-none;
+			}
+		}
 
-    @variant dark {
-    }
-  }
+		input {
+			&[type="number"] {
+				@apply [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield] [appearance:textfield];
+			}
+		}
+
+		@variant dark {
+		}
+	}
 }
 
 @utility animation-delay-* {
-  /* prettier-ignore */
-  animation-delay: --value(integer)ms;
+	/* prettier-ignore */
+	animation-delay: --value(integer) ms;
 }
 
 @utility animation-duration-* {
-  /* prettier-ignore */
-  animation-duration: --value(integer)ms;
+	/* prettier-ignore */
+	animation-duration: --value(integer) ms;
 }
 
 @utility scrollbar-hidden {
-  &::-webkit-scrollbar {
-    display: none;
-  }
+	&::-webkit-scrollbar {
+		display: none;
+	}
 }
 
 @utility clip-star-8 {
-  clip-path: polygon(
-    50% 0%,
-    67.5% 25%,
-    85% 15%,
-    75% 42.5%,
-    100% 50%,
-    75% 57.5%,
-    85% 85%,
-    67.5% 75%,
-    50% 100%,
-    32.5% 75%,
-    15% 85%,
-    25% 57.5%,
-    0% 50%,
-    25% 42.5%,
-    15% 15%,
-    32.5% 25%
-  );
+	clip-path: polygon(
+		50% 0%,
+		67.5% 25%,
+		85% 15%,
+		75% 42.5%,
+		100% 50%,
+		75% 57.5%,
+		85% 85%,
+		67.5% 75%,
+		50% 100%,
+		32.5% 75%,
+		15% 85%,
+		25% 57.5%,
+		0% 50%,
+		25% 42.5%,
+		15% 15%,
+		32.5% 25%
+	);
 }
 
 @layer components {
-  .animate-bounce {
-    position: relative;
+	.animate-bounce {
+		position: relative;
 
-    @variant after {
-      position: absolute;
-      bottom: -0.5rem; /* -2 in Tailwind terms */
-      left: 50%;
-      width: 40%; /* 32px */
-      aspect-ratio: 1/1;
-      background-color: --alpha(var(--color-gray-500) / 50%);
-      border-radius: 9999px; /* Full rounding */
-      transform: translateX(-50%) translateY(125%);
-      animation: var(--animate-bounce-shadow);
-      animation-duration: inherit;
-      z-index: -1;
-    }
-  }
+		@variant after {
+			position: absolute;
+			bottom: -0.5rem; /* -2 in Tailwind terms */
+			left: 50%;
+			width: 40%; /* 32px */
+			aspect-ratio: 1 / 1;
+			background-color: --alpha(var(--color-geyser) / 50%);
+			border-radius: 9999px; /* Full rounding */
+			transform: translateX(-50%) translateY(125%);
+			animation: var(--animate-bounce-shadow);
+			animation-duration: inherit;
+			z-index: -1;
+		}
+	}
 }
 
 @custom-variant supports-dvw (@supports (width: 100dvw));
