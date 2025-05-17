@@ -1,19 +1,23 @@
-@for (s of [1, 2, 3, 4, 5]; track $index) {
+@for (s of stars(); track s) {
   @let stop = s > star() && s - star() < 1 ? 100 - (s - star()) * 100 : 0;
   <span
-    (click)="value.set(s)"
-    class="icon-[tdesign--star] bg-gradient-to-r"
+    (click)="!readonly() && handleStarClick(s)"
+    class="text-gray-300 bg-gradient-to-r dark:text-gray-500 icon-[tdesign--star]"
     [class.cursor-pointer]="!readonly()"
-    (mouseover)="!readonly() && star.set(s)"
+    (mouseover)="!readonly() && hovered.set(s)"
     [ngClass]="{
       'from-amber-400 dark:from-amber-300':
         s <= star() || (s > star() && s < star() + 1),
       'to-amber-400 dark:to-amber-300': s <= star(),
       'from-gray-300 dark:from-gray-500': s - star() > 1,
       'to-gray-300 dark:to-gray-500': s > star(),
+      'scale-130': s <= hovered()
     }"
+    tabindex="0"
     [style.--tw-gradient-from-position.%]="stop"
-    role="img"
+    [attr.aria-checked]="s <= star()"
+    [attr.aria-label]="`${readonly() ? star() + ' out of ' + max() : 'Rate ' + star() + 'out of ' + max()}`"
+    role="radio"
     aria-hidden="true"
   ></span>
 }

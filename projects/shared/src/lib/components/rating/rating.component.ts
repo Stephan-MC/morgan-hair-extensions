@@ -1,11 +1,14 @@
 import { NgClass } from '@angular/common';
 import {
   Component,
+  computed,
   effect,
   forwardRef,
   input,
   linkedSignal,
+  model,
   output,
+  signal,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -16,7 +19,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   styleUrl: './rating.component.css',
   host: {
     class: '"flex gap-px"',
-    '(mouseleave)': '!readonly() && star.set(value())',
+    '(mouseleave)': '!readonly() && hovered.set(0)',
   },
   providers: [
     {
@@ -27,11 +30,24 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class RatingComponent implements ControlValueAccessor {
-  _value = input(0, { alias: 'value' });
+  /**
+   * Indicates whether the rating is editable by the user
+   *
+   * @default {true}
+   */
   _readonly = input<boolean>(true, { alias: 'readonly' });
-  value = linkedSignal(() => this._value());
   readonly = linkedSignal(() => this._readonly());
-  star = linkedSignal(() => this.value());
+
+
+  // TODO: Make this input required
+  _rating = model<number>(0, { alias: 'rating' })
+  rating = linkedSignal(() => this._rating())
+  max = input<number, number>(5, { alias: 'max', transform: (value) => value > 0 ? value : 5 })
+  stars = computed(() => Array.from({length: this.max()}).map((_, i) => i+1) )
+  hovered = signal(0)
+
+  /** The number of stars to be painted */
+  star = linkedSignal(() => this.hovered() > 0 ? this.hovered() : this.rating());
 
   _onChange!: (_: any) => void;
   _onTouched!: VoidFunction;
@@ -41,15 +57,15 @@ export class RatingComponent implements ControlValueAccessor {
   constructor() {
     effect(() => {
       if (!this.readonly()) {
-        this.change.emit(this.value());
+        this.change.emit(this.rating());
         this._onTouched();
-        this._onChange(this.value());
+        this._onChange(this.rating());
       }
     });
   }
 
   writeValue(value: number): void {
-    this.star.set(Number.isInteger(value) ? value : Number(value));
+    this.rating.set(Number.isInteger(value) ? value : Number(value));
   }
 
   registerOnChange(fn: (_: any) => void): void {
@@ -62,5 +78,9 @@ export class RatingComponent implements ControlValueAccessor {
 
   setDisabledState?(isDisabled: boolean): void {
     this.readonly.set(isDisabled);
+  }
+
+  handleStarClick(n: number) {
+    this.rating.update(value => value == n ? 0 : n)
   }
 }
