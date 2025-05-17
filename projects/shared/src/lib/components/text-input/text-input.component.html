@@ -1,18 +1,30 @@
 <div class="form-input--wrapper">
-  <div class="left">
+  <div class="flex h-full left">
     <ng-content select="left"></ng-content>
   </div>
-  <input
-    [type]="type()"
-    [value]="value()"
-    (blur)="handleChange($event)"
-    (input)="handleChange($event)"
-    (change)="handleChange($event)"
-    [attr.placeholder]="placeholder()"
-    class="grow"
-    #input
-  />
-  <div class="right">
+  <div class="grow has-placeholder-shown:relative">
+    <input
+      class="p-1 w-full peer placeholder:capitalize"
+      [class.placeholder-transparent]="!!label()"
+      [type]="type()"
+      [value]="value()"
+      (blur)="handleChange($event)"
+      (input)="handleChange($event)"
+      (change)="handleChange($event)"
+      [placeholder]="placeholder()"
+      #input
+    />
+    @if (label()) {
+      <label
+        for=""
+        (click)="input.focus()"
+        class="absolute left-1 -top-6 transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-1 peer-placeholder-shown:p-1"
+      >
+        {{ label() }}
+      </label>
+    }
+  </div>
+  <div class="flex h-full right">
     <ng-content select="right"></ng-content>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, forwardRef, input, output } from '@angular/core';
+import { Component, effect, forwardRef, input, output } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { InputComponent } from '../input/input.component';
 
@@ -15,11 +15,21 @@ import { InputComponent } from '../input/input.component';
     },
   ],
   host: {
-    '[class.form-input--text]': 'true',
+    '[class.form-input]': 'true',
   },
 })
 export class TextInputComponent extends InputComponent {
   override _value = input<string>('');
   override type = input<'text' | 'email'>('text');
   override change = output<string>();
+  input = output<string>();
+  label = input<string>()
+
+  constructor() {
+    super();
+
+    effect(() => {
+      this.input.emit(this.value());
+    });
+  }
 }

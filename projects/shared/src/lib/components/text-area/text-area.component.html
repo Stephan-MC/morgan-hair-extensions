@@ -2,13 +2,15 @@
   <div class="left">
     <ng-content select="left"> </ng-content>
   </div>
-  <div class="grow has-placeholder-shown:relative">
+  <div class="has-placeholder-shown:relative grow">
     <textarea
-      class="p-1 peer w-full placeholder:capitalize placeholder-transparent"
+      class="p-1 w-full peer placeholder:capitalize"
+      [class.placeholder-transparent]="!!label()"
       [value]="value()"
       (input)="onTouched()"
       [rows]="rows()"
       [cols]="cols()"
+      (input)="handleChange($event)"
       [placeholder]="placeholder()"
       #input
     ></textarea>
@@ -16,7 +18,7 @@
       <label
         for=""
         (click)="input.focus()"
-        class="absolute left-1 -top-6 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-1 peer-placeholder-shown:p-1 transition-all duration-300"
+        class="absolute left-1 -top-6 transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-1 peer-placeholder-shown:p-1"
       >
         {{ label() }}
       </label>

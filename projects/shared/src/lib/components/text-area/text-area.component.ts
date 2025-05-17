@@ -26,7 +26,10 @@ export class TextAreaComponent extends DefaultValueAccessor {
   cols = input<number>(20);
 
   override writeValue(value: any): void {
-    console.log('setting value to ', value);
     this.value.set(value);
+  }
+
+  handleChange(event: Event) {
+    this.value.set((event.target as HTMLTextAreaElement).value)
   }
 }
