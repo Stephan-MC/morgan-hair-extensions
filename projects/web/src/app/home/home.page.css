@@ -1,0 +1,8 @@
+@reference "../../../../shared/styles.css";
+@reference "../../../../shared/theme.css";
+
+:host {
+  & > section {
+    /* @apply odd:bg-nyanza even:bg-tea-rose; */
+  }
+}

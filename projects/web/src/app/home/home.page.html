@@ -1,77 +1,44 @@
-<section class="h-screen supports-dvh:h-[100dvh] relative">
-  <div class="size-full overflow-hidden">
-    <img
-      ngSrc="/assets/images/3178d28f2451fedefcbbecf960f16fbd.jpg"
-      alt=""
-      class="object-cover object-top!"
-      priority
-      fill
-    />
-  </div>
-  <div class="absolute left-1/2 -translate-x-1/2 bottom-10">
-    <button
-      class="animate-bounce animation-duration-5000 size-square size-12 bg-primary text-black rounded-full flex items-center justify-center"
-      (click)="viewPortScroller.scrollToAnchor('categories')"
-    >
-      <span
-        class="icon-[garden--chevron-double-down-stroke-16]"
-        role="img"
-        aria-hidden="true"
-      ></span>
-    </button>
-  </div>
-</section>
+<section class="relative pb-3 h-screen supports-dvh:h-[100dvh]">
+  <div class="flex flex-col gap-y-3 size-full">
+    @defer (hydrate on immediate) {
+      <web-hero class="overflow-hidden grow" />
+    }
 
-<section
-  class="supports-dvh:h-[100dvh] pt-16 pb-6 bg-primary dark:bg-primary/30"
-  id="categories"
->
-  <div class="h-full max-w-screen-lg mx-auto max-h-full px-3 lg:px-0">
-    <div
-      class="grid columns-2 grid-cols-2 grid-rows-5 gap-3 h-full group/container"
-    >
-      @for (hair_type of hairTypes.value(); track hair_type.id) {
-      <div
-        class="group relative rounded-lg first:row-span-2 last:row-span-2 not-first:not-last:row-span-3 overflow-hidden group/item"
-      >
-        <img
-          [src]="hair_type.thumbnail.url"
-          class="size-full object-cover object-top group-hover:scale-105 duration-500"
-        />
-        <div
-          class="absolute inset-0 transition-all duration-500 overlay group-hover/item:bg-white/10 group-has-hover/container:backdrop-blur-[2px] group-hover/item:!backdrop-blur-none"
-        >
-          <div class="size-full relative">
-            <a
-              [routerLink]="['/shop']"
-              [queryParams]="{hair_type: hair_type.name}"
-              class=""
-            >
-              <span
-                class="ps-2 absolute inset-x-0 opacity-30 -top-[10%] group-hover/item:opacity-100 group-hover/item:top-[20%] transition-all duration-500 text-2xl font-bold"
-                >{{ hair_type.name }}</span
-              >
-              <span class="absolute inset-0"></span>
-            </a>
-          </div>
+    @if (hairTypes.hasValue()) {
+      @let hairTypes = this.hairTypes.value()!;
+      <div class="self-center px-3 w-full max-w-screen-xl lg:px-0">
+        <div class="grid grid-cols-3 gap-3 w-full tablet:gap-6">
+          @for (hairType of hairTypes; track hairType.id) {
+            <div class="overflow-hidden relative aspect-video group">
+              <thumbnail [src]="hairType.thumbnail.url" [alt]="hairType.thumbnail.alt || `${hairType.name} Hair`" class="transition duration-300 group-hover:scale-110 size-full" />
+              <div class="flex absolute inset-0 flex-col gap-3 justify-center items-center grow">
+                <span class="text-lg font-black capitalize tablet-sm:text-xl tablet-lg:text-2xl text-shadow-sm text-shadow-geyser dark:text-shadow-primary">
+                  {{ hairType.name }} Hair
+                </span>
+                <a [routerLink]="['/shop']" [queryParams]="{ hair_type: hairType.name }" class="py-px px-2 text-xs tablet-lg:py-1 tablet-lg:px-3 tablet:text-sm bg-geyser dark:bg-primary">
+                  View More
+                  <span class="absolute inset-0"></span>
+                </a>
+              </div>
+            </div>
+          }
         </div>
       </div>
-      }
-    </div>
+    }
   </div>
 </section>
 
-<section class="supports-dvh:min-h-[100dvh] pt-18 pb-9" id="featured-section">
-  <div class="max-w-screen-lg mx-auto space-y-9">
-    <h3 class="text-3xl tracking-widest font-black text-center">
+<section class="pb-9 supports-dvh:min-h-[100dvh] pt-18" id="featured-section">
+  <div class="mx-auto space-y-9 max-w-screen-lg">
+    <h3 class="text-3xl font-black tracking-widest text-center">
       Featured Wigs
     </h3>
 
     <div
-      class="grid tablet-sm:grid-cols-2 tablet-lg:grid-cols-3 laptop:grid-cols-4 gap-6 py-3 px-4"
+      class="grid gap-x-3 gap-y-6 py-3 px-4 mobile:grid-cols-2 tablet-sm:grid-cols-3 tablet-sm:gap-y-9 tablet-lg:grid-cols-4"
     >
       <div
-        class="flex justify-center items-center gap-3 mt-3 font-medium col-span-full py-3"
+        class="flex col-span-full gap-3 justify-center items-center py-3 mt-3 font-medium"
       >
         <button>New</button>
         <button>Best Selling</button>
@@ -79,26 +46,29 @@
       </div>
       @if (products.isLoading()) {
       <!-- ! -->
-      @for (wig of [1, 2, 3, 4]; track $index) {
+      @for (wig of [1, 2, 3, 4, 5, 6, 7, 8]; track $index) {
 
       <web-product-card-skeleton />
       }
       <!-- ! -->
-      } @else { @for (wig of products.value(); track wig.id) {
-      <web-wig-card
-        [wig]="wig"
-        (like)="wig.liked = $event"
-        [class.max-tablet-lg:hidden!]="$index > 3"
-        [class.max-laptop:hidden!]="$index > 5"
-      />
+      } @else {
+        <!-- ! -->
+        @for (wig of products.value(); track wig.id) {
+          <web-wig-card
+            [wig]="wig"
+            (like)="wig.liked = $event"
+            [class.max-tablet-lg:hidden!]="$index > 5"
+            [class.max-laptop:hidden!]="$index > 7"
+          />
 
-      }}
+        }
+      }
     </div>
 
     <div class="flex justify-center">
       <a
         [routerLink]="['/shop']"
-        class="rounded-full bg-amber-200 text-black px-3 py-1.5 mx-auto"
+        class="py-1.5 px-3 mx-auto text-white rounded-full dark:bg-white bg-primary dark:text-slate-800"
       >
         View More
       </a>
@@ -106,47 +76,11 @@
   </div>
 </section>
 
-<section class="pt-16">
-  <div class="grid grid-cols-4 max-w-screen-lg mx-auto gap-9 *:justify-center">
-    <div class="flex gap-3">
-      <span
-        class="icon-[fa-solid--shipping-fast] self-center text-4xl text-blue-400"
-        role="img"
-        aria-hidden="true"
-      ></span>
-      <div class="flex flex-col justify-center gap-2">
-        <span class="font-bold">Free Shipping</span>
-        <span class="text-sm">On all Orders over 99$</span>
-      </div>
-    </div>
-    <div class="flex gap-3">
-      <span
-        class="icon-[majesticons--money-hand-line] self-center text-5xl text-blue-400"
-        role="img"
-        aria-hidden="true"
-      ></span>
-      <div class="flex flex-col justify-center gap-2">
-        <span class="font-bold">Secure payment</span>
-        <span class="text-sm">On all Orders over 99$</span>
-      </div>
-    </div>
-    <div class="flex gap-3">
-      <span></span>
-      <div class="flex flex-col justify-center gap-2">
-        <span class="font-bold">100% Money Back</span>
-        <span class="text-sm">30 days return policy</span>
-      </div>
-    </div>
-    <div class="flex gap-3">
-      <span
-        class="icon-[streamline--interface-help-customer-support-2-customer-headphones-headset-help-microphone-phone-person-support] self-center text-4xl text-blue-400"
-        role="img"
-        aria-hidden="true"
-      ></span>
-      <div class="flex flex-col justify-center gap-2">
-        <span class="font-bold">Online Support</span>
-        <span class="text-sm">24/7 Dedicated Support</span>
-      </div>
-    </div>
-  </div>
+<section class="pb-9 pt-18" id="featured-section">
+  <h3 class="mb-6 text-3xl font-black tracking-widest text-center">
+    Feedback from customers
+  </h3>
+  @defer () {
+  <web-testimonial-list class="max-w-screen-lg" />
+  }
 </section>

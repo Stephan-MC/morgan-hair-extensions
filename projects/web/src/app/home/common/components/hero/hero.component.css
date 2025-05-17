@@ -5,6 +5,6 @@
   @apply from-gray-200/10 via-gray-400/20 to-geyser/30;
 
   @variant dark {
-    @apply from-slate-700 via-slate-950 to-slate-800;
+    @apply from-slate-600 via-slate-700 to-slate-800;
   }
 }
