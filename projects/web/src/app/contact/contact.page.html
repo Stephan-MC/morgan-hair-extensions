@@ -1,1 +1,31 @@
-<p>contact works!</p>
+<section class="p-3 mt-20 pb-15">
+  <div
+    class="mx-auto bg-no-repeat bg-contain max-w-screen-laptop min-[1028px]:bg-[url(/assets/images/contact-form-image.png)] bg-bottom-right"
+  >
+    <form [formGroup]="form" class="max-w-screen-tablet-lg">
+      <h3 class="mb-3 text-3xl font-bolder">
+        We're here for you
+        <span class="text-amber-300 dark:text-amber-400">!</span>
+      </h3>
+      <span class="text-muted">
+        Finding your perfect wig should be a joyful experience! Our team is
+        ready to assist with any questions about products, orders, or styling
+        advice. Please use the form below, and we'll help you step out in style!
+      </span>
+      <div
+        class="mt-9 *:not-first:has-placeholder-shown:mt-6 *:not-first:mt-12 *:transition-all *:duration-200"
+      >
+        <text-input label="Name" formControlName="name" />
+        <text-input type="email" label="Email" formControlName="email" />
+        <text-area label="Message" formControlName="message" />
+      </div>
+
+      <button
+        type="submit"
+        class="py-1 px-3 mt-6 w-full text-center bg-primary dark:text-geyser"
+      >
+        Send
+      </button>
+    </form>
+  </div>
+</section>
