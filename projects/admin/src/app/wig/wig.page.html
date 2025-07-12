@@ -1,6 +1,6 @@
-<div class="max-w-screen-lg mx-auto">
+<div class="mx-auto max-w-screen-lg">
   <form class="" [formGroup]="form" (ngSubmit)="handleSubmit()">
-    <div class="grid gap-6 gap-x-3 tablet:gap-9 tablet:gap-x-6 grid-cols-2 p-3">
+    <div class="grid grid-cols-2 gap-x-3 gap-6 p-3 tablet:gap-9 tablet:gap-x-6">
       <div class="flex flex-col col-span-full">
         <span>Thumbnail</span>
         <file-input
@@ -9,12 +9,12 @@
           accept="image/*"
         >
           <thumbnail
-            class="aspect-thumbnail w-full grow"
+            class="w-full aspect-thumbnail grow"
             [src]="thumbnail()"
             [priority]="true"
           />
           <span
-            class="absolute inset-0 bg-gray-600/80 group-hover/thumbnail:opacity-0 transition duration-500 flex items-center justify-center text-white"
+            class="flex absolute inset-0 justify-center items-center text-white transition duration-500 bg-gray-600/80 group-hover/thumbnail:opacity-0"
           >
             Click on image to modify
           </span>
@@ -23,15 +23,15 @@
       <div class="flex flex-col col-span-full">
         <span>Gallery</span>
         <div
-          class="grid gap-3 grid-cols-2 tablet-sm:grid-cols-3 tablet-lg:grid-cols-4 laptop:grid-cols-5"
+          class="grid grid-cols-2 gap-3 tablet-sm:grid-cols-3 tablet-lg:grid-cols-4 laptop:grid-cols-5"
         >
           @for (image of gallery(); track image.id) {
-          <div class="aspect-thumbnail relative">
+          <div class="relative aspect-thumbnail">
             <thumbnail class="size-full grow" [src]="image"></thumbnail>
             <button
               type="button"
               (click)="removeImageFromGallery(image.id)"
-              class="absolute rotate-45 right-3 top-3 h-3 tablet:h-5 bg-red-500 text-white rounded-full aspect-square flex items-center justify-center text-xs tablet:text-base"
+              class="flex absolute top-3 right-3 justify-center items-center h-3 text-xs text-white bg-red-500 rounded-full rotate-45 tablet:h-5 aspect-square tablet:text-base"
             >
               +
             </button>
@@ -39,7 +39,7 @@
           }
           <!-- ~ -->
           @for (i of form.controls.gallery.controls; track i) {
-          <div class="aspect-thumbnail relative">
+          <div class="relative aspect-thumbnail">
             <thumbnail
               class="size-full grow"
               [src]="form.controls.gallery.controls.at($index)?.getRawValue()"
@@ -47,7 +47,7 @@
             <button
               type="button"
               (click)="form.controls.gallery.removeAt($index)"
-              class="absolute rotate-45 right-3 top-3 h-5 bg-red-500 text-white rounded-full aspect-square flex items-center justify-center"
+              class="flex absolute top-3 right-3 justify-center items-center h-5 text-white bg-red-500 rounded-full rotate-45 aspect-square"
             >
               +
             </button>
@@ -55,7 +55,7 @@
           }
           <button
             type="button"
-            class="rounded bg-amber-200 aspect-thumbnail"
+            class="text-4xl bg-amber-200 rounded dark:bg-amber-400 tablet:text-5xl aspect-thumbnail dark:text-slate-800"
             (click)="galleryInput.click()"
           >
             +
@@ -77,7 +77,7 @@
       <div class="flex flex-col col-span-full">
         <span class=""> Color @if (color$()) { ({{ color$() }}) } </span>
         <div
-          class="grid grid-cols-6 tablet-sm:grid-cols-9 tablet:grid-cols-12 tablet-lg:grid-cols-15 gap-1.5"
+          class="grid grid-cols-6 gap-1.5 tablet-sm:grid-cols-9 tablet:grid-cols-12 tablet-lg:grid-cols-15"
         >
           @for (color of colors.value(); track color.id) {
           <div
@@ -101,17 +101,18 @@
       <div class="flex flex-col col-span-full">
         <span class="">Hair Type</span>
         <div
-          class="grid grid-cols-2 tablet-sm:grid-cols-2 tablet:grid-cols-3 tablet-lg:grid-cols-5 gap-4"
+          class="grid grid-cols-2 gap-4 tablet-sm:grid-cols-2 tablet:grid-cols-3 tablet-lg:grid-cols-5"
         >
           @for (hair_type of hairTypes.value(); track hair_type.id) {
           <div
             [class.selected]="hair_type.id === form.controls.hair_type_id.getRawValue()"
-            class="flex flex-col rounded cursor-pointer group/hair-type border-transparent border-8 [&.selected]:border-amber-200"
+            class="flex flex-col rounded cursor-pointer group/hair-type border-transparent border-8 [&.selected]:border-navajo-white"
             (click)="form.controls.hair_type_id.setValue(hair_type.id)"
           >
             <thumbnail
               [src]="hair_type.thumbnail"
-              class="aspect-thumbnail group-hover/hair-type:scale-110 transition duration-400"
+              [alt]="hair_type.name"
+              class="transition aspect-thumbnail duration-400 group-hover/hair-type:scale-110"
             />
           </div>
           }
@@ -125,15 +126,15 @@
         <span>Stock</span>
         <number-input formControlName="stock" />
       </div>
-      <div class="flex flex-col max-tablet-sm:col-span-full">
-        <span>Price </span>
-        <number-input formControlName="price" [step]="5">
-          <span ngProjectAs="error">
-            @if (form.hasError('price')) { @if (form.errors?.['price'].length) {
-            {{ form.errors?.['price'][0] }} } }
-          </span>
-        </number-input>
-      </div>
+      <!-- <div class="flex flex-col max-tablet-sm:col-span-full"> -->
+      <!--   <span>Price </span> -->
+      <!--   <number-input formControlName="price" [step]="5"> -->
+      <!--     <span ngProjectAs="error"> -->
+      <!--       @if (form.hasError('price')) { @if (form.errors?.['price'].length) { -->
+      <!--       {{ form.errors?.['price'][0] }} } } -->
+      <!--     </span> -->
+      <!--   </number-input> -->
+      <!-- </div> -->
       <div class="flex flex-col">
         <span>Source</span>
         <form-select
@@ -164,11 +165,11 @@
       <div class="flex flex-col col-span-full">
         <span class="">Lengths</span>
         <div
-          class="grid grid-cols-2 tablet-sm:grid-cols-3 tablet:grid-cols-4 tablet-lg:grid-cols-5 gap-3"
+          class="grid grid-cols-2 gap-3 tablet-sm:grid-cols-3 tablet:grid-cols-4 tablet-lg:grid-cols-5"
         >
           @for (length of form.controls.lengths.controls | keyvalue; track
           length.key) {
-          <div class="flex flex-col p-1 rounded bg-amber-100 dark:text-black">
+          <div class="flex flex-col p-1 bg-amber-100 rounded dark:text-black">
             <span
               >{{ lengths.value().find(find(length.key))?.value }} inches</span
             >
@@ -177,18 +178,20 @@
             </span>
           </div>
           } @empty {
-          <h5 class="text-center [grid-column:1_/_-2]">No length added yet</h5>
+          <h5 class="flex justify-center items-center text-center [grid-column:1_/_-2]">No length added yet</h5>
           }
           <button
+            [class.cursor-progress!]="lengths.isLoading()"
+            [disabled]="lengths.isLoading() || !lengths.hasValue()"
             type="button"
-            class="bg-amber-200 flex items-center justify-center tablet-sm:text-4xl aspect-thumbnail"
+            class="flex justify-center items-center text-4xl bg-amber-300 dark:bg-amber-400 tablet-sm:text-4xl aspect-thumbnail tablet:text-5xl dark:text-slate-800"
             (click)="openNewLengthDialog()"
           >
             +
           </button>
         </div>
       </div>
-      <button type="submit" class="col-span-full bg-amber-200">Update</button>
+      <button type="submit" class="col-span-full bg-amber-300 dark:bg-amber-500 dark:text-slate-800">{{ `${!!wig.value() ? 'Update' : 'Add'}`}}</button>
     </div>
   </form>
 </div>

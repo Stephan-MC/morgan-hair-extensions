@@ -46,10 +46,11 @@ export class InputComponent implements ControlValueAccessor {
   placeholder = input<HTMLInputElement['placeholder']>();
   multiple = input<boolean>(false);
   changeOn = input<'blur' | 'input'>('input');
+  readonly = input<boolean>(false);
 
   value = linkedSignal(() => this._value());
 
-  private _onChange!: (_: any) => void;
+  private _onChange: (_: any) => void = (_: any) => {};
   private _onTouch: VoidFunction = () => {};
 
   constructor() {
@@ -93,7 +94,6 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   handleChange(event: Event) {
-    console.log(event);
     if (event.type == 'input') {
       this._onTouch();
     }

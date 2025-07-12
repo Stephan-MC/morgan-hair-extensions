@@ -130,14 +130,14 @@ export const CartStore = signalStore(
       );
       store._db.then((db) =>
         newProduct.quantity <= 0
-          ? db.delete('cart', newProduct.id)
+          ? db.delete('cart', [newProduct.id, newProduct.length.id])
           : db.update<CartItem>('cart', newProduct),
       );
     },
 
     remove: (item: CartItem) => {
       patchState(store, removeEntity(`${item.id}:${item.length.id}`));
-      store._db.then((db) => db.delete('cart', item.length.id));
+      store._db.then((db) => db.delete('cart', [item.id, item.length.id]));
     },
 
     has: (item: CartItem | Wig | string) => {

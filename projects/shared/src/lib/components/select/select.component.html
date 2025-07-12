@@ -1,5 +1,5 @@
 <div class="form-input--wrapper">
-  <select (change)="handleChange($event)" [multiple]="multiple()" #select>
+  <select (input)="handleChange($event)" [multiple]="multiple()" #select>
     @for (option of options(); track $index) {
       <option
         [selected]="

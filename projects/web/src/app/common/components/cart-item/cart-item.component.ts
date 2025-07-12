@@ -10,10 +10,11 @@ import {
 import { RouterLink } from '@angular/router';
 import { ProductHelper } from '../../helpers/product.helper';
 import { CartItem } from '../../stores/cart.store';
+import { ImageComponent, NumberInputComponent } from 'shared';
 
 @Component({
   selector: 'web-cart-item',
-  imports: [CurrencyPipe, RouterLink],
+  imports: [CurrencyPipe, RouterLink, NumberInputComponent, ImageComponent],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,7 +1,7 @@
-<section class="mt-18">
-  <div class="flex flex-col tablet-lg:flex-row px-3">
+<section class="py-3 mt-15" >
+  <div class="flex flex-col px-3 tablet-lg:flex-row">
     <div
-      class="shrink-0 tablet-lg:w-[min(300px,90dvw)] supports-dvw:tablet-lg:w-[min(300px,90dvw)] transition-all duration-300"
+      class="transition-all duration-300 shrink-0 tablet-lg:w-[min(300px,90dvw)] supports-dvw:tablet-lg:w-[min(300px,90dvw)]"
       [class.w-30!]="!filterOpen()"
     >
       <web-shop-filter
@@ -12,31 +12,39 @@
     </div>
     <div class="grow @container/page">
       <div
-        class="grid @min-[35rem]/page:grid-cols-2 @3xl/page:grid-cols-3 @min-[62rem]/page:grid-cols-4 gap-x-3 gap-y-6 4xl:gap-10 px-6"
+        class="grid mobile:grid-cols-2 @min-[35rem]/page:grid-cols-3 @3xl/page:grid-cols-4 @min-[62rem]/page:grid-cols-5 @min-[80rem]/page:grid-cols-6 gap-x-3 gap-y-6 4xl:gap-10 tablet:px-3"
       >
-        @if (wigs.isLoading()) { @for(i of [1,2,3,4,5,6,7,8]; track $index) {
-        <web-product-card-skeleton />
-        } } @else { @for(wig of wigs.value()?.data; track wig.id) {
-        <web-wig-card
-          [wig]="wig"
-          class=""
-          (like)="wig.liked = !wig.liked"
-          [thumbnailLoadingPriority]="$index <= 3"
-        />
-        } @empty {
-        <div
-          class="text-center col-span-full p-6 rounded-lg bg-geyser/40 backdrop-blur-sm"
-        >
-          @if (hasFilters()) {
-          <h4 class="text-xl font-bold">
-            No items match for current search filters
-          </h4>
-          } @else {
-          <h4 class="text-xl font-bold">No wigs available.</h4>
-          <span class=""> Please try again later. </span>
+        @if (wigs.isLoading()) {
+          <!-- ! -->
+          @for(i of [1,2,3,4,5,6,7,8,9,10,11,12]; track $index) {
+            <web-product-card-skeleton />
           }
-        </div>
-        } }
+          <!-- ! -->
+        } @else {
+          <!-- ! -->
+          @for(wig of wigs.value()?.data; track wig.id) {
+            <web-wig-card
+              [wig]="wig"
+              class=""
+              (like)="wig.liked = !wig.liked"
+              [thumbnailLoadingPriority]="$index <= 3"
+            />
+          } @empty {
+            <div
+              class="col-span-full p-6 text-center rounded-lg bg-geyser/40 backdrop-blur-sm"
+            >
+              @if (hasFilters()) {
+                <h4 class="text-lg font-bold tablet-sm:text-xl">
+                  No items match for current search filters
+                </h4>
+              } @else {
+                <h4 class="text-lg font-bold tablet:text-xl">No wigs available.</h4>
+                <span class=""> Please try again later. </span>
+              }
+            </div>
+          }
+          <!-- ! -->
+        }
         <!-- ! -->
         @if (wigs.value()) {
         <web-pagination

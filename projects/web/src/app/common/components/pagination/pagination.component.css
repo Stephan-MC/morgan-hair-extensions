@@ -9,10 +9,10 @@
   }
 
   .pagination-link {
-    @apply px-3 border border-amber-200 bg-amber-300 dark:border-amber-600 dark:bg-amber-500 dark:text-slate-800 rounded;
+    @apply px-3 bg-geyser text-primary dark:border-primary dark:bg-primary dark:text-geyser rounded;
 
     &.active {
-      @apply text-white;
+      @apply shadow-xs shadow-amber-200/40 bg-amber-300 dark:bg-amber-500 dark:shadow-amber-400/50 text-primary;
     }
 
     @variant hover {

@@ -1,0 +1,24 @@
+@reference '../../../../styles.css';
+
+:host {
+	@apply block w-full overflow-hidden;
+	mask-image: linear-gradient(to right, transparent, #000 15% 85%, transparent);
+}
+
+.wrapper {
+	@apply flex w-max gap-3 hover:[animation-play-state:paused];
+	animation: scroll 20s linear infinite;
+}
+
+@keyframes scroll {
+	0% {
+		transform: translateX(0);
+	}
+	100% {
+		transform: translateX(-50%);
+	}
+}
+
+.scroll:hover {
+	animation-play-state: paused;
+}

@@ -1,4 +1,4 @@
-<header class="relative py-1 px-2 flex items-center justify-between">
+<header class="flex relative justify-between items-center py-1 px-2">
   <nav
     class="flex items-center gap-3 flex-1 px-2 *:font-bold max-tablet-lg:hidden"
   >
@@ -7,10 +7,11 @@
     <a [routerLink]="['/about']">About</a>
     <a [routerLink]="['/contact']">Contact</a>
   </nav>
-  <div class="flex-1 tablet-lg:hidden ps-2 dark:text-amber-500">
+
+  <div class="flex-1 tablet-lg:hidden ps-2">
     <button (click)="showMobileMenu = !showMobileMenu">
       <span
-        class="icon-[material-symbols-light--menu]"
+        class="text-2xl icon-[material-symbols-light--menu]"
         role="img"
         aria-hidden="true"
       ></span>
@@ -19,11 +20,12 @@
 
   <a
     routerLink="/"
-    class="block bg-white rounded-full h-10 aspect-square shrink-0 overflow-hidden relative"
+    class="block overflow-hidden relative h-10 rounded-full aspect-square shrink-0"
   >
     <img ngSrc="/assets/images/logo.jpg" alt="Morgan Hair logo" priority fill />
   </a>
-  <div class="flex items-center justify-end gap-6 flex-1 px-2">
+  <div class="flex flex-1 gap-3 justify-end items-center px-2 tablet-sm:gap-6">
+    <span class="icon-[iconoir--search]" role="img" aria-hidden="true"></span>
     <div class="flex items-center">
       <web-badge
         role="button"
@@ -32,16 +34,18 @@
         [value]="cart.count() > 0 ? cart.count() : undefined"
       >
         <span
-          class="icon-[solar--cart-4-linear] text-lg"
+          class="text-lg icon-[solar--cart-4-linear]"
           role="img"
           aria-hidden="true"
         >
         </span>
       </web-badge>
     </div>
-    <div
-      class="rounded-full aspect-square bg-amber-200 dark:bg-amber-500 size-10"
-    ></div>
+    <span
+      class="icon-[solar--user-rounded-outline]"
+      role="img"
+      aria-hidden="true"
+    ></span>
   </div>
 
   <div class="absolute inset-x-0 top-[112%] tablet-lg:hidden px-6">

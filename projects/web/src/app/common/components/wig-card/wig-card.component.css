@@ -1,7 +1,7 @@
 @reference "../../../../styles.css";
 
 :host {
-  @apply block rounded-lg overflow-hidden pb-2 relative duration-200 transition-transform z-0 max-tablet-sm:border max-tablet-sm:border-gray-900/10;
+  @apply block overflow-hidden pb-2 relative duration-200 transition-transform z-0 max-tablet-sm:border max-tablet-sm:border-gray-900/10;
 
   @variant hover {
     @apply shadow;

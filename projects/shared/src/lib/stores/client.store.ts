@@ -7,11 +7,13 @@ import {
   withMethods,
   withProps,
   withState,
+  withHooks,
+  patchState,
 } from '@ngrx/signals';
 import { Environment } from '../types/environment';
 import { AccessToken, Client, PlainTextToken } from '../types';
-import { catchError, tap } from 'rxjs/operators';
-import { EMPTY } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import { EMPTY, lastValueFrom } from 'rxjs';
 import { DBInstance, DbService } from '../services/db.service';
 
 export interface ClientStoreInterface {
@@ -21,15 +23,10 @@ export interface ClientStoreInterface {
 const CLIENT_STORE = new InjectionToken<ClientStoreInterface>('CLIENT_STORE', {
   providedIn: 'root',
   factory: (_http = inject(HttpClient), _environment = inject(Environment)) => {
-    let initialState: Client | null = null;
+    let initialState = { client: null };
 
-    _http
-      .get<Client>(`${_environment.url.api}/user`)
-      .pipe(catchError((error) => EMPTY))
-      .subscribe((value) => (initialState = value));
-
-    return { client: initialState };
-  },
+    return  initialState
+  }
 });
 
 export const ClientStore = signalStore(
@@ -47,7 +44,7 @@ export const ClientStore = signalStore(
         version: 1,
         stores: [
           { name: 'client', options: { keyPath: 'tokenable_id' } },
-          // { name: 'access_tokens', options: { keyPath: 'plainTextToken' } },
+          { name: 'access_tokens', options: { keyPath: 'plainTextToken' } },
         ],
       }) as Promise<DBInstance>,
       _http: httpClient,
@@ -109,4 +106,9 @@ export const ClientStore = signalStore(
   withComputed(({ client }) => ({
     full_name: computed(() => client()?.first_name + ' ' + client()?.last_name),
   })),
+  withHooks({
+    onInit: (store) => {
+      store._http.get<Client>(`${store._environment.url.api}/user`).pipe(tap(client => patchState(store, { client })), catchError(error => EMPTY)).subscribe()
+    }
+  })
 );

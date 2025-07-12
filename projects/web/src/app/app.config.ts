@@ -1,24 +1,33 @@
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
 import {
   ApplicationConfig,
-  provideExperimentalZonelessChangeDetection,
+  provideZonelessChangeDetection,
 } from '@angular/core';
 import {
   provideClientHydration,
   withEventReplay,
+  withIncrementalHydration,
 } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withRouterConfig,
+} from '@angular/router';
 import { routes } from './app.routes';
-import { Environment } from 'shared';
+import { apiInterceptor, Environment } from 'shared';
 import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideExperimentalZonelessChangeDetection(),
-    provideRouter(routes, withComponentInputBinding()),
-    provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch()),
+    provideZonelessChangeDetection(),
+    provideRouter(routes, withComponentInputBinding(), withRouterConfig({})),
+    provideClientHydration(withEventReplay(), withIncrementalHydration()),
+    provideHttpClient(withFetch(), withInterceptors([apiInterceptor])),
     provideAnimations(),
     { provide: Environment, useFactory: () => environment },
   ],

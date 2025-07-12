@@ -14,7 +14,7 @@ import {
   host: {
     '[class.selected]': 'selected()',
     '[attr.role]': '"button"',
-    '(click)': '[selected.set(!selected()), select.emit()]',
+    '(click)': '[select.emit()]',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

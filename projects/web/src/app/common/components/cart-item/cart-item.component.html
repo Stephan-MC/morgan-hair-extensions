@@ -1,17 +1,11 @@
-<div class="aspect-3/4 rounded overflow-hidden">
-  <img
-    [src]="product().thumbnail.url"
-    [alt]="product().thumbnail.alt ? product().thumbnail.alt : product().name"
-    class="object-cover object-center"
-  />
-</div>
+<thumbnail [src]="product().thumbnail" [alt]="product().thumbnail.alt ? product().thumbnail.alt : product().name" class="overflow-hidden rounded aspect-4/3"  />
 
 <div class="col-span-4">
   <div class="flex flex-col gap-1.5">
-    <div class="flex items-center justify-between gap-3">
+    <div class="flex gap-3 justify-between items-center">
       <a
         [routerLink]="['/product', product().id]"
-        class="text-lg capitalize truncate inline-block"
+        class="inline-block text-lg capitalize truncate"
       >
         {{ product().name }}
         <span class="absolute inset-0 z-9"></span>
@@ -19,7 +13,7 @@
       <span
         role="button"
         (click)="remove.emit()"
-        class="rounded-full flex items-center justify-center px-2 py-[0.5px] text-xs border border-gray-400 shrink-0 z-10"
+        class="flex z-10 justify-center items-center px-2 text-xs rounded-full border border-gray-400 py-[0.5px] shrink-0"
         >remove</span
       >
     </div>
@@ -34,18 +28,6 @@
       </sup>
     </div>
     <span class="">{{ product().length.value }} inches</span>
-    <div
-      class="flex ms-auto border border-gray-300 gap-3 rounded px-2 py-0.5 text-xs z-10"
-    >
-      <button (click)="decrement.emit()">-</button>
-      <input
-        type="number"
-        [readOnly]="true"
-        [value]="product().quantity"
-        class="grow-0 outline-none text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-        [style.width.px]="calculateInputWidth()"
-      />
-      <button (click)="increment.emit()">+</button>
-    </div>
+      <number-input [min]="0" [value]="product().quantity" (increment)="increment.emit()" (decrement)="decrement.emit()" class="z-100 ms-auto [&_input]:w-10" [readonly]="true"/>
   </div>
 </div>

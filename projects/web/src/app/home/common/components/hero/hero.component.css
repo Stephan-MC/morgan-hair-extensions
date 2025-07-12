@@ -1,10 +1,10 @@
 @reference "../../../../../styles.css";
 
 :host {
-  @apply relative flex gap-2 px-6 bg-radial;
-  @apply from-gray-200/10 via-gray-400/20 to-geyser/30;
+	@apply relative flex gap-2 px-6 bg-[url(/assets/images/nav-bg.png)] bg-cover bg-no-repeat bg-center;
+	/* @apply from-gray-200/10 via-gray-400/20 to-geyser/30; */
 
-  @variant dark {
-    @apply from-slate-600 via-slate-700 to-slate-800;
-  }
+	@variant dark {
+		/* @apply from-slate-600 via-slate-700 to-slate-800; */
+	}
 }

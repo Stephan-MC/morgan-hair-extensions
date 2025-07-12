@@ -1,192 +1,199 @@
-<div class="spacy-y-3 max-w-screen-lg mx-auto">
+<div class="mx-auto max-w-screen-lg spacy-y-3">
   @if (!this.wig.isLoading()) {
   <!-- ! -->
 
-  @if (wig.hasValue()) {
-  <!-- ! -->
-  @let wig = this.wig.value()!;
+    @if (wig.hasValue()) {
+    <!-- ! -->
+    @let wig = this.wig.value()!;
 
-  <thumbnail
-    class="aspect-thumbnail"
-    [src]="wig!.thumbnail.url"
-    [alt]="wig!.thumbnail.alt ? wig!.thumbnail.alt : wig!.name"
-    fill
-  />
-  <swiper-container #gallerySwipe init="false" class="py-3">
-    <swiper-slide class="aspect-video">
-      <thumbnail [src]="wig.thumbnail.url" class="size-full" />
-    </swiper-slide>
-    @for (image of wig.gallery; track image.id) {
-    <swiper-slide class="aspect-video">
-      <thumbnail [src]="image.url" class="size-full" />
-    </swiper-slide>
-    }
-  </swiper-container>
-  <div class="flex flex-col gap-6 px-3 py-6">
-    <h2 class="text-3xl tracking-wide font-bold capitalize">{{ wig?.name }}</h2>
-    <div class="flex justify-between">
-      <div class="flex gap-1 items-center">
-        @if (wig?.discount) {
-        <del class="text-sm">{{ wig!.length.price | currency }}</del>
-        }
-        <sup>
-          <span class="text-sm" [class.price-tag]="wig?.discount"
-            >{{ discountedPrice() | currency }}</span
-          >
-        </sup>
-      </div>
-
-      <div class="flex gap-6">
-        <div class="flex gap-1 items-center">
-          <rating
-            [value]="(wig?.rating?.weight ?? 0) / (wig?.rating?.count ?? 1)"
-          />
-          <span>
-            ({{ (wig?.rating?.weight ?? 0) / (wig?.rating?.count ?? 1) | number
-            : '1.1-1' }})
-          </span>
-        </div>
-
-        <div class="flex gap-1 items-center">
-          <span
-            class="icon-[iconoir--heart-solid] text-amber-200 dark:text-amber-500"
-          ></span>
-          {{ wig?.love?.count ?? 0 }}
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="grid grid-cols-6 tablet-sm:grid-cols-9 tablet:grid-cols-12 tablet-lg:grid-cols-18 gap-3"
-    >
-      <h4 class="col-span-full">Choose you preferred length</h4>
-      @for (length of wig.lengths; track length.id) {
-      <span
-        (click)="selectLength(length)"
-        class="border-2 border-doubled border-amber-500 text-center cursor-pointer"
-        [class]="length.id == wig.length.id ? 'bg-amber-500 dark:text-slate-800' : 'bg-transparent'"
-        >{{ length.value }}</span
-      >
+    <thumbnail
+      class="aspect-thumbnail"
+      [src]="activeThumbnail()"
+      [alt]="wig!.thumbnail.alt ? wig!.thumbnail.alt : wig!.name"
+      fill
+    />
+    <swiper-container #gallerySwipe init="false" class="py-3">
+      <swiper-slide class="aspect-video" (click)="activeThumbnail.set(wig.thumbnail)">
+        <thumbnail [src]="wig.thumbnail.url" class="size-full" />
+      </swiper-slide>
+      @for (image of wig.gallery; track image.id) {
+      <swiper-slide class="aspect-video">
+        <thumbnail [src]="image.url" class="size-full" (click)="activeThumbnail.set(image)" />
+      </swiper-slide>
       }
-    </div>
+    </swiper-container>
+    <div class="flex flex-col gap-3 py-6 px-3">
+      <h2 class="text-3xl font-bold tracking-wide capitalize line-clamp-2">{{ wig?.name }}</h2>
+      <div class="flex justify-between scroll-t-20" id="price">
+        <div class="flex gap-1 items-center">
+          @if (wig?.discount) {
+          <del class="text-sm">{{ wig!.length.price | currency }}</del>
+          <sup>
+            <span class="text-base font-semibold tablet:text-lg" [class.price-tag]="!!wig?.discount"
+              >{{ discountedPrice() | currency }}</span
+            >
+          </sup>
+          } @else {
+            <span class="text-xl font-semibold tracking-wide tablet:text-2xl">{{ discountedPrice() | currency }}</span>
+          }
+        </div>
 
-    <div class="flex gap-3">
-      <div
-        class="flex border border-gray-300 gap-3 rounded px-2 py-0.5 text-xs z-10"
-      >
-        <button (click)="cart.reduce(wig!, false)">-</button>
-        <input
-          type="number"
-          [readOnly]="true"
-          [value]="cart.get(wig!.id + ':' + wig!.length.id)?.quantity || 0"
-          class="grow-0 outline-none text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-          [style.width.px]="30"
-        />
-        <button (click)="cart.add(wig!, false)">+</button>
-      </div>
+        <div class="flex gap-6">
+          <div class="flex gap-1 items-center">
+            <rating
+              [rating]="(wig?.rating?.weight ?? 0) / (wig?.rating?.count ?? 1)"
+            />
+            <span>
+              ({{ (wig?.rating?.weight ?? 0) / (wig?.rating?.count ?? 1) | number
+              : '1.1-1' }})
+            </span>
+          </div>
 
-      <a
-        (click)="viewportScroller.scrollToPosition([0, 0])"
-        routerLink="/cart"
-        class="grow bg-amber-200 dark:bg-amber-500 dark:text-slate-800 px-3 py-1 text-center"
-        >View cart</a
-      >
-    </div>
-
-    <div class="">
-      <h4 class="font-bold text-2xl my-5">Description</h4>
-      <div class="flex flex-col gap-3 *:*:first:basis-2/5">
-        <p>{{ wig!.description }}</p>
-
-        <div class="flex gap-3">
-          <span class="">color:</span>
-          <div class="flex items-center gap-2">
-            <span
-              class="rounded-full size-3"
-              [style.background]="wig!.color.code"
-            ></span>
-            <span>{{ wig!.color.name }}</span>
+          <div class="flex gap-1 items-center">
+            <span class="icon-[iconoir--heart-solid] text-thistle"></span>
+            {{ wig?.love?.count ?? 0 }}
           </div>
         </div>
-        <div class="flex gap-3">
-          <span class="">length:</span>
-          <span>{{ wig!.length.value }} (inches)</span>
-        </div>
-        <div class="flex gap-3">
-          <span class="">hair type:</span>
-          <span>{{ wig!.hair_type.name }} </span>
-        </div>
-        <div class="flex gap-3">
-          <span class="">lace</span>
-          <span>{{ wig!.lace.name }} </span>
-        </div>
-        <div class="flex gap-3">
-          <span class="">texture</span>
-          <span>{{ wig!.texture.name }} </span>
-        </div>
-        <div class="flex gap-3">
-          <span class="">source</span>
-          <span>{{ wig!.source.name }} </span>
-        </div>
       </div>
-    </div>
 
-    <section class="py-6 tablet:py-12" #recommendedWigsSection>
-      <h4 class="text-xl font-bold mb-3">You may also like</h4>
-
-      @defer (on interaction; on viewport(recommendedWigsSection); on timer(1s))
-      {
-      <web-recommend-wig-list [wigs]="recommendedWigs.value()" />
-      } @placeholder (minimum 600ms) {
-      <div class="flex gap-3">
-        @for (i of [1,2,3,4,5]; track $index) {
-        <div
-          class="flex flex-col basis-[40vh] tablet-sm:basis-[30vh] tablet-lg:basis-[20vh]"
-        >
-          <div class="aspect-thumbnail skeleton mb-2"></div>
-          <span class="skeleton h-3 w-3/5"></span>
-        </div>
+      <div
+        class="grid grid-cols-6 gap-3 mt-6 tablet-sm:grid-cols-9 tablet:grid-cols-12 tablet-lg:grid-cols-18"
+      >
+        <h4 class="col-span-full">Choose you preferred length (inches)</h4>
+        @for (length of wig.lengths; track length.id) {
+        <span
+          (click)="[selectLength(length)]"
+          class="text-center border-2 cursor-pointer border-doubled border-thistle"
+          [class]="length.id == wig.length.id ? 'bg-thistle dark:text-slate-800' : 'bg-transparent'"
+          >
+            {{ length.value }}
+          </span>
         }
       </div>
-      }
-    </section>
-    <!-- ! -->
 
-    <section #reviewsSection class="py-6 tablet:py-12">
-      <h4 class="font-bold text-2xl my-5">Reviews</h4>
+      <div class="flex flex-wrap gap-3 mt-6">
+        @if (wig.stock > 0 || (cart.get(wig)?.quantity ?? 0) < wig.stock) {
+          <number-input [value]="cart.get(wig!)?.quantity || 0" [min]="0" [max]="wig.stock" (increment)="cart.add(wig!, false)" (decrement)="cart.reduce(wig!, false)" [style.width.px]="100" />
+        } @else {
+          <div class="py-3 text-center text-red-500 animate-pulse basis-full">
+            This item is out of stock
+          </div>
+        }
 
-      @defer (on viewport(reviewsSection)) {
-      <web-review-list [reviews]="wig.reviews" />
-      } @loading (after 3000ms; minimum 1500ms) {
-      <div class="flex flex-col gap-6 aspect-thumbnail skeleton"></div>
-      }
-
-      <div class="flex flex-wrap gap-3 mx-3 mt-6">
-        <text-area class="basis-full" />
-        <div class="max-tablet-sm:order-first max-tablet-sm:basis-full">
-          <rating [readonly]="false" />
-        </div>
-        <button
-          class="ms-auto py-1 px-3 bg-amber-200 dark:bg-amber-500 dark:text-slate-800"
+        <a
+          (click)="viewportScroller.scrollToPosition([0, 0])"
+          routerLink="/cart"
+          class="py-1 px-3 text-center grow bg-navajo-white dark:text-slate-800"
+          >View cart</a
         >
-          <!-- TODO: Add Rating component here  -->
-          Review
-        </button>
       </div>
-    </section>
-  </div>
-  } } @else {
+
+      <div class="">
+        <h4 class="my-9 text-2xl font-bold">Description</h4>
+        <div class="flex flex-col gap-3 *:*:first:basis-2/5">
+          <p class="text-lg">{{ wig!.description }}</p>
+
+            <div class="flex gap-3 mt-6">
+              <span class="">color:</span>
+              <div class="flex gap-2 items-center">
+                <span
+                  class="rounded-full size-3"
+                  [style.background]="wig!.color.code"
+                ></span>
+                <span>{{ wig!.color.name }}</span>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <span class="">length:</span>
+              <span>{{ wig!.length.value }} (inches)</span>
+            </div>
+            <div class="flex gap-3">
+              <span class="">hair type:</span>
+              <span>{{ wig!.hair_type.name }} </span>
+            </div>
+            <div class="flex gap-3">
+              <span class="">lace</span>
+              <span>{{ wig!.lace.name }} </span>
+            </div>
+            <div class="flex gap-3">
+              <span class="">texture</span>
+              <span>{{ wig!.texture.name }} </span>
+            </div>
+            <div class="flex gap-3">
+              <span class="">source</span>
+              <span>{{ wig!.source.name }} </span>
+            </div>
+            <div class="flex gap-3">
+              <span class="">cap size</span>
+              <span>{{ wig!.cap.size }} </span>
+            </div>
+            <div class="flex gap-3">
+              <span class="">parting</span>
+              <span>{{ wig!.parting.name }} part</span>
+            </div>
+        </div>
+      </div>
+
+      <section class="py-6 tablet:py-12" #recommendedWigsSection>
+        <h4 class="mb-3 text-xl font-bold">You may also like</h4>
+
+        @defer (on interaction; on viewport(recommendedWigsSection); on timer(1s))
+        {
+        <web-recommend-wig-list [wigs]="recommendedWigs.value()" />
+        } @placeholder (minimum 600ms) {
+        <div class="flex gap-3">
+          @for (i of [1,2,3,4,5]; track $index) {
+          <div
+            class="flex flex-col basis-[40vh] tablet-sm:basis-[30vh] tablet-lg:basis-[20vh]"
+          >
+            <div class="mb-2 aspect-thumbnail skeleton"></div>
+            <span class="w-3/5 h-3 skeleton"></span>
+          </div>
+          }
+        </div>
+        }
+      </section>
+      <!-- ! -->
+
+      <section #reviewsSection class="py-6 tablet:py-12">
+        <h4 class="my-5 text-2xl font-bold">Reviews</h4>
+
+        @defer (on viewport(reviewsSection)) {
+        <web-review-list [reviews]="wig.reviews" />
+        } @loading (after 3000ms; minimum 1500ms) {
+        <div class="flex flex-col gap-6 aspect-thumbnail skeleton"></div>
+        }
+
+        <!-- ! -->
+        @defer {
+        <web-review-form (submit)="handleReview($event)" class="mt-12" />
+        }
+      </section>
+    </div>
+    } @else {
+        <!-- Wig not fetched but not found -->
+      <section class="grid place-content-center mt-20 mb-3 h-[80vh]">
+        <div class="p-9 text-center bg-geyser dark:bg-primary">
+          <p class="text-lg tablet:text-2xl">
+            The page request was not found on our server. Go to
+            <a routerLink="/" class="text-blue-200 dark:text-amber-400">home</a>
+          </p>
+        </div>
+      </section>
+    }
+  } @else {
+    <!-- Wig is loading -->
   <div class="skeleton aspect-thumbnail"></div>
-  <div class="flex flex-col gap-6 px-3 py-6">
+  <div class="flex flex-col gap-6 py-6 px-3">
     <span class="skeleton h-8 w-[75%] my-3"></span>
     <div class="flex gap-1 items-center">
-      <del class="skeleton w-20 h-3"></del>
-      <sup class="skeleton h-3"></sup>
+      <del class="w-20 h-3 skeleton"></del>
+      <sup class="h-3 skeleton"></sup>
     </div>
     <div class="flex gap-3">
-      <div class="flex gap-3 rounded px-2 py-0.5 text-xs z-10">
-        <span class="skeleton w-7 h-8"></span>
-        <span class="skeleton grow h-8"></span>
+      <div class="flex z-10 gap-3 py-0.5 px-2 text-xs rounded">
+        <span class="w-7 h-8 skeleton"></span>
+        <span class="h-8 skeleton grow"></span>
       </div>
     </div>
   </div>

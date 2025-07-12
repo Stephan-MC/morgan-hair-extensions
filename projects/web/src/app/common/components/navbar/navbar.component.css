@@ -1,5 +1,5 @@
 @reference "../../../../styles.css";
 
 :host {
-  @apply block fixed top-0 inset-x-0 backdrop-blur-[1px] shadow-gray-400;
+	@apply block fixed top-0 inset-x-0 backdrop-blur-[1px] shadow-gray-400 bg-geyser text-primary bg-[url(/assets/images/nav-bg.png)] bg-no-repeat bg-cover bg-center;
 }

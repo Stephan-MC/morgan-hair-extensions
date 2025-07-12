@@ -66,22 +66,22 @@ export class DbService {
 
   private buildDBInstance(db: IDBDatabase): DBInstance {
     return {
-      add: <T>(storeName: string, data: T): Promise<number> =>
+      add: <T = any>(storeName: string, data: T): Promise<number> =>
         this.runTransaction(db, storeName, 'readwrite', (store) =>
           store.add(data),
         ),
 
-      get: <T>(storeName: string, key: IDBValidKey): Promise<T | undefined> =>
+      get: <T = any>(storeName: string, key: IDBValidKey): Promise<T | undefined> =>
         this.runTransaction(db, storeName, 'readonly', (store) =>
           store.get(key),
         ),
 
-      getAll: <T>(storeName: string): Promise<T[]> =>
+      getAll: <T = any>(storeName: string): Promise<T[]> =>
         this.runTransaction(db, storeName, 'readonly', (store) =>
           store.getAll(),
         ),
 
-      update: <T>(storeName: string, data: T): Promise<void> =>
+      update: <T = any>(storeName: string, data: T): Promise<void> =>
         this.runTransaction(db, storeName, 'readwrite', (store) =>
           store.put(data),
         ).then(() => {}),

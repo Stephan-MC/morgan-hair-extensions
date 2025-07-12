@@ -1,7 +1,8 @@
 @import "../../shared/theme.css";
 
 @theme {
-  --color-geyser: #deddd4;
-  --color-skeleton: var(--color-gray-200);
-  --default-font-family: "Diotima LT Std";
+	--color-geyser: oklch(0.91 0 0);
+	--color-primary: #424242;
+	--color-skeleton: var(--color-gray-200);
+	--default-font-family: "Diotima LT Std";
 }

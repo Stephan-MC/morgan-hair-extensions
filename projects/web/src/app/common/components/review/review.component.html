@@ -2,18 +2,26 @@
   <thumbnail
     [src]="''"
     [alt]="`${review().client.first_name} ${review().client.last_name}`"
-    class="size-8 aspect-square rounded-full overflow-hidden shrink-0"
+    class="overflow-hidden rounded-full size-8 aspect-square shrink-0"
     title="{{ `${review().client.first_name} ${review().client.last_name}` }}"
   />
-  <div class="grow flex flex-col gap-1">
+  <div class="flex flex-col gap-1 grow">
     <div class="flex justify-between">
-      <span class="text-sm text-navajo-white truncate font-semibold">
-        {{ `${review().client.first_name} ${review().client.last_name}` }}
+      <span class="text-sm font-semibold text-amber-500 truncate">
+        @if (clientStore.client()?.id === review().client.id) {
+          You
+        }
+        @else {
+          {{ `${review().client.first_name} ${review().client.last_name}` }}
+        }
       </span>
       <div class="shrink-0">
-        <rating [value]="review().rating.rate * review().rating.type.mass" [readonly]="true" />
+        <rating [rating]="review().rating.rate * review().rating.type.mass" [readonly]="true" />
       </div>
     </div>
     <p class="">{{ review().comment.body }}</p>
+  </div>
+  <div class="">
+
   </div>
 </div>

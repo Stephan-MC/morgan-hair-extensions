@@ -12,7 +12,10 @@
           fill
           class="relative aspect-thumbnail"
         />
-        <a [routerLink]="['/wig', recommended.slug]">
+        <a
+          (click)="navigateToWig($event, recommended.slug)"
+          [routerLink]="['/wig', recommended.slug]"
+        >
           {{ recommended.name }}
           <span class="absolute inset-0"></span>
         </a>

@@ -1,7 +1,7 @@
 @let wig = this.wig();
 
 <div class="flex flex-col">
-  <div class="aspect-300/400 overflow-hidden relative">
+  <div class="overflow-hidden relative aspect-300/400">
     <thumbnail
       [src]="wig.thumbnail.url"
       [alt]="wig.thumbnail.alt ? wig.thumbnail.alt : wig.name"
@@ -9,26 +9,26 @@
     />
 
     <!-- out of stock  -->
-    <div class="out-of-stock hidden">
-      <span class="animate-pulse"> Out of stock </span>
+    <div class="hidden out-of-stock">
+      <span class="text-sm animate-pulse tablet-sm:text-base"> Out of stock </span>
     </div>
   </div>
 
-  <div class="mt-3 px-px flex flex-col gap-3">
-    <a class="first-letter:uppercase" [routerLink]="['/wig', wig.slug]">
+  <div class="flex flex-col gap-3 px-px mt-3">
+    <a class="font-semibold truncate max-tablet-sm:text-sm max-tablet-sm:font-semibold first-letter:uppercase" [state]="{ preserveScroll: false }" [routerLink]="['/wig', wig.slug]">
       {{ wig.name }}
       <span class="absolute inset-0"></span>
     </a>
 
     <div
-      class="flex flex-col tablet-sm:flex-row tablet-sm:justify-between tablet-sm:items-center px-3"
+      class="flex max-tablet:px-1 tablet-sm:flex-row tablet-sm:justify-between tablet-sm:items-center text-primary/90"
     >
       <div class="flex gap-1 items-center">
         @if (wig.discount) {
-          <del class="text-sm">{{ wig.length.price | currency }}</del>
+          <del class="text-sm max-tablet-sm:text-sm">{{ wig.length.price | currency }}</del>
         }
         <sup>
-          <span class="text-sm" [class.price-tag]="!!wig.discount">{{
+          <span class="text-sm max-tablet-sm:text-xs" [class.price-tag]="!!wig.discount">{{
             wigHelper.discountedPrice() | currency
           }}</span>
         </sup>
@@ -47,13 +47,13 @@
         @if (cart.canBeAdded(wig)) {
           @if (cart.has(wig)) {
             <span
-              class="icon-[solar--cart-check-bold]"
+              class="text-xl icon-[solar--cart-check-bold] text-periwinkle"
               role="img"
               aria-hidden="true"
             ></span>
           } @else {
             <span
-              class="icon-[solar--cart-plus-linear]"
+              class="text-lg icon-[solar--cart-plus-linear]"
               role="img"
               aria-hidden="true"
             ></span>
@@ -64,7 +64,7 @@
   </div>
 
   <span
-    class="absolute top-5 right-5 text-2xl z-auto cursor-pointer text-amber-400 dark:text-amber-500"
+    class="absolute top-2 right-2 z-auto cursor-pointer tablet-sm:top-5 tablet-sm:right-5 tablet-sm:text-2xl text-navajo-white dark:text-geyser"
     (click)="likeWig()"
     [class]="[
       wig.liked ? 'icon-[iconoir--heart-solid]' : 'icon-[iconoir--heart]',
@@ -75,7 +75,7 @@
 
   @if (wig.discount; as discount) {
     <span
-      class="absolute top-2 left-2 rounded-full px-1 flex items-center bg-amber-200 dark:bg-amber-500 aspect-square animate-pulse"
+      class="flex absolute top-2 left-2 items-center px-1 bg-amber-200 rounded-full animate-pulse dark:bg-amber-300 aspect-square"
     >
       @if (discount.type == "percentage") {
         - {{ discount.value / 100 | percent }}

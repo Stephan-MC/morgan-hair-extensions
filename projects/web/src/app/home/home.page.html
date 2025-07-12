@@ -4,28 +4,13 @@
       <web-hero class="overflow-hidden grow" />
     }
 
-    @if (hairTypes.hasValue()) {
-      @let hairTypes = this.hairTypes.value()!;
-      <div class="self-center px-3 w-full max-w-screen-xl lg:px-0">
-        <div class="grid grid-cols-3 gap-3 w-full tablet:gap-6">
-          @for (hairType of hairTypes; track hairType.id) {
-            <div class="overflow-hidden relative aspect-video group">
-              <thumbnail [src]="hairType.thumbnail.url" [alt]="hairType.thumbnail.alt || `${hairType.name} Hair`" class="transition duration-300 group-hover:scale-110 size-full" />
-              <div class="flex absolute inset-0 flex-col gap-3 justify-center items-center grow">
-                <span class="text-lg font-black capitalize tablet-sm:text-xl tablet-lg:text-2xl text-shadow-sm text-shadow-geyser dark:text-shadow-primary">
-                  {{ hairType.name }} Hair
-                </span>
-                <a [routerLink]="['/shop']" [queryParams]="{ hair_type: hairType.name }" class="py-px px-2 text-xs tablet-lg:py-1 tablet-lg:px-3 tablet:text-sm bg-geyser dark:bg-primary">
-                  View More
-                  <span class="absolute inset-0"></span>
-                </a>
-              </div>
-            </div>
-          }
-        </div>
-      </div>
-    }
   </div>
+</section>
+
+<section class="">
+    @defer(hydrate on immediate) {
+      <web-hair-type-list />
+    }
 </section>
 
 <section class="pb-9 supports-dvh:min-h-[100dvh] pt-18" id="featured-section">
@@ -80,7 +65,7 @@
   <h3 class="mb-6 text-3xl font-black tracking-widest text-center">
     Feedback from customers
   </h3>
-  @defer () {
+  @defer (hydrate on immediate) {
   <web-testimonial-list class="max-w-screen-lg" />
   }
 </section>

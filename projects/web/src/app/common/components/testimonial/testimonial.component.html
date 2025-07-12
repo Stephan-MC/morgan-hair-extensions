@@ -1,26 +1,47 @@
-<div
-  class="max-w-sm border border-gray-300 rounded-lg shadow-lg bg-white p-6 space-y-4"
->
-  <div class="flex items-center space-x-4">
-    <div
-      class="h-12 w-12 flex items-center justify-center bg-red-500 text-white text-lg font-semibold rounded-full"
-    >
-      DJ
-    </div>
-    <div>
-      <div class="text-gray-900 font-medium">Donald Jackman</div>
-      <div class="text-gray-600 text-sm">Content Creator</div>
-    </div>
+<div class="flex items-center space-x-4">
+  <div
+    class="flex justify-center items-center w-12 h-12 text-lg font-semibold rounded-full"
+    [style.backgroundColor]="'#' + bg()"
+    [style.color]="'white'"
+  >
+    {{ testimonial().client.first_name.charAt(0) + testimonial().client.last_name.charAt(0) }}
   </div>
+  <div>
+    <div class="font-medium text-gray-900 dark:text-gray-200">
+      {{ testimonial().client.first_name }}
+      {{ testimonial().client.last_name }}
+    </div>
+    <rating [readonly]="true" [rating]="rating().rate * rating().type.mass" />
+  </div>
+</div>
+<div class="grid grid-cols-3">
+  <div class="flex flex-col items-center">
+    {{ testimonial().client.purchases_count }}
+    <span class="text-xs" [ngPlural]="testimonial().client.purchases_count">
+      <ng-template ngPluralCase="=1">Purchase</ng-template>
+      <ng-template ngPluralCase="other">Purchases</ng-template>
+    </span>
+  </div>
+  <div class="flex flex-col items-center">
+    {{ testimonial().client.reviews_count }}
+    <span class="text-xs" [ngPlural]="testimonial().client.reviews_count">
+      <ng-template ngPluralCase="=1">Review</ng-template>
+      <ng-template ngPluralCase="other">Reviews</ng-template>
+    </span>
+  </div>
+  <div class="flex flex-col items-center">
+    <!-- TODO: Add loves count here -->
+    {{ testimonial().client.reviews_count }}
+    <span class="text-xs">Likes</span>
+  </div>
+</div>
 
-  <div class="flex text-red-500 text-xl">★★★★★</div>
-
-  <p class="text-gray-700">
-    I've been using Imagify for nearly two years, primarily for Instagram, and
-    it has been incredibly user-friendly, making my work much easier.
+<div class="flex flex-col gap-3 mt-3 grow">
+  <p class="text-gray-700 dark:text-gray-300 line-clamp-4">
+    {{ testimonial().comment.body }}
   </p>
 
-  <div class="text-red-500 font-medium cursor-pointer hover:underline">
+  <div class="mt-auto font-medium text-red-500 cursor-pointer hover:underline">
     Read more
   </div>
 </div>

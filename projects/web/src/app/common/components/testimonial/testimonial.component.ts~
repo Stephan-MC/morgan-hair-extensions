@@ -30,18 +30,15 @@ export class TestimonialComponent {
 			" " +
 			this.testimonial()?.client.last_name,
 	);
-	hash = computed(() =>
-		this.fullname()
-			.split("")
-			.reduce(
-				(acc: number, char: string) => (acc << 5) - acc + char.charCodeAt(0),
-				0,
-			),
+	hash = computed(
+		() =>
+			this.fullname()
+				.split("")
+				.reduce((acc, char) => (acc << 5) - acc + char.charCodeAt(0)),
+		0,
 	);
-	bg = computed(() => (this.hash() & 0xffffff).toString(16).padStart(6, "0"));
-	color = computed(() =>
-		((0xffffff - (this.hash() & 0xffffff)) & 0xffffff)
-			.toString(16)
-			.padStart(6, "0"),
+	thumbnail = computed(
+		() =>
+			`https://ui-avatars.com/api/?name=${this.fullname}&size=100&background=${md5()}`,
 	);
 }

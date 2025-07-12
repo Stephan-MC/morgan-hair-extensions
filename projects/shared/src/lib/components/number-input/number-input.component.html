@@ -1,28 +1,27 @@
 <div class="form-input--wrapper">
   <div class="left">
     <ng-content select="left">
-      <button class="flex-1 shrink-0 p-1" (click)="decrement()" type="button">
-        <span class="icon-[mynaui--minus]" role="img" aria-hidden="true"></span>
-      </button>
+        <span class="icon-[mynaui--minus]" (click)="handleDecrement()" role="button" aria-hidden="true"></span>
     </ng-content>
   </div>
-  <input
-    [type]="type()"
-    (blur)="handleChange($event)"
-    (input)="handleChange($event)"
-    (change)="handleChange($event)"
-    [min]="min()"
-    [max]="max()"
-    [step]="step()"
-    [attr.placeholder]="placeholder()"
-    class="flex-1 text-center"
-    #input
-  />
+  <div class="grow has-placeholder-shown:relative">
+    <input
+      [type]="type()"
+      (blur)="handleChange($event)"
+      (input)="handleChange($event)"
+      (change)="handleChange($event)"
+      [min]="min()"
+      [max]="max()"
+      [step]="step()"
+      [readOnly]="readonly()"
+      [attr.placeholder]="placeholder()"
+      class="flex-1 w-full text-center"
+      #input
+    />
+  </div>
   <div class="right">
     <ng-content select="right">
-      <button class="shrink-0 flex-1 p-1" (click)="increment()" type="button">
-        <span class="icon-[mynaui--plus]" role="img" aria-hidden="true"></span>
-      </button>
+        <span class="icon-[mynaui--plus]" (click)="handleIncrement()" role="button" aria-hidden="true"></span>
     </ng-content>
   </div>
 </div>

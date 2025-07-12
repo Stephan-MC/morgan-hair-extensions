@@ -1,9 +1,9 @@
 @reference "../../../../styles.css";
 
 :host {
-  @apply inline rounded-full px-3 py-0.5 border border-dotted border-amber-300 dark:border-amber-500 text-nowrap transition-all duration-300;
+	@apply inline rounded-full px-3 py-0.5 border border-dashed text-nowrap transition-all duration-300;
 
-  &.selected {
-    @apply bg-amber-300 dark:bg-amber-500 text-white dark:text-slate-800;
-  }
+	&.selected {
+		@apply bg-primary dark:bg-geyser text-white dark:text-primary;
+	}
 }

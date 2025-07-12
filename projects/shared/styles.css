@@ -2,13 +2,14 @@
 @source "../";
 @import "@angular/cdk/overlay-prebuilt.css";
 
-@plugin "./src/lib/plugins/tailwindcss/icons.ts";
+@plugin "@iconify/tailwind4";
 
 @layer base {
 	@font-face {
 		font-family: "Diotima LT Std";
 		src: url("./src/lib/fonts/DiotimaLTStd-Roman.eot");
-		src: url("./src/lib/fonts/DiotimaLTStd-Roman.eot?#iefix")
+		src:
+			url("./src/lib/fonts/DiotimaLTStd-Roman.eot?#iefix")
 			format("embedded-opentype"),
 			url("./src/lib/fonts/DiotimaLTStd-Roman.woff2") format("woff2"),
 			url("./src/lib/fonts/DiotimaLTStd-Roman.woff") format("woff"),
@@ -162,7 +163,7 @@
 			left: 50%;
 			width: 40%; /* 32px */
 			aspect-ratio: 1 / 1;
-			background-color: --alpha(var(--color-geyser) / 50%);
+			background-color: --alpha(var(--color-primary) / 50%);
 			border-radius: 9999px; /* Full rounding */
 			transform: translateX(-50%) translateY(125%);
 			animation: var(--animate-bounce-shadow);

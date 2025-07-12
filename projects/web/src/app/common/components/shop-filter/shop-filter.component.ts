@@ -1,124 +1,155 @@
 import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
+	animate,
+	state,
+	style,
+	transition,
+	trigger,
+} from "@angular/animations";
+import { ViewportScroller } from "@angular/common";
 import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  input,
-  linkedSignal,
-  output,
-} from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { WigService } from '../../services/wig.service';
-import { ColorService } from '../../services/wig/color.service';
-import { LengthService } from '../../services/wig/length.service';
-import { ChipComponent } from '../chip/chip.component';
-import { WigFilter } from 'shared';
-import { HairTypeService } from '../../services/wig/hair-type.service';
-import { TextureService } from '../../services/wig/texture.service';
-import { LaceService } from '../../services/wig/lace.service';
-import { SourceService } from '../../services/wig/source.service';
-import { Router } from '@angular/router';
-import { ViewportScroller } from '@angular/common';
+	ChangeDetectionStrategy,
+	Component,
+	inject,
+	input,
+	linkedSignal,
+	output,
+} from "@angular/core";
+import { takeUntilDestroyed, toSignal } from "@angular/core/rxjs-interop";
+import {
+	FormControl,
+	PristineChangeEvent,
+	ReactiveFormsModule,
+} from "@angular/forms";
+import {
+	ActivatedRoute,
+	NavigationEnd,
+	Router,
+	RouterLink,
+	RouterLinkActive,
+} from "@angular/router";
+import { EMPTY } from "rxjs";
+import {
+	debounceTime,
+	distinctUntilChanged,
+	exhaustMap,
+	filter,
+	map,
+	tap,
+	withLatestFrom,
+} from "rxjs/operators";
+import { TextInputComponent } from "shared";
+import { WigService } from "../../services/wig.service";
+import { ColorService } from "../../services/wig/color.service";
+import { HairTypeService } from "shared";
+import { LaceService } from "../../services/wig/lace.service";
+import { LengthService } from "../../services/wig/length.service";
+import { SourceService } from "../../services/wig/source.service";
+import { TextureService } from "../../services/wig/texture.service";
+import { ChipComponent } from "../chip/chip.component";
 
 @Component({
-  selector: 'web-shop-filter',
-  imports: [FormsModule, ChipComponent],
-  templateUrl: './shop-filter.component.html',
-  styleUrl: './shop-filter.component.css',
-  animations: [
-    trigger('openClose', [
-      state(
-        'open',
-        style({
-          height: '*',
-          width: '*',
-        }),
-      ),
-      state(
-        'close',
-        style({
-          height: 'calc(var(--spacing) * 10)',
-          width: 'calc(var(--spacing) * 30)',
-        }),
-      ),
-      transition('open => close', animate('0.3s linear')),
-      transition('close => open', animate('0.3s linear')),
-    ]),
-  ],
-  host: {
-    '[@openClose]': 'show() ? "open" : "close"',
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush,
+	selector: "web-shop-filter",
+	imports: [
+		ReactiveFormsModule,
+		ChipComponent,
+		TextInputComponent,
+		RouterLink,
+		RouterLinkActive,
+	],
+	templateUrl: "./shop-filter.component.html",
+	styleUrl: "./shop-filter.component.css",
+	animations: [
+		trigger("openClose", [
+			state(
+				"open",
+				style({
+					height: "*",
+					width: "*",
+				}),
+			),
+			state(
+				"close",
+				style({
+					height: "calc(var(--spacing) * 10)",
+					width: "calc(var(--spacing) * 30)",
+				}),
+			),
+			transition("open => close", animate("0.3s linear")),
+			transition("close => open", animate("0.3s linear")),
+		]),
+	],
+	host: {
+		"[@openClose]": 'show() ? "open" : "close"',
+	},
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShopFilterComponent {
-  private _wigService = inject(WigService);
-  private _router = inject(Router);
-  private _viewPortScroller = inject(ViewportScroller);
-  colors = inject(ColorService).colorsResource;
-  laces = inject(LaceService).lacesResource;
-  sources = inject(SourceService).sourcesResource;
-  hairTypes = inject(HairTypeService).hairTypesResource;
-  lengths = inject(LengthService).lengthsResource;
-  textures = inject(TextureService).texturesResource;
-  filterChange = output<WigFilter>();
-  open = input(false);
-  show = linkedSignal(() => this.open());
-  _open = output({ alias: 'open' });
-  _close = output({ alias: 'close' });
+	private _wigService = inject(WigService);
+	private _router = inject(Router);
+	private _route = inject(ActivatedRoute);
+	protected viewportScroller = inject(ViewportScroller);
 
-  filters: WigFilter = {
-    q: '',
-    color: '',
-    lace: '',
-    source: '',
-    length: '',
-    hair_type: '',
-    texture: '',
-    page: 1,
-  };
+	open = input(false);
 
-  updateFilter<K extends keyof WigFilter>(key: K, value: WigFilter[K]) {
-    if (this.filters[key] == value) return;
+	_open = output({ alias: "open" });
+	_close = output({ alias: "close" });
 
-    this.filters[key] = value;
-  }
+	colors = inject(ColorService).colorsResource;
+	laces = inject(LaceService).lacesResource;
+	sources = inject(SourceService).sourcesResource;
+	hairTypes = inject(HairTypeService).hairTypesResource;
+	lengths = inject(LengthService).lengthsResource;
+	textures = inject(TextureService).texturesResource;
+	queryParams = toSignal(this._route.queryParams.pipe(), {
+		initialValue: {} as Record<string, string | undefined>,
+	});
+	q = new FormControl("");
+	show = linkedSignal(() => this.open());
 
-  applyFilters() {
-    this.filters.page = 1;
-    this.filterChange.emit(this.filters);
-    this._wigService.setFilter(this.filters);
-    this._viewPortScroller.scrollToPosition([0, 0]);
+	constructor() {
+		this._router.events.pipe(
+			filter((event) => event instanceof NavigationEnd),
+			tap(() => {
+				console.log("Constructor -> navigation ended");
+				this.q.reset(this._route.snapshot.queryParams["q"]);
+			}),
+		);
+		this.q.valueChanges
+			.pipe(
+				takeUntilDestroyed(),
+				tap(() => console.log("Constructor -> watching for changes")),
+				debounceTime(800),
+				map((value) => (value?.length ? value?.trim() : undefined)),
+				distinctUntilChanged(),
+				withLatestFrom(
+					this.q.events.pipe(filter((ev) => ev instanceof PristineChangeEvent)),
+				),
+				exhaustMap(([value, ev]) =>
+					!ev.pristine
+						? this._router.navigate(["/shop"], {
+								queryParamsHandling: "merge",
+								queryParams: { q: value },
+								state: { skipLoading: true },
+							})
+						: EMPTY,
+				),
+			)
+			.subscribe();
+	}
 
-    this.closeFilters();
-  }
+	ngOnInit() {}
 
-  clearFilters() {
-    Object.keys(this.filters).forEach((key) => {
-      const k = key as keyof WigFilter;
+	openFilters() {
+		if (this.show()) return;
 
-      delete this.filters[k];
-    });
+		this._open.emit();
+		this.show.set(true);
+	}
 
-    this._router.navigate(['/shop']);
-  }
+	closeFilters() {
+		if (!this.show()) return;
 
-  openFilters() {
-    if (this.show()) return;
-
-    this._open.emit();
-    this.show.set(true);
-  }
-
-  closeFilters() {
-    if (!this.show()) return;
-
-    this._close.emit();
-    this.show.set(false);
-  }
+		this._close.emit();
+		this.show.set(false);
+	}
 }

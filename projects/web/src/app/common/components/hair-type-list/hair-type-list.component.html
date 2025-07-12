@@ -1,0 +1,54 @@
+<div class="wrapper">
+  @if (hairTypes.hasValue()) {
+    @let hairTypes = this.hairTypes.value()!;
+    @for (hairType of hairTypes; track hairType.id) {
+      <a [routerLink]="['/shop']" [queryParams]="{ hair_type: hairType.name }">
+        <div class="overflow-hidden relative aspect-video group w-50">
+          <thumbnail [src]="hairType.thumbnail.url" [alt]="hairType.thumbnail.alt || `${hairType.name} Hair`" class="transition duration-300 group-hover:scale-110 size-full" />
+          <div class="flex absolute inset-0 flex-col gap-3 justify-center items-center grow">
+            <span class="text-lg font-black capitalize tablet-sm:text-xl tablet-lg:text-2xl text-shadow-sm text-shadow-geyser dark:text-shadow-primary">
+              {{ hairType.name }} Hair
+            </span>
+          </div>
+        </div>
+      </a>
+    }
+    @for (hairType of hairTypes; track hairType.id) {
+      <a [routerLink]="['/shop']" [queryParams]="{ hair_type: hairType.name }">
+        <div class="overflow-hidden relative aspect-video group w-50">
+          <thumbnail [src]="hairType.thumbnail.url" [alt]="hairType.thumbnail.alt || `${hairType.name} Hair`" class="transition duration-300 group-hover:scale-110 size-full" />
+          <div class="flex absolute inset-0 flex-col gap-3 justify-center items-center grow">
+            <span class="text-lg font-black capitalize tablet-sm:text-xl tablet-lg:text-2xl text-shadow-sm text-shadow-geyser dark:text-shadow-primary">
+              {{ hairType.name }} Hair
+            </span>
+          </div>
+        </div>
+      </a>
+    }
+    @for (hairType of hairTypes; track hairType.id) {
+      <a [routerLink]="['/shop']" [queryParams]="{ hair_type: hairType.name }">
+        <div class="overflow-hidden relative aspect-video group w-50">
+          <thumbnail [src]="hairType.thumbnail.url" [alt]="hairType.thumbnail.alt || `${hairType.name} Hair`" class="transition duration-300 group-hover:scale-110 size-full" />
+          <div class="flex absolute inset-0 flex-col gap-3 justify-center items-center grow">
+            <span class="text-lg font-black capitalize tablet-sm:text-xl tablet-lg:text-2xl text-shadow-sm text-shadow-geyser dark:text-shadow-primary">
+              {{ hairType.name }} Hair
+            </span>
+          </div>
+        </div>
+      </a>
+    }
+    @for (hairType of hairTypes; track hairType.id) {
+      <a [routerLink]="['/shop']" [queryParams]="{ hair_type: hairType.name }">
+        <div class="overflow-hidden relative aspect-video group w-50">
+          <thumbnail [src]="hairType.thumbnail.url" [alt]="hairType.thumbnail.alt || `${hairType.name} Hair`" class="transition duration-300 group-hover:scale-110 size-full" />
+          <div class="flex absolute inset-0 flex-col gap-3 justify-center items-center grow">
+            <span class="text-lg font-black capitalize tablet-sm:text-xl tablet-lg:text-2xl text-shadow-sm text-shadow-geyser dark:text-shadow-primary">
+              {{ hairType.name }} Hair
+            </span>
+          </div>
+        </div>
+      </a>
+    }
+  }
+</div>
+

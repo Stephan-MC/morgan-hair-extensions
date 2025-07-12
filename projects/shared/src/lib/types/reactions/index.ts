@@ -11,11 +11,13 @@ export interface Reaction extends Omit<Model, 'id'> {
   id: number;
   /** The value of the reaction */
   rate: number;
+  // reactant_id: number;
+  // reacter_id: number;
   reacter: {
     reacterable: Client;
   };
   type: {
     name: ReactionType;
-    mass: 1;
+    mass: number;
   } & Omit<Model, 'id'>;
 }

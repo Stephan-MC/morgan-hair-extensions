@@ -1,10 +1,10 @@
 <section
-  class="bg-navajo-white dark:bg-amber-500 dark:text-slate-800 backdrop-blur-sm"
+  class="dark:bg-amber-500 bg-navajo-white backdrop-blur-sm dark:text-slate-800"
 >
-  <div class="pt-20 pb-15 px-6 max-w-screen-tablet-lg mx-auto">
-    <h3 class="text-4xl font-bold text-center mb-6">Disclaimer</h3>
+  <div class="px-6 pt-20 mx-auto pb-15 max-w-screen-tablet-lg">
+    <h3 class="mb-6 text-4xl font-bold text-center">Disclaimer</h3>
 
-    <p class="text-justify font-semibold text-lg">
+    <p class="text-lg font-semibold text-justify">
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto asperiores
       ab quis aperiam harum rem excepturi quibusdam corporis enim. Aut animi
       esse veniam repellendus id fuga eaque doloremque quia repellat quos. Quasi
@@ -15,14 +15,14 @@
   </div>
 </section>
 <section>
-  <div class="max-w-screen-lg mx-auto p-6">
+  <div class="p-6 mx-auto max-w-screen-lg">
     <div class="grid grid-cols-8">
       <div
-        class="col-span-5 max-tablet-lg:order-last max-tablet-lg:col-span-full divide-y overflow-y-auto scrollbar-hidden"
+        class="overflow-y-auto col-span-5 divide-y max-tablet-lg:order-last max-tablet-lg:col-span-full scrollbar-hidden"
       >
         @for (product of cart.entities(); track product.id) {
         <div class="flex gap-3 py-6 px-3">
-          <div class="relative basis-1/5 aspect-3/4 overflow-hidden rounded-lg">
+          <div class="overflow-hidden relative rounded-lg basis-1/5 aspect-3/4">
             <thumbnail
               [src]="product.thumbnail.url"
               [alt]="product.thumbnail.alt != '' ? product.thumbnail.alt :  product.name"
@@ -31,19 +31,19 @@
               [priority]="$first"
             />
           </div>
-          <div class="flex flex-col grow gap-2">
+          <div class="flex flex-col gap-2 grow">
             <div class="flex justify-between">
-              <span class="text-nowrap text-lg"> {{ product.name }} </span>
+              <span class="text-lg text-nowrap"> {{ product.name }} </span>
               <span
                 role="button"
                 (click)="cart.remove(product)"
-                class="rounded-full flex items-center justify-center px-2 py-[0.5px] text-xs border border-gray-400 shrink-0 z-10"
+                class="flex z-10 justify-center items-center px-2 text-xs rounded-full border border-gray-400 py-[0.5px] shrink-0"
               >
                 remove
               </span>
             </div>
 
-            <div class="flex grow gap-1 items-center">
+            <div class="flex gap-1 items-center grow">
               @if (product.discount) {
               <del class="text-sm">{{ product.price | currency }}</del>
               <sup>
@@ -60,31 +60,20 @@
             <span>{{ product.length.value }} inches</span>
 
             <div class="flex justify-end py-3">
-              <div
-                class="flex ms-auto border border-gray-300 gap-3 rounded px-2 py-0.5 z-10 max-w-20"
-              >
-                <button (click)="cart.reduce(product, false)">-</button>
-                <input
-                  type="number"
-                  [readOnly]="true"
-                  [value]="product.quantity"
-                  class="grow-0 outline-none text-center [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-6"
-                />
-                <button (click)="cart.add(product, false)">+</button>
-              </div>
+                <number-input (increment)="cart.add(product, false)" (decrement)="cart.reduce(product, false)" [readonly]="true" [value]="product.quantity" class="[&_input]:w-10" />
             </div>
           </div>
         </div>
         } @empty{
-        <div class="flex flex-col gap-1 items-center justify-center h-90">
+        <div class="flex flex-col gap-1 justify-center items-center h-90">
           <span class="text-2xl font-bolder">No items in cart</span>
-          <a [routerLink]="['/shop']" class="underline text-amber-300"
+          <a [routerLink]="['/shop']" class="text-amber-300 underline"
             >continue shopping</a
           >
         </div>
         }
       </div>
-      <div class="col-span-3 max-tablet-lg:col-span-full p-3">
+      <div class="col-span-3 p-3 max-tablet-lg:col-span-full">
         <div class="sticky top-20">
           <div class="flex justify-between">
             <span class="text-xl font-bold"> Subtotal </span>
@@ -94,9 +83,9 @@
             <span> Delivery </span>
             <span>{{ 0 | currency }}</span>
           </div>
-          <div class="flex flex-col gap-3 py-6">
-            <span>Enter coupon code</span>
-            <span>Add delivery note</span>
+          <div class="flex flex-col gap-3 py-6 *:mt-9 *:has-placeholder-shown:mt-3">
+            <text-input label="Enter coupon code" class="transition-300" />
+            <text-area label="Add Delivery Note" class="transition-300" />
           </div>
           <div class="">
             <div class="flex justify-between">
@@ -105,7 +94,8 @@
             </div>
             <div class="flex flex-col gap-3 py-6">
               <button
-                class="bg-navajo-white dark:bg-amber-500 dark:text-slate-800 text-white rounded-lg py-3 px-1 text-lg font-bold"
+                class="py-3 px-1 text-lg font-bold text-white rounded-lg dark:bg-amber-500 bg-navajo-white dark:text-slate-800"
+                routerLink="/checkout"
               >
                 Checkout
               </button>

@@ -6,16 +6,20 @@
   <text-area
     label="Write Your Review Here"
     class="basis-full"
-    placeholder="Write your review here"
     formControlName="body"
   />
-  <div class="max-tablet-sm:order-first max-tablet-sm:basis-full">
-    <rating [readonly]="false" formControlName="rating" />
-  </div>
-  <button
-    [disabled]="form.invalid"
-    class="ms-auto py-1 px-3 bg-navajo-white dark:bg-amber-500 dark:text-slate-800"
-  >
-    Review
-  </button>
+  @if (clientStore.client()) {
+    <div class="max-tablet-sm:order-first max-tablet-sm:basis-full">
+      <rating [readonly]="false" formControlName="rating" />
+    </div>
+    <button
+      [disabled]="form.invalid"
+      class="py-1 px-3 dark:bg-amber-500 ms-auto bg-navajo-white dark:text-slate-800"
+    >
+      Review
+    </button>
+  }
+  @else {
+  <span class="text-sm basis-full">Please <a routerLink="/login" class="text-amber-500 dark:text-amber-400">login</a> to leave a review</span>
+  }
 </form>

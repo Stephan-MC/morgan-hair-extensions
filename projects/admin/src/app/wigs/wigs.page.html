@@ -1,28 +1,30 @@
+<div class="sticky top-0 p-3 z-9999 dark:bg-slate-800">
+  <text-input placeholder="Search name, color, texture, etc..." />
+</div>
 <div
   class="grid tablet-sm:grid-cols-2 tablet-lg:grid-cols-3 min-[920px]:grid-cols-4 gap-6 max-w-screen-laptop mx-auto @container/wig p-3"
 >
   @for (wig of wigs.value()?.data; track wig.id) {
   <div class="relative">
-    <div class="aspect-thumbnail relative">
-      <img
-        [ngSrc]="wig.thumbnail.url"
+    <div class="relative aspect-thumbnail">
+      <thumbnail
+        class="size-full"
+        [src]="wig.thumbnail.url"
         [alt]="wig.thumbnail.alt ? wig.thumbnail.alt : wig.name"
         [priority]="$index < 5"
-        placeholder="/assets/images/logo.jpg"
-        fill
       />
     </div>
-    <a [routerLink]="['/wig', wig.slug]" class="text-xl font-bold">
+    <a [routerLink]="['/wig', wig.slug]" class="text-xl font-bold line-clamp-1">
       {{ wig.name }}
       <span class="absolute inset-0"></span>
     </a>
-    <div class="flex flex-col text-sm">
+    <div class="flex flex-col mt-3 text-sm">
       <div class="flex gap-3">
         <span class="shink-0">Color</span>
         <div class="flex gap-1 items-center">
           <span
             [style.background]="wig.color.code"
-            class="size-3 rounded-full"
+            class="rounded-full size-3"
           ></span>
           <span class="grow">{{ wig.color.name }}</span>
         </div>

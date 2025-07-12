@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-3">
-  <number-input [(ngModel)]="dialogData.price" />
+  <number-input [(ngModel)]="dialogData.price" (increment)="dialogData.price = dialogData.price + 10" (decrement)="dialogData.price = dialogData.price - 10" />
   <form-select
     [options]="dialogData.lengths"
     optionLabel="value"

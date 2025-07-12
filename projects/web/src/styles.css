@@ -4,22 +4,19 @@
 
 @layer base {
   body {
+    @apply bg-white dark:bg-slate-800;
     /* font-weight: 600; */
   }
 }
 
 @layer components {
   .price-tag {
-    @apply bg-amber-200 dark:bg-amber-500 dark:text-slate-800 rounded-r-sm px-1.5 py-0.5 relative isolate ms-2;
+    @apply bg-periwinkle dark:text-slate-800 rounded-r-sm px-1.5 py-0.5 relative isolate ms-2;
 
     @variant before {
-      @apply absolute right-[99.999999%] inset-y-0 aspect-square bg-amber-200;
+      @apply absolute right-full inset-y-0 aspect-square bg-periwinkle;
 
-      clip-path: polygon(50% 50%, 100% 0%, 100% 100%);
-    }
-
-    @variant dark {
-      @apply before:bg-amber-500;
+      clip-path: polygon(50% 50%, 105% 0%, 105% 100%);
     }
   }
 }

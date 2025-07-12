@@ -86,7 +86,6 @@ export class TestimonialListComponent {
           this.swiperConfig,
         );
         this._swiperElementRef()?.nativeElement.initialize();
-        console.log(this._swiperElementRef());
         this._cdr.detectChanges();
       }
     });

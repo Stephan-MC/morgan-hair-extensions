@@ -1,16 +1,14 @@
 import {
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  linkedSignal,
+    ChangeDetectionStrategy,
+    Component,
+    inject,
+    input
 } from '@angular/core';
 import {
-  ClientReview,
-  ImageComponent,
-  RatingComponent,
-  ReactionType,
-  Review,
-  ReviewModel,
+    ClientStore,
+    ImageComponent,
+    RatingComponent,
+    Review
 } from 'shared';
 
 @Component({
@@ -21,38 +19,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReviewComponent {
-  _review = input.required<
-    {
-      client: Pick<ReviewModel['client'], 'first_name' | 'last_name'>;
-      rating: {
-        rate: ReviewModel['rating']['rate'];
-        type: Pick<ReviewModel['rating']['type'], 'name' | 'mass'>;
-      };
-      comment: { body: string };
-    },
-    Review
-  >({
-    alias: 'review',
-    transform: (review) => {
-      const value = {};
-      if (!(review as ReviewModel).client) {
-        return {
-          client: { first_name: 'You', last_name: '' },
-          comment: {
-            body: (review as ClientReview).body,
-          },
-          rating: {
-            rate: (review as ClientReview).rating,
-            type: {
-              name: ReactionType.RATING,
-              mass: 1,
-            },
-          },
-        };
-      }
-
-      return review as ReviewModel;
-    },
-  });
-  review = linkedSignal(() => this._review());
+  review = input.required<Review>({ alias: 'review'});
+  readonly clientStore = inject(ClientStore)
 }
