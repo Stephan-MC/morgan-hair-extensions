@@ -14,14 +14,14 @@
     </div>
   </div>
 
-  <div class="flex flex-col gap-3 px-px mt-3">
+  <div class="flex flex-col gap-3 px-2 mt-3">
     <a class="font-semibold truncate max-tablet-sm:text-sm max-tablet-sm:font-semibold first-letter:uppercase" [state]="{ preserveScroll: false }" [routerLink]="['/wig', wig.slug]">
       {{ wig.name }}
       <span class="absolute inset-0"></span>
     </a>
 
     <div
-      class="flex max-tablet:px-1 tablet-sm:flex-row tablet-sm:justify-between tablet-sm:items-center text-primary/90"
+      class="flex max-tablet:px-1 tablet-sm:flex-row tablet-sm:justify-between tablet-sm:items-center not-dark:text-primary/90"
     >
       <div class="flex gap-1 items-center">
         @if (wig.discount) {
@@ -75,10 +75,10 @@
 
   @if (wig.discount; as discount) {
     <span
-      class="flex absolute top-2 left-2 items-center px-1 bg-amber-200 rounded-full animate-pulse dark:bg-amber-300 aspect-square"
+      class="flex absolute top-2 left-2 items-center px-1 font-bold bg-amber-300 rounded-full animate-pulse dark:bg-amber-500 aspect-square dark:text-shadow-2xs dark:text-shadow-primary"
     >
       @if (discount.type == "percentage") {
-        - {{ discount.value / 100 | percent }}
+        -{{ discount.value / 100 | percent }}
       }
     </span>
   }

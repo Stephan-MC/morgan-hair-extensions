@@ -7,13 +7,11 @@ import {
 	linkedSignal,
 	output,
 } from "@angular/core";
-import { NavigationStart, Router, RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { ImageComponent, type Wig } from "shared";
 import { ProductHelper } from "../../helpers/product.helper";
 import { WigService } from "../../services/wig.service";
 import { CartStore } from "../../stores/cart.store";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { filter, tap } from "rxjs/operators";
 
 @Component({
 	selector: "web-wig-card",

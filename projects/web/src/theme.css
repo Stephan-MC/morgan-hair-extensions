@@ -2,7 +2,7 @@
 
 @theme {
 	--color-geyser: oklch(0.91 0 0);
-	--color-primary: #424242;
+	--color-primary: oklch(0.38 0 0);
 	--color-skeleton: var(--color-gray-200);
 	--default-font-family: "Diotima LT Std";
 }

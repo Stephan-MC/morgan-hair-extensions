@@ -1,5 +1,6 @@
 export const environment = {
-  url: {
-    api: 'http://api.morganhairextensions.localhost',
-  },
+	url: {
+		base: "http://morganhairextensions.localhost",
+		api: "http://api.morganhairextensions.localhost",
+	},
 };

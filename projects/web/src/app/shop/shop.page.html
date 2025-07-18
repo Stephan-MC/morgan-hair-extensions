@@ -46,13 +46,13 @@
           <!-- ! -->
         }
         <!-- ! -->
-        @if (wigs.value()) {
-        <web-pagination
-          class="col-span-full"
-          [meta]="wigs.value()!.meta"
-          [page]="page() ?? wigs.value()!.meta.current_page"
-          (pageChange)="this.page.set($event)"
-        />
+        @if (wigs.value() && wigs.value()!.meta.last_page > 1) {
+          <web-pagination
+            class="col-span-full"
+            [meta]="wigs.value()!.meta"
+            [page]="page() ?? wigs.value()!.meta.current_page"
+            (pageChange)="this.page.set($event)"
+          />
         }
       </div>
     </div>

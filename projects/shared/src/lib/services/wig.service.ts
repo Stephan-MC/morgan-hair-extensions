@@ -4,12 +4,13 @@ import {
 	HttpParams,
 	httpResource,
 } from "@angular/common/http";
-import { inject, Injectable, signal, Signal } from "@angular/core";
+import { inject, Injectable, PLATFORM_ID, signal, Signal } from "@angular/core";
 import { environment } from "../environments/environment.development";
 import { toFormData } from "../helpers/form";
 import { HTTP_SKIP_ON_SERVER } from "../http/context";
 import { Paginated, Wig, WigFilter } from "../types";
 import { Environment } from "../types/environment";
+import { isPlatformBrowser } from "@angular/common";
 
 @Injectable({
 	providedIn: "root",
@@ -19,6 +20,8 @@ export class WigService {
 	private environment = inject(Environment);
 	private _params = signal<WigFilter>({});
 	private _http = inject(HttpClient);
+	private _platformId = inject(PLATFORM_ID);
+	private isBrowser = isPlatformBrowser(PLATFORM_ID);
 
 	wigsResource = httpResource<Paginated<Wig>>(() => ({
 		url: `${this.environment.url.api}/wigs`,

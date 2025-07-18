@@ -1,18 +1,22 @@
-import { InjectionToken } from '@angular/core';
+import { InjectionToken } from "@angular/core";
+
+const domain = "morganhairextensions.com";
 
 export interface Environment extends Record<string, any> {
-  url: {
-    api: string;
-  };
-  production: boolean;
+	url: {
+		base: string;
+		api: string;
+	};
+	production: boolean;
 }
 
-export const Environment = new InjectionToken<Environment>('environments', {
-  providedIn: 'root',
-  factory: () => ({
-    url: {
-      api: 'http://api.morganhairextensions.com',
-    },
-    production: true,
-  }),
+export const Environment = new InjectionToken<Environment>("environments", {
+	providedIn: "root",
+	factory: () => ({
+		url: {
+			base: `https://${domain}`,
+			api: `https://api.${domain}`,
+		},
+		production: true,
+	}),
 });

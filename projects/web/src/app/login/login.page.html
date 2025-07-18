@@ -1,0 +1,31 @@
+<div class="flex overflow-x-hidden relative flex-col min-h-screen size-full group/design-root">
+  <div class="flex flex-col h-full layout-container grow">
+    <div class="flex flex-1 justify-center py-5 px-10 lg:px-40">
+      <form [formGroup]="form" class="flex flex-col flex-1 justify-center py-5 layout-content-container w-[512px] max-w-[512px] max-w-[960px]">
+        <h2 class="px-4 pt-5 pb-3 font-bold leading-tight text-center tracking-light text-[28px]">Welcome back!</h2>
+        @if (!!message() && !loading()) {
+          <div class="p-2 my-4 bg-red-400">
+            {{ message() }}
+          </div>
+        }
+        <div class="space-y-9">
+          <text-input placeholder="Email" type="email" formControlName="email" />
+          <text-input placeholder="Password" type="password" formControlName="password" />
+          <checkbox label="hello" formControlName="remember" />
+        </div>
+        <div class="flex gap-3 py-3 px-4">
+          <button
+            class="flex overflow-hidden flex-1 gap-2 justify-center items-center px-4 mx-auto h-10 text-sm font-bold leading-normal text-white bg-black min-w-[84px] max-w-[480px] tracking-[0.015em]"
+            [ngClass]="{'cursor-pointer': form.valid && !loading(), 'cursor-progress': loading(), 'cursor-not-allowed': form.invalid}"
+          >
+            @if (loading()) {
+              <span class="animate-spin icon-[icomoon-free--spinner2]" role="img" aria-hidden="true"></span>
+            }
+            <span class="truncate">Login</span>
+          </button>
+        </div>
+        <p class="px-4 pt-1 pb-3 text-sm font-normal leading-normal text-center">Already have an account? <a routerLink="/signup" class="dark:text-amber-400">Sign up</a></p>
+      </form>
+    </div>
+  </div>
+</div>

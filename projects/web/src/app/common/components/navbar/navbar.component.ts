@@ -56,7 +56,7 @@ export class NavbarComponent {
 	private platformId = inject(PLATFORM_ID);
 
 	protected readonly cart = inject(CartStore);
-	protected readonly client = inject(ClientStore);
+	protected readonly clientStore = inject(ClientStore);
 
 	showMobileMenu = false;
 

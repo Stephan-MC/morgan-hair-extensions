@@ -1,25 +1,25 @@
 @reference "../../../../styles.css";
 
 :host {
-  @apply block overflow-hidden pb-2 relative duration-200 transition-transform z-0 max-tablet-sm:border max-tablet-sm:border-gray-900/10;
+	@apply block overflow-hidden pb-2 relative duration-200 transition-transform z-0 max-tablet-sm:border max-tablet-sm:border-gray-900/10 not-dark:shadow;
 
-  @variant hover {
-    @apply shadow;
-  }
+	@variant hover {
+		@apply shadow;
+	}
 
-  &.out {
-    /* @apply grayscale-80; */
+	&.out {
+		/* @apply grayscale-80; */
 
-    .out-of-stock {
-      @apply absolute bottom-3 w-[80%] mx-auto block! px-3 py-1 text-center isolate left-1/2 -translate-x-1/2 text-red-400 shadow drop-shadow-sm grayscale-0;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-      background: repeating-linear-gradient(
-        45deg,
-        --alpha(var(--color-black) / 15%),
-        --alpha(var(--color-black) / 15%) 20px,
-        --alpha(#ffff00 / 15%) 20px,
-        --alpha(#ffff00 / 15%) 40px
-      );
-    }
-  }
+		.out-of-stock {
+			@apply absolute bottom-3 w-[80%] mx-auto block! px-3 py-1 text-center isolate left-1/2 -translate-x-1/2 text-red-400 shadow drop-shadow-sm grayscale-0;
+			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+			background: repeating-linear-gradient(
+				45deg,
+				--alpha(var(--color-black) / 15%),
+				--alpha(var(--color-black) / 15%) 20px,
+				--alpha(#ffff00 / 15%) 20px,
+				--alpha(#ffff00 / 15%) 40px
+			);
+		}
+	}
 }

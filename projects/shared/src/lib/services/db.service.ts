@@ -1,114 +1,126 @@
-import { isPlatformBrowser } from '@angular/common';
-import { inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from "@angular/common";
+import { inject, Injectable, PLATFORM_ID } from "@angular/core";
 
 interface ObjectStoreSchema {
-  name: string;
-  options?: IDBObjectStoreParameters;
+	name: string;
+	options?: IDBObjectStoreParameters;
 }
 
 export interface DBConfig {
-  /** Database name */
-  name: string;
+	/** Database name */
+	name: string;
 
-  /** Store version */
-  version: number;
+	/** Store version */
+	version: number;
 
-  /** Various stores (tables) in DB */
-  stores: ObjectStoreSchema[];
+	/** Various stores (tables) in DB */
+	stores: ObjectStoreSchema[];
 }
 
 export interface DBInstance {
-  add<T>(store: string, data: T): Promise<number>;
-  get<T>(store: string, key: IDBValidKey): Promise<T | undefined>;
-  getAll<T>(store: string): Promise<Array<T>>;
-  update<T>(store: string, data: T): Promise<void>;
-  delete(store: string, key: IDBValidKey): Promise<void>;
-  // getLast<T>(store: string): Promise<T>;
+	add<T>(store: string, data: T): Promise<number>;
+	get<T>(store: string, key: IDBValidKey): Promise<T | undefined>;
+	getAll<T>(store: string): Promise<Array<T>>;
+	update<T>(store: string, data: T): Promise<void>;
+	delete(store: string, key: IDBValidKey): Promise<void>;
+	clear(store: string): Promise<IDBRequest<undefined>>;
+	// getLast<T>(store: string): Promise<T>;
 }
 
 @Injectable({
-  providedIn: 'root',
+	providedIn: "root",
 })
 export class DbService {
-  private _platformId = inject(PLATFORM_ID);
-  private cache = new Map<string, IDBDatabase>();
+	private _platformId = inject(PLATFORM_ID);
+	private cache = new Map<string, IDBDatabase>();
 
-  async open(config: DBConfig) {
-    if (!isPlatformBrowser(this._platformId)) return;
+	async open(config: DBConfig) {
+		if (!isPlatformBrowser(this._platformId)) return;
 
-    if (this.cache.has(config.name)) {
-      return this.buildDBInstance(this.cache.get(config.name)!);
-    }
+		if (this.cache.has(config.name)) {
+			return this.buildDBInstance(this.cache.get(config.name)!);
+		}
 
-    const db = await new Promise<IDBDatabase>((resolve, reject) => {
-      const request = indexedDB.open(config.name, config.version);
+		const db = await new Promise<IDBDatabase>((resolve, reject) => {
+			const request = indexedDB.open(config.name, config.version);
 
-      request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
-        const db = (event.target as IDBRequest).result;
+			request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
+				const db = (event.target as IDBRequest).result;
 
-        for (const store of config.stores) {
-          if (!db.objectStoreNames.contains(store.name)) {
-            db.createObjectStore(
-              store.name,
-              store.options || { keyPath: 'id', autoIncrement: true },
-            );
-          }
-        }
-      };
+				for (const store of config.stores) {
+					if (!db.objectStoreNames.contains(store.name)) {
+						db.createObjectStore(
+							store.name,
+							store.options || { keyPath: "id", autoIncrement: true },
+						);
+					}
+				}
+			};
 
-      request.onsuccess = (event: any) => resolve(event.target.result);
-      request.onerror = () => reject(request.error);
-    });
+			request.onsuccess = (event: any) => resolve(event.target.result);
+			request.onerror = () => reject(request.error);
+		});
 
-    this.cache.set(config.name, db);
-    return this.buildDBInstance(db);
-  }
+		this.cache.set(config.name, db);
+		return this.buildDBInstance(db);
+	}
 
-  private buildDBInstance(db: IDBDatabase): DBInstance {
-    return {
-      add: <T = any>(storeName: string, data: T): Promise<number> =>
-        this.runTransaction(db, storeName, 'readwrite', (store) =>
-          store.add(data),
-        ),
+	private buildDBInstance(db: IDBDatabase): DBInstance {
+		return {
+			add: <T = any>(storeName: string, data: T): Promise<number> =>
+				this.runTransaction(db, storeName, "readwrite", (store) =>
+					store.add(data),
+				),
 
-      get: <T = any>(storeName: string, key: IDBValidKey): Promise<T | undefined> =>
-        this.runTransaction(db, storeName, 'readonly', (store) =>
-          store.get(key),
-        ),
+			get: <T = any>(
+				storeName: string,
+				key: IDBValidKey,
+			): Promise<T | undefined> =>
+				this.runTransaction(db, storeName, "readonly", (store) =>
+					store.get(key),
+				),
 
-      getAll: <T = any>(storeName: string): Promise<T[]> =>
-        this.runTransaction(db, storeName, 'readonly', (store) =>
-          store.getAll(),
-        ),
+			getAll: <T = any>(storeName: string): Promise<T[]> =>
+				this.runTransaction(db, storeName, "readonly", (store) =>
+					store.getAll(),
+				),
 
-      update: <T = any>(storeName: string, data: T): Promise<void> =>
-        this.runTransaction(db, storeName, 'readwrite', (store) =>
-          store.put(data),
-        ).then(() => {}),
+			update: <T = any>(storeName: string, data: T): Promise<void> =>
+				this.runTransaction(db, storeName, "readwrite", (store) =>
+					store.put(data),
+				).then(() => {}),
 
-      delete: (storeName: string, key: IDBValidKey): Promise<void> =>
-        this.runTransaction(db, storeName, 'readwrite', (store) =>
-          store.delete(key),
-        ).then(() => {}),
+			delete: (storeName: string, key: IDBValidKey): Promise<void> =>
+				this.runTransaction(db, storeName, "readwrite", (store) =>
+					store.delete(key),
+				).then(() => {}),
 
-      // getLast: <T>(storeName: string): Promise<T> =>
-      //   this.runTransaction(db, storeName, 'readonly', (store) => 'string'),
-    };
-  }
+			clear: (store: string) =>
+				this.runTransaction<IDBRequest<undefined>>(
+					db,
+					store,
+					"readwrite",
+					(store) => store.clear(),
+				),
 
-  private runTransaction<T>(
-    db: IDBDatabase,
-    storeName: string,
-    mode: IDBTransactionMode,
-    action: (store: IDBObjectStore) => IDBRequest,
-  ): Promise<T> {
-    return new Promise((resolve, reject) => {
-      const tx = db.transaction(storeName, mode);
-      const store = tx.objectStore(storeName);
-      const request = action(store);
+			// getLast: <T>(storeName: string): Promise<T> =>
+			//   this.runTransaction(db, storeName, 'readonly', (store) => 'string'),
+		};
+	}
 
-      request.onsuccess = () => resolve(request.result as T);
-      request.onerror = () => reject(request.error);
-    });
-  }
+	private runTransaction<T>(
+		db: IDBDatabase,
+		storeName: string,
+		mode: IDBTransactionMode,
+		action: (store: IDBObjectStore) => IDBRequest,
+	): Promise<T> {
+		return new Promise((resolve, reject) => {
+			const tx = db.transaction(storeName, mode);
+			const store = tx.objectStore(storeName);
+			const request = action(store);
+
+			request.onsuccess = () => resolve(request.result as T);
+			request.onerror = () => reject(request.error);
+		});
+	}
 }

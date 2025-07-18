@@ -239,6 +239,7 @@
           routerLinkActive="selected"
           [queryParams]="{ cap, page: undefined }"
           queryParamsHandling="merge"
+          [state]="{skipLoading: true}"
         >
           {{ cap }}
         </web-chip>

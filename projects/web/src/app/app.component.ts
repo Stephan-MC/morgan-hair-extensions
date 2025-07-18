@@ -1,4 +1,5 @@
 import { trigger } from "@angular/animations";
+import { isPlatformBrowser, ViewportScroller } from "@angular/common";
 import { Component, inject, PLATFORM_ID } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { Meta } from "@angular/platform-browser";
@@ -10,8 +11,8 @@ import {
 	Router,
 	RouterOutlet,
 } from "@angular/router";
+import { of, timer } from "rxjs";
 import {
-	delay,
 	distinctUntilChanged,
 	filter,
 	map,
@@ -23,8 +24,6 @@ import { CartComponent } from "./common/components/cart/cart.component";
 import { FooterComponent } from "./common/components/footer/footer.component";
 import { NavbarComponent } from "./common/components/navbar/navbar.component";
 import { CartStore } from "./common/stores/cart.store";
-import { EMPTY, of, timer } from "rxjs";
-import { isPlatformBrowser, ViewportScroller } from "@angular/common";
 
 @Component({
 	selector: "web-root",
@@ -59,10 +58,7 @@ export class AppComponent {
 				}
 
 				const state = this._router.getCurrentNavigation()?.extras.state;
-				console.log(state);
 				if (isPlatformBrowser(this._platformId)) {
-					console.log(state);
-
 					if (state && state["preserveScroll"] === false)
 						this._viewportScroller.scrollToPosition([0, 0]);
 				}

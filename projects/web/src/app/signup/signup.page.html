@@ -1,0 +1,35 @@
+<div class="flex overflow-x-hidden relative flex-col min-h-screen size-full group/design-root">
+  <div class="flex flex-col h-full layout-container grow">
+    <div class="flex flex-1 justify-center py-5 px-10 lg:px-20">
+      <form [formGroup]="form" class="flex flex-col flex-1 justify-center py-5 layout-content-container w-[512px] max-w-[512px] max-w-[960px]">
+        <h2 class="px-4 pt-5 pb-3 font-bold leading-tight text-center tracking-light text-[28px]">Create your account</h2>
+        @if (!!message() && !loading()) {
+          <div class="p-2 my-4 bg-red-400">
+            {{ message() }}
+          </div>
+        }
+        <div class="space-y-10">
+          <div class="grid grid-cols-2 gap-3">
+            <text-input label="First name" formControlName="first_name" />
+            <text-input label="Last name" formControlName="last_name" />
+          </div>
+          <text-input label="Email" type="email" formControlName="email" />
+          <text-input label="Password" type="password" formControlName="password" />
+          <text-input label="Confirm Password" type="password" formControlName="password_confirmation" />
+        </div>
+        <div class="flex py-3 px-4">
+          <button
+            [disabled]="form.invalid"
+            class="flex overflow-hidden flex-1 justify-center items-center px-4 w-full h-10 text-sm font-bold leading-normal text-white bg-black cursor-pointer min-w-[84px] tracking-[0.015em]"
+          >
+            @if (loading()) {
+              <span class="animate-spin icon-[icomoon-free--spinner2]" role="img" aria-hidden="true"></span>
+            }
+            <span class="truncate">Sign Up</span>
+          </button>
+        </div>
+        <p class="px-4 pt-1 pb-3 text-sm font-normal leading-normal text-center">Already have an account? <a routerLink="/login" class="dark:text-amber-400">Log in</a></p>
+      </form>
+    </div>
+  </div>
+</div>

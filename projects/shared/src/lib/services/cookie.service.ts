@@ -1,5 +1,5 @@
 import { Injectable, PLATFORM_ID, Inject, signal, inject } from "@angular/core";
-import { isPlatformServer } from "@angular/common";
+import { isPlatformBrowser, isPlatformServer } from "@angular/common";
 import { TransferState, makeStateKey } from "@angular/core";
 import { DOCUMENT } from "@angular/common";
 
@@ -15,149 +15,96 @@ export interface CookieOptions {
 	"max-age"?: number;
 }
 
+export interface BrowserCookie extends CookieOptions {
+	value: string;
+}
+
 @Injectable({
 	providedIn: "root",
 })
-export class Cookie {
-	private readonly isServer: boolean;
-	private readonly cookies = signal<Map<string, string>>(new Map());
-	private readonly _platformId = inject(PLATFORM_ID);
-	private readonly _document = inject(DOCUMENT);
-	private readonly _transferState = inject(TransferState);
+export class CookieService {
+	private _document = inject(DOCUMENT);
+	private _platformId = inject(PLATFORM_ID);
 
-	constructor() {
-		this.isServer = isPlatformServer(this._platformId);
+	private _cookies = signal(new Map<string, BrowserCookie>());
 
-		// --- Client-Side Hydration ---
-		// When the app runs in the browser, this logic takes over.
+	protected isServer = isPlatformServer(this._platformId);
+
+	get(name: string) {
+		return this._cookies().get(name);
+	}
+
+	getAll() {
+		return new Map(this._cookies());
+	}
+
+	has(name: string) {
 		if (!this.isServer) {
-			// 1. Get cookie strings transferred from the server.
-			const serverCookieStrings = this._transferState.get(COOKIE_STATE_KEY, []);
+			return !!this._document.cookie.match(new RegExp(`${name}=`));
+		}
 
-			// 2. Set these cookies in the browser document.
-			// This is the crucial step to sync the browser's state with the server's.
-			// Note: HttpOnly cookies cannot be set via JavaScript. They must be set
-			// directly by the browser from the server's response headers. This
-			// implementation ensures non-HttpOnly cookies are available.
-			serverCookieStrings.forEach((cookieStr) => {
-				// We only set cookies that are not HttpOnly
-				if (cookieStr.toLowerCase().indexOf("httponly") === -1) {
-					this._document.cookie = cookieStr;
-				}
+		return this._cookies().has(name);
+	}
+
+	set(name: string, value: string, options: CookieOptions = {}) {
+		if (!this.isServer) {
+			document.cookie = `${name}=${encodeURIComponent(value)}; ${this.buildOptionsString(options)}`;
+		}
+
+		this._cookies().set(name, { ...options, value });
+	}
+
+	setCookieFromString(cookie: string) {
+		/** Skip all http only cookies */
+		if (cookie.toLowerCase().match(/httponly;/)) {
+			return;
+		}
+
+		const [nameValue, ...segments] = cookie
+			.split(";")
+			.map((part) => part.trim());
+		const [name, value] = nameValue
+			.split("=")
+			.map((p) => decodeURIComponent(p));
+		const options: CookieOptions = {};
+
+		segments.forEach((segment) => {
+			const [key, value] = segment.split("=") as [
+				k: keyof CookieOptions,
+				v: string,
+			];
+
+			/** @ts-ignore */
+			options[key.toLowerCase()] = value;
+		});
+
+		this.set(name, value, options);
+	}
+
+	delete(name: string, options: Pick<CookieOptions, "path" | "domain"> = {}) {
+		if (!this.isServer) {
+			this._document.cookie = `${name}=${options.path ? "; path=" + options.path : ""}${options.domain ? "; domain=" + options.domain : ""}; expires=${new Date(0).toUTCString()}`;
+		}
+		this._cookies().delete(name);
+	}
+
+	clear() {
+		if (!this.isServer) {
+			const cookies = this._document.cookie
+				.split(";")
+				.map((part) => part.trim());
+			const domain = window.location.hostname.split(".").splice(-2).join(".");
+			cookies.forEach((cookie) => {
+				const [name, value] = cookie.split("=");
+
+				this._document.cookie = `${name}=; domain=${domain}; expires=${new Date(0).toUTCString()}`;
+				this._document.cookie = `${name}=; domain=.${domain}; expires=${new Date(0).toUTCString()}`;
 			});
-
-			// 3. Clean up the transfer state.
-			this._transferState.remove(COOKIE_STATE_KEY);
-
-			// 4. Parse the browser's cookies to populate the service's state.
-			this.updateCookiesFromBrowser();
-		}
-	}
-
-	/**
-	 * Gets a cookie value by name.
-	 * @param name The name of the cookie.
-	 * @returns The cookie value or undefined if not found.
-	 */
-	get(name: string): string | undefined {
-		return this.cookies().get(name);
-	}
-
-	/**
-	 * Sets a cookie. On the client, this directly sets the browser cookie.
-	 * On the server, this method is a no-op; cookies should be set via
-	 * response headers using the ServerCookieInterceptor.
-	 * @param name The name of the cookie.
-	 * @param value The value of the cookie.
-	 * @param options Cookie options.
-	 */
-	set(name: string, value: string, options: CookieOptions = {}): void {
-		if (this.isServer) {
-			// On the server, setting cookies should be handled by modifying response headers.
-			// The ServerCookieInterceptor is responsible for this.
-			console.warn(
-				"CookieService.set() was called on the server. This is a no-op. Use response headers instead.",
-			);
-			return;
 		}
 
-		let cookieStr = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
-		cookieStr += this.buildOptionsString(options);
-		this._document.cookie = cookieStr;
-
-		// Update internal state
-		this.updateCookiesFromBrowser();
-	}
-
-	/**
-	 * Deletes a cookie by name.
-	 * @param name The name of the cookie.
-	 * @param path The path of the cookie to delete.
-	 * @param domain The domain of the cookie to delete.
-	 */
-	delete(name: string, path?: string, domain?: string): void {
-		const options: CookieOptions = {
-			expires: new Date(0), // Set expiry to a past date
-			path,
-			domain,
-		};
-		this.set(name, "", options);
-	}
-
-	/**
-	 * Checks if a cookie with the given name exists.
-	 * @param name The name of the cookie.
-	 * @returns True if the cookie exists, false otherwise.
-	 */
-	has(name: string): boolean {
-		return this.cookies().has(name);
-	}
-
-	/**
-	 * [SERVER-SIDE ONLY]
-	 * Reads cookies from an incoming server request and populates the service.
-	 * @param cookieHeader The string from the 'cookie' header of the request.
-	 */
-	populateFromSsrRequest(cookieHeader: string | undefined): void {
-		if (!this.isServer || !cookieHeader) {
-			return;
-		}
-		this.parseCookieString(cookieHeader);
-	}
-
-	/**
-	 * [SERVER-SIDE ONLY]
-	 * Stores an array of 'Set-Cookie' header strings in TransferState.
-	 * @param setCookieHeaders Array of strings from 'Set-Cookie' headers.
-	 */
-	transferCookiesToBrowser(setCookieHeaders: string[]): void {
-		if (this.isServer) {
-			this._transferState.set(COOKIE_STATE_KEY, setCookieHeaders);
-		}
-	}
-
-	/** Parses the browser's document.cookie and updates the internal state. */
-	private updateCookiesFromBrowser(): void {
-		if (!this.isServer) {
-			this.parseCookieString(this._document.cookie);
-		}
-	}
-
-	/** Generic parser for a cookie string (from request header or document.cookie) */
-	private parseCookieString(cookieStr: string): void {
-		const newCookies = new Map<string, string>();
-		if (cookieStr) {
-			const pairs = cookieStr.split(";");
-			for (const pair of pairs) {
-				const eqPos = pair.indexOf("=");
-				if (eqPos > -1) {
-					const key = decodeURIComponent(pair.substring(0, eqPos).trim());
-					const value = decodeURIComponent(pair.substring(eqPos + 1).trim());
-					newCookies.set(key, value);
-				}
-			}
-		}
-		this.cookies.set(newCookies);
+		this._cookies().forEach((cookie, name) => {
+			this.delete(name, cookie);
+		});
 	}
 
 	/** Builds the options part of the cookie string. */

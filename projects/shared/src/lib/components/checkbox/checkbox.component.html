@@ -1,0 +1,25 @@
+<div class="form-input--wrapper">
+  <!-- <div class="flex h-full left"> -->
+  <!--   <ng-content select="left"></ng-content> -->
+  <!-- </div> -->
+  <div class="grow">
+    <input
+      class="p-1 w-full peer"
+      [type]="'checkbox'"
+      [value]="value()"
+      #input
+    />
+    @if (label()) {
+      <label
+        for=""
+        (click)="input.click()"
+        class="absolute left-1 -top-6 transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-1 peer-placeholder-shown:p-1"
+      >
+        {{ label() }}
+      </label>
+    }
+  </div>
+  <!-- <div class="flex h-full right"> -->
+  <!--   <ng-content select="right"></ng-content> -->
+  <!-- </div> -->
+</div>

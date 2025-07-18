@@ -95,10 +95,12 @@
 			}
 		}
 
-		input,
+		input:not([type="checkbox"]),
 		select,
 		textarea {
-			@apply border-none grow! shrink-0 dark:text-gray-300;
+			@apply border-none grow! shrink-0 dark:text-gray-300 bg-transparent! autofill:bg-transparent! autofill:bg-unset!;
+			width: -moz-available;
+			width: -webkit-fill-available;
 
 			@variant focus {
 				@apply outline-none;

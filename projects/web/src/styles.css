@@ -3,20 +3,20 @@
 @import "./theme.css";
 
 @layer base {
-  body {
-    @apply bg-white dark:bg-slate-800;
-    /* font-weight: 600; */
-  }
+	body {
+		@apply bg-white dark:bg-slate-800;
+		/* font-weight: 600; */
+	}
 }
 
 @layer components {
-  .price-tag {
-    @apply bg-periwinkle dark:text-slate-800 rounded-r-sm px-1.5 py-0.5 relative isolate ms-2;
+	.price-tag {
+		@apply bg-periwinkle dark:text-slate-800 rounded-r-sm px-1.5 py-0.5 relative isolate ms-2;
 
-    @variant before {
-      @apply absolute right-full inset-y-0 aspect-square bg-periwinkle;
+		@variant before {
+			@apply absolute right-full inset-y-0 aspect-square bg-periwinkle;
 
-      clip-path: polygon(50% 50%, 105% 0%, 105% 100%);
-    }
-  }
+			clip-path: polygon(50% 50%, 105% 0%, 105% 100%);
+		}
+	}
 }
