@@ -19,7 +19,7 @@ import {
 	tap,
 	withLatestFrom,
 } from "rxjs/operators";
-import { Environment, TextAreaComponent, TextInputComponent } from "shared";
+import { ENVIRONMENT, TextAreaComponent, TextInputComponent } from "shared";
 
 @Component({
 	selector: "web-contact",
@@ -31,7 +31,7 @@ export class ContactPage {
 	private _fb = inject(FormBuilder);
 	private _http = inject(HttpClient);
 	private _destroyRef = inject(DestroyRef);
-	private environment = inject(Environment);
+	private environment = inject(ENVIRONMENT);
 	form = this._fb.group(
 		{
 			name: this._fb.control("", {

@@ -1,4 +1,4 @@
-import { NgClass } from "@angular/common";
+import { Location, NgClass } from "@angular/common";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Component, inject, signal } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
@@ -22,7 +22,7 @@ import {
 import {
 	CheckboxComponent,
 	ClientStore,
-	Environment,
+	ENVIRONMENT,
 	TextInputComponent,
 } from "shared";
 
@@ -42,7 +42,8 @@ export class LoginPage {
 	private _fb = inject(FormBuilder);
 	private _http$ = inject(HttpClient);
 	private _router = inject(Router);
-	private environment = inject(Environment);
+	private _location = inject(Location);
+	private environment = inject(ENVIRONMENT);
 	clientStore = inject(ClientStore);
 
 	form = this._fb.group({
@@ -65,7 +66,17 @@ export class LoginPage {
 			switchMap(() =>
 				this.clientStore.login(this.form.getRawValue()).pipe(
 					// On successful login, wait 500ms then set loading to false
-					switchMap(() => timer(500).pipe(map(() => false))),
+					switchMap(() =>
+						timer(500).pipe(
+							map(() => false),
+							tap(() => {
+								console.log(this._router.url);
+								this._location.path(false) !== "/login"
+									? window.location.reload()
+									: this._router.navigate(["."]);
+							}),
+						),
+					),
 					// If an error occurs during login, catch it, log it, and immediately set loading to false
 					catchError((error) => {
 						if (error instanceof HttpErrorResponse) {

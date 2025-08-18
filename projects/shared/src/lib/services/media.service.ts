@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Environment } from '../types/environment';
+import { ENVIRONMENT } from '../types/environment';
 import { Media } from '../types/media';
 import { HttpClient } from '@angular/common/http';
 import { Wig } from '../types/wig';
@@ -8,7 +8,7 @@ import { Wig } from '../types/wig';
   providedIn: 'root',
 })
 export class MediaService {
-  environment = inject(Environment);
+  environment = inject(ENVIRONMENT);
   private _http = inject(HttpClient);
 
   detach(slug: Wig['slug'], id: Media['id']) {

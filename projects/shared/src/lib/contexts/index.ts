@@ -1,9 +1,5 @@
 import { HttpContextToken } from "@angular/common/http";
 
-export const HTTP_REQUIRE_ACCESS_TOKEN = new HttpContextToken<boolean>(
-	() => false,
-);
-
 /**
  * This context helps to determine whether to skip the request on the server side.
  * @default false

@@ -98,7 +98,7 @@
 		input:not([type="checkbox"]),
 		select,
 		textarea {
-			@apply border-none grow! shrink-0 dark:text-gray-300 bg-transparent! autofill:bg-transparent! autofill:bg-unset!;
+			@apply border-none grow! shrink-0 dark:text-gray-300 bg-transparent! autofill:bg-transparent!;
 			width: -moz-available;
 			width: -webkit-fill-available;
 

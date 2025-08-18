@@ -12,7 +12,7 @@ import { endWith, filter, map, startWith, switchMap, tap, timer } from "rxjs";
 import {
 	ClientStore,
 	CookieService,
-	Environment,
+	ENVIRONMENT,
 	TextInputComponent,
 } from "shared";
 
@@ -23,7 +23,7 @@ import {
 	styleUrl: "./signup.page.css",
 })
 export class SignupPage {
-	private _environment = inject(Environment);
+	private _environment = inject(ENVIRONMENT);
 	private _fb = inject(FormBuilder);
 	private _http$ = inject(HttpClient);
 	private clientStore = inject(ClientStore);

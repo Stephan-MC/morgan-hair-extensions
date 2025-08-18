@@ -7,9 +7,9 @@ import {
 import { inject, Injectable, PLATFORM_ID, signal, Signal } from "@angular/core";
 import { environment } from "../environments/environment.development";
 import { toFormData } from "../helpers/form";
-import { HTTP_SKIP_ON_SERVER } from "../http/context";
+import { HTTP_SKIP_ON_SERVER } from "../contexts";
 import { Paginated, Wig, WigFilter } from "../types";
-import { Environment } from "../types/environment";
+import { ENVIRONMENT } from "../types/environment";
 import { isPlatformBrowser } from "@angular/common";
 
 @Injectable({
@@ -17,7 +17,7 @@ import { isPlatformBrowser } from "@angular/common";
 })
 export class WigService {
 	currentWig = signal<string>("");
-	private environment = inject(Environment);
+	private environment = inject(ENVIRONMENT);
 	private _params = signal<WigFilter>({});
 	private _http = inject(HttpClient);
 	private _platformId = inject(PLATFORM_ID);

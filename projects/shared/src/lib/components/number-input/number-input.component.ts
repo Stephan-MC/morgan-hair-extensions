@@ -16,6 +16,7 @@ import { NG_VALUE_ACCESSOR } from "@angular/forms";
 	],
 	host: {
 		"[class.form-input--number]": "true",
+		"[class.form-input]": "true",
 	},
 })
 export class NumberInputComponent extends InputComponent {

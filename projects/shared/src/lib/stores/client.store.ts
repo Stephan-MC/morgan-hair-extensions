@@ -13,7 +13,7 @@ import { EMPTY, throwError } from "rxjs";
 import { catchError, switchMap, tap } from "rxjs/operators";
 import { DBInstance, DbService } from "../services/db.service";
 import { Client } from "../types";
-import { Environment } from "../types/environment";
+import { ENVIRONMENT } from "../types/environment";
 
 export interface ClientStoreInterface {
 	client: Client | null;
@@ -21,7 +21,7 @@ export interface ClientStoreInterface {
 
 const CLIENT_STORE = new InjectionToken<ClientStoreInterface>("CLIENT_STORE", {
 	providedIn: "root",
-	factory: (_http = inject(HttpClient), _environment = inject(Environment)) => {
+	factory: (_http = inject(HttpClient), _environment = inject(ENVIRONMENT)) => {
 		let initialState = { client: null };
 
 		return initialState;
@@ -36,7 +36,7 @@ export const ClientStore = signalStore(
 			store,
 			dbService = inject(DbService),
 			httpClient = inject(HttpClient),
-			environment = inject(Environment),
+			environment = inject(ENVIRONMENT),
 		) => ({
 			_db: dbService.open({
 				name: "clients",

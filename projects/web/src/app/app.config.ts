@@ -22,7 +22,7 @@ import {
 import {
 	authInterceptor,
 	cookieInterceptor,
-	Environment,
+	ENVIRONMENT,
 	xsrfInterceptor,
 } from "shared";
 import { environment } from "../environments/environment";
@@ -42,6 +42,6 @@ export const appConfig: ApplicationConfig = {
 			}),
 		),
 		provideAnimations(),
-		{ provide: Environment, useFactory: () => environment },
+		{ provide: ENVIRONMENT, useFactory: () => environment },
 	],
 };
