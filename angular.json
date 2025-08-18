@@ -221,7 +221,8 @@
 	},
 	"schematics": {
 		"@schematics/angular:component": {
-			"type": "component"
+			"type": "component",
+			"ngHtml": true
 		},
 		"@schematics/angular:directive": {
 			"type": "directive"
@@ -244,5 +245,8 @@
 		"@schematics/angular:resolver": {
 			"typeSeparator": "."
 		}
+	},
+	"cli": {
+		"analytics": "4792642e-7e20-4780-bfdf-8f84e6466957"
 	}
 }
