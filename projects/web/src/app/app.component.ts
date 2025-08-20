@@ -57,7 +57,7 @@ export class AppComponent {
 					return of(true);
 				}
 
-				const state = this._router.getCurrentNavigation()?.extras.state;
+				const state = this._router.currentNavigation()?.extras.state;
 				if (isPlatformBrowser(this._platformId)) {
 					if (state && state["preserveScroll"] === false)
 						this._viewportScroller.scrollToPosition([0, 0]);
