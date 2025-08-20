@@ -1,21 +1,11 @@
 import {
-	HttpClient,
-	HttpHeaders,
 	HttpInterceptorFn,
 	HttpXsrfTokenExtractor,
 } from "@angular/common/http";
 import { inject } from "@angular/core";
-import { CookieService } from "../services/cookie.service";
-import { ENVIRONMENT } from "../types/environment";
-import { delay } from "rxjs";
 
 export const xsrfInterceptor: HttpInterceptorFn = (req, next) => {
-	const cookies = inject(CookieService);
-	const http = inject(HttpClient);
-	const environment = inject(ENVIRONMENT);
 	const tokenExtractor = inject(HttpXsrfTokenExtractor);
-
-	console.log("XSRF-INTERCEPTOR -> INIT -> ", req.url);
 
 	if (req.method !== "GET") {
 		return next(

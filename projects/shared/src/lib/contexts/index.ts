@@ -2,6 +2,7 @@ import { HttpContextToken } from "@angular/common/http";
 
 /**
  * This context helps to determine whether to skip the request on the server side.
+ * It can be useful for requests that may need to send browser cookies to backend
  * @default false
  */
 export const HTTP_SKIP_ON_SERVER = new HttpContextToken<boolean>(() => false);
