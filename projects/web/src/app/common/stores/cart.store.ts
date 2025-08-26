@@ -147,7 +147,7 @@ export const CartStore = signalStore(
 		},
 
 		hasLength: (wig: Wig, id: Wig.Length["id"]) =>
-			!!store.entityMap()[`${wig.id}:${id}`],
+			store.entityMap()[`${wig.id}:${id}`] !== undefined,
 
 		get: (item: CartItem | Wig | string): CartItem | undefined =>
 			store.entityMap()[

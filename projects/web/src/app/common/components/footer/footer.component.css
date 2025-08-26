@@ -1,12 +1,14 @@
 @reference "../../../../styles.css";
 
 :host {
-  display: block;
-  background-color: var(--color-geyser);
-  color: var(--color-primary);
-  padding: calc(var(--spacing) * 6) calc(var(--spacing) * 3) calc(var(--spacing) * 3);
+	display: block;
+	background-color: var(--color-geyser);
+	/* background-color: oklch(from var(--color-slate-800), l c h) !important; */
+	color: var(--color-primary);
+	padding: calc(var(--spacing) * 6) calc(var(--spacing) * 3)
+		calc(var(--spacing) * 3);
 
-  @variant dark {
-    @apply bg-primary text-geyser;
-  }
+	@variant dark {
+		@apply bg-primary text-geyser;
+	}
 }
