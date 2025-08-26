@@ -31,6 +31,7 @@ export class WigService {
 
 	featuredWigsResource = httpResource<Array<Wig>>(() => ({
 		url: `${this.environment.url.api}/wigs/featured`,
+		context: new HttpContext().set(HTTP_SKIP_ON_SERVER, true),
 	}));
 
 	wig(slug: Signal<Wig["slug"]>) {

@@ -1,4 +1,8 @@
 <ng-content />
-@if (value()) {
-  <span class="badge">{{ value() }}</span>
-}
+<div class="badge">
+  <ng-content select="value">
+    @if (value()) {
+      {{ value() }}
+    }
+  </ng-content>
+</div>

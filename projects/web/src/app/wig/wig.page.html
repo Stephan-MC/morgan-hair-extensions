@@ -61,24 +61,39 @@
       >
         <h4 class="col-span-full">Choose you preferred length (inches)</h4>
         @for (length of wig.lengths; track length.id) {
-        <span
-          (click)="[selectLength(length)]"
-          class="text-center border-2 cursor-pointer border-doubled border-thistle"
-          [class]="length.id == wig.length.id ? 'bg-thistle dark:text-slate-800' : 'bg-transparent'"
-          >
-            {{ length.value }}
-          </span>
+            <web-badge
+              class="text-center border-2 cursor-pointer border-doubled border-thistle"
+              [class]="length.id == wig.length.id ? 'bg-thistle dark:text-slate-800' : 'bg-transparent'"
+              (click)="length.id !== wig.length.id && selectLength(length)"
+              [hide]="!cart.hasLength(wig, length.id)"
+            >
+              @if (cart.hasLength(wig, length.id)) {
+                <span ngProjectAs="value"
+                  class="text-[.65rem] icon-[solar--cart-4-linear]"
+                  role="img"
+                  aria-hidden="true"
+                >
+                </span>
+              }
+              {{ length.value }}
+            </web-badge>
         }
       </div>
 
       <div class="flex flex-wrap gap-3 mt-6">
-        @if (wig.stock > 0 || (cart.get(wig)?.quantity ?? 0) < wig.stock) {
-          <number-input [value]="cart.get(wig!)?.quantity || 0" [min]="0" [max]="wig.stock" (increment)="cart.add(wig!, false)" (decrement)="cart.reduce(wig!, false)" [style.width.px]="100" />
-        } @else {
-          <div class="py-3 text-center text-red-500 animate-pulse basis-full">
-            This item is out of stock
-          </div>
-        }
+          @if (wig.stock < 1) {
+            <div class="py-3 text-center text-red-500 animate-pulse basis-full">
+              This item is out of stock
+            </div>
+          } @else {
+            @if (wig.length.stock > 0 || (cart.get(wig)?.quantity ?? 0) < wig.length.stock) {
+              <number-input [value]="cart.get(wig!)?.quantity || 0" [min]="0" [max]="wig.stock" (increment)="cart.add(wig!, false)" (decrement)="cart.reduce(wig!, false)" [style.width.px]="100" />
+            } @else {
+              <div class="py-3 text-center text-amber-500 animate-pulse basis-full">
+                This length is out of stock but other lenths are available
+              </div>
+            }
+          }
 
         <a
           (click)="viewportScroller.scrollToPosition([0, 0])"

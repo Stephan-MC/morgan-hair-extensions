@@ -3,7 +3,7 @@ import { HttpClient, HttpInterceptorFn } from "@angular/common/http";
 import { inject, PLATFORM_ID } from "@angular/core";
 import { EMPTY, switchMap, tap } from "rxjs";
 import { CookieService } from "../services";
-import { HTTP_SKIP_ON_SERVER } from "../http";
+import { HTTP_SKIP_ON_SERVER } from "../contexts/";
 
 /** This interceptors ensures server cookies are transfered properly to client */
 export const cookieInterceptor: HttpInterceptorFn = (req, next) => {

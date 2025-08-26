@@ -46,7 +46,9 @@
 						"outputPath": "dist/web",
 						"index": "projects/web/src/index.html",
 						"browser": "projects/web/src/main.ts",
-						"polyfills": [],
+						"polyfills": [
+              "@angular/localize/init"
+            ],
 						"tsConfig": "projects/web/tsconfig.app.json",
 						"assets": [
 							{
@@ -113,7 +115,9 @@
 				"test": {
 					"builder": "@angular/build:karma",
 					"options": {
-						"polyfills": [],
+						"polyfills": [
+              "@angular/localize/init"
+            ],
 						"tsConfig": "projects/web/tsconfig.spec.json",
 						"assets": [
 							{

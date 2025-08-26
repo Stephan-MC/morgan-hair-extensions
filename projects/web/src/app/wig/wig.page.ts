@@ -26,6 +26,7 @@ import {
 	endWith,
 	filter,
 	interval,
+	repeat,
 	scan,
 	switchMap,
 	takeWhile,
@@ -49,6 +50,7 @@ import { ReviewFormComponent } from "../common/components/review-form/review-for
 import { ReviewListComponent } from "../common/components/review-list/review-list.component";
 import { ProductHelper } from "../common/helpers/product.helper";
 import { CartStore } from "../common/stores/cart.store";
+import { BadgeComponent } from "../common/components/badge/badge.component";
 
 @Component({
 	selector: "web-wig",
@@ -56,6 +58,7 @@ import { CartStore } from "../common/stores/cart.store";
 		CurrencyPipe,
 		DecimalPipe,
 		RouterLink,
+		BadgeComponent,
 		ImageComponent,
 		ReviewListComponent,
 		RecommendWigListComponent,
@@ -96,7 +99,7 @@ export class WigPage {
 			debounceTime(300),
 			filter((wig) => !!wig),
 			switchMap((wig) =>
-				interval(Math.max(50, Math.ceil(500 / wig.length.price))).pipe(
+				interval(Math.max(5, Math.ceil(300 / wig.length.price))).pipe(
 					scan((acc) => (acc > wig.length.price ? acc - 1 : acc + 1), 0),
 					takeWhile((price) => Math.abs(wig.length.price - price) > 1),
 					endWith(

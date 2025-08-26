@@ -6,7 +6,7 @@ import { DbService } from "../services";
 import { AccessToken, PlainTextToken } from "../types";
 import { EMPTY, from } from "rxjs";
 import { catchError, filter, switchMap, tap } from "rxjs/operators";
-import { HTTP_SKIP_ON_SERVER } from "../http";
+import { HTTP_SKIP_ON_SERVER } from "../contexts";
 
 export const apiInterceptor: HttpInterceptorFn = (req, next) => {
 	const platformId = inject(PLATFORM_ID);

@@ -32,6 +32,7 @@
         class="py-1 px-3 text-white bg-red-400 rounded-full"
         (click)="q.reset()"
         [routerLink]="['./']"
+        [state]="{skipLoading: true}"
       >
         Reset Filters
       </button>

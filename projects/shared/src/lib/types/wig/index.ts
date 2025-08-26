@@ -11,6 +11,9 @@ export namespace Wig {
 
 	export interface Length extends Model {
 		value: number;
+		price: number;
+		stock: number;
+		default: boolean;
 	}
 	export interface Source extends Model {
 		name: string;
