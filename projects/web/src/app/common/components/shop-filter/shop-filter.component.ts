@@ -103,17 +103,20 @@ export class ShopFilterComponent {
 	queryParams = toSignal(this._route.queryParams.pipe(), {
 		initialValue: {} as Record<string, string | undefined>,
 	});
-	q = new FormControl("");
+	q = new FormControl(this._route.snapshot.queryParamMap.get("q"));
 	show = linkedSignal(() => this.open());
 
 	constructor() {
 		this._router.events.pipe(
 			filter((event) => event instanceof NavigationEnd),
 			tap(() => {
-				console.log("Constructor -> navigation ended");
-				this.q.reset(this._route.snapshot.queryParams["q"]);
+				console.log("tapping q");
+				this.q.setValue(this._route.snapshot.queryParams["q"], {
+					emitEvent: false,
+				});
 			}),
 		);
+
 		this.q.valueChanges
 			.pipe(
 				takeUntilDestroyed(),
@@ -137,7 +140,9 @@ export class ShopFilterComponent {
 			.subscribe();
 	}
 
-	ngOnInit() {}
+	ngOnInit() {
+		console.log("Initializing");
+	}
 
 	openFilters() {
 		if (this.show()) return;

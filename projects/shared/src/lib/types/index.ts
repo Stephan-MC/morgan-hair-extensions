@@ -23,7 +23,7 @@ export interface Paginated<T = any> {
 		path: string;
 
 		/** The number of items sent per page */
-		perPage: number;
+		per_page: number;
 
 		last_page: number;
 

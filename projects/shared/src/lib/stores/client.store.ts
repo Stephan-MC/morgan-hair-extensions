@@ -14,7 +14,7 @@ import { catchError, switchMap, tap } from "rxjs/operators";
 import { DBInstance, DbService } from "../services/db.service";
 import { Client } from "../types";
 import { ENVIRONMENT } from "../types/environment";
-import { HTTP_SKIP_ON_SERVER } from "shared";
+import { HTTP_SKIP_ON_SERVER } from "../contexts";
 
 export interface ClientStoreInterface {
 	client: Client | null;

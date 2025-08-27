@@ -8,10 +8,11 @@ import {
 } from "@angular/core";
 import { ReactionType, Testimonial } from "shared";
 import { RatingComponent } from "shared";
+import { MatCardModule } from "@angular/material/card";
 
 @Component({
 	selector: "web-testimonial",
-	imports: [NgPlural, NgPluralCase, RatingComponent],
+	imports: [NgPlural, NgPluralCase, RatingComponent, MatCardModule],
 	templateUrl: "./testimonial.component.html",
 	styleUrl: "./testimonial.component.css",
 	changeDetection: ChangeDetectionStrategy.OnPush,

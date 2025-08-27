@@ -1,8 +1,11 @@
 import {
-	isPlatformBrowser,
-	isPlatformServer,
-	NgOptimizedImage,
-} from "@angular/common";
+	animate,
+	state,
+	style,
+	transition,
+	trigger,
+} from "@angular/animations";
+import { isPlatformBrowser, NgOptimizedImage } from "@angular/common";
 import {
 	Component,
 	ElementRef,
@@ -11,21 +14,15 @@ import {
 	PLATFORM_ID,
 	Renderer2,
 } from "@angular/core";
+import { MatBadgeModule } from "@angular/material/badge";
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { RouterLink } from "@angular/router";
-import { CartStore } from "../../stores/cart.store";
-import { BadgeComponent } from "../badge/badge.component";
-import {
-	animate,
-	state,
-	style,
-	transition,
-	trigger,
-} from "@angular/animations";
 import { ClientStore } from "shared";
+import { CartStore } from "../../stores/cart.store";
 
 @Component({
 	selector: "web-navbar",
-	imports: [NgOptimizedImage, RouterLink, BadgeComponent],
+	imports: [NgOptimizedImage, RouterLink, MatBadgeModule, MatTooltipModule],
 	templateUrl: "./navbar.component.html",
 	styleUrl: "./navbar.component.css",
 	animations: [

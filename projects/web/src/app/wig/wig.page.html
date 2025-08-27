@@ -23,7 +23,7 @@
       }
     </swiper-container>
     <div class="flex flex-col gap-3 py-6 px-3">
-      <h2 class="text-3xl font-bold tracking-wide capitalize line-clamp-2">{{ wig?.name }}</h2>
+      <h2 class="text-3xl font-bold tracking-wide capitalize text-(--mat-sys-tertiary) line-clamp-2">{{ wig?.name }}</h2>
       <div class="flex justify-between scroll-t-20" id="price">
         <div class="flex gap-1 items-center">
           @if (wig?.discount) {
@@ -50,7 +50,7 @@
           </div>
 
           <div class="flex gap-1 items-center">
-            <span class="icon-[iconoir--heart-solid] text-thistle"></span>
+            <span class="icon-[iconoir--heart-solid] text-(--mat-sys-primary)"></span>
             {{ wig?.love?.count ?? 0 }}
           </div>
         </div>
@@ -63,7 +63,7 @@
         @for (length of wig.lengths; track length.id) {
             <web-badge
               class="text-center border-2 cursor-pointer border-doubled border-thistle"
-              [class]="length.id == wig.length.id ? 'bg-thistle dark:text-slate-800' : 'bg-transparent'"
+              [class]="length.id == wig.length.id ? 'bg-(--mat-sys-primary) text-(--mat-sys-on-primary)' : 'bg-transparent'"
               (click)="length.id !== wig.length.id && selectLength(length)"
               [hide]="!cart.hasLength(wig, length.id)"
             >
@@ -89,22 +89,23 @@
             @if (wig.length.stock > 0 || (cart.get(wig)?.quantity ?? 0) < wig.length.stock) {
               <number-input [value]="cart.get(wig!)?.quantity || 0" [min]="0" [max]="wig.stock" (increment)="cart.add(wig!, false)" (decrement)="cart.reduce(wig!, false)" [style.width.px]="100" />
             } @else {
-              <div class="py-3 text-center text-amber-500 animate-pulse basis-full">
+              <a class="py-3 text-center animate-pulse text-(--mat-sys-primary) basis-full">
                 This length is out of stock but other lenths are available
-              </div>
+              </a>
             }
           }
 
         <a
           (click)="viewportScroller.scrollToPosition([0, 0])"
           routerLink="/cart"
-          class="py-1 px-3 text-center grow bg-navajo-white dark:text-slate-800"
+          class="rounded-none! grow"
+          matButton="filled"
           >View cart</a
         >
       </div>
 
       <div class="">
-        <h4 class="my-9 text-2xl font-bold">Description</h4>
+        <h4 class="my-9 text-2xl font-bold text-(--mat-sys-tertiary)">Description</h4>
         <div class="flex flex-col gap-3 *:*:first:basis-2/5">
           <p class="text-lg">{{ wig!.description }}</p>
 
