@@ -39,6 +39,14 @@
 			"root": "projects/web",
 			"sourceRoot": "projects/web/src",
 			"prefix": "web",
+			"i18n": {
+				"sourceLocale": "en",
+				"locales": {
+					"fr": {
+						"translation": "projects/web/src/locales/messages.fr.xlf"
+					}
+				}
+			},
 			"architect": {
 				"build": {
 					"builder": "@angular/build:application",
@@ -46,9 +54,7 @@
 						"outputPath": "dist/web",
 						"index": "projects/web/src/index.html",
 						"browser": "projects/web/src/main.ts",
-						"polyfills": [
-              "@angular/localize/init"
-            ],
+						"polyfills": ["@angular/localize/init"],
 						"tsConfig": "projects/web/tsconfig.app.json",
 						"assets": [
 							{
@@ -56,7 +62,10 @@
 								"input": "projects/web/public"
 							}
 						],
-						"styles": ["projects/web/src/styles.css"],
+						"styles": [
+              "projects/web/src/custom-theme.scss",
+              "projects/web/src/styles.css"
+            ],
 						"scripts": [],
 						"server": "projects/web/src/main.server.ts",
 						"outputMode": "server",
@@ -115,9 +124,7 @@
 				"test": {
 					"builder": "@angular/build:karma",
 					"options": {
-						"polyfills": [
-              "@angular/localize/init"
-            ],
+						"polyfills": ["@angular/localize/init"],
 						"tsConfig": "projects/web/tsconfig.spec.json",
 						"assets": [
 							{

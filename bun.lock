@@ -10,6 +10,7 @@
         "@angular/compiler": "^20.2.0",
         "@angular/core": "^20.2.0",
         "@angular/forms": "^20.2.0",
+        "@angular/material": "20.2.0",
         "@angular/platform-browser": "^20.2.0",
         "@angular/platform-browser-dynamic": "^20.2.0",
         "@angular/platform-server": "^20.2.0",
@@ -111,6 +112,8 @@
     "@angular/forms": ["@angular/forms@20.2.0", "", { "dependencies": { "tslib": "^2.3.0" }, "peerDependencies": { "@angular/common": "20.2.0", "@angular/core": "20.2.0", "@angular/platform-browser": "20.2.0", "rxjs": "^6.5.3 || ^7.4.0" } }, "sha512-vG5FIMCGNDMbaWPSazd5Jv14cW+aVUg8G5ikWRSGU1aou7uzmzT2n+zpg4PDSxOFeNXuSZV3n5zJ5prM1NaYJg=="],
 
     "@angular/localize": ["@angular/localize@20.2.0", "", { "dependencies": { "@babel/core": "7.28.3", "@types/babel__core": "7.20.5", "tinyglobby": "^0.2.12", "yargs": "^18.0.0" }, "peerDependencies": { "@angular/compiler": "20.2.0", "@angular/compiler-cli": "20.2.0" }, "bin": { "localize-extract": "tools/bundles/src/extract/cli.js", "localize-migrate": "tools/bundles/src/migrate/cli.js", "localize-translate": "tools/bundles/src/translate/cli.js" } }, "sha512-XKYinzSPk72Eae60HpP5yWPLf6Yo/y5esd20/gRRpZ0rQMbRFPtWoHnAk+5jOCeQaBaxx25MX312TVLxjS5+0Q=="],
+
+    "@angular/material": ["@angular/material@20.2.0", "", { "dependencies": { "tslib": "^2.3.0" }, "peerDependencies": { "@angular/cdk": "20.2.0", "@angular/common": "^20.0.0 || ^21.0.0", "@angular/core": "^20.0.0 || ^21.0.0", "@angular/forms": "^20.0.0 || ^21.0.0", "@angular/platform-browser": "^20.0.0 || ^21.0.0", "rxjs": "^6.5.3 || ^7.4.0" } }, "sha512-lwkV1VP7PkC/dhPRXLeYaNtPaIAOjI8/zfpkPnmxJuGA7t7hkngtTxmY+6gElDAtfnle9ZJulW4KndKGr3ng/g=="],
 
     "@angular/platform-browser": ["@angular/platform-browser@20.2.0", "", { "dependencies": { "tslib": "^2.3.0" }, "peerDependencies": { "@angular/animations": "20.2.0", "@angular/common": "20.2.0", "@angular/core": "20.2.0" }, "optionalPeers": ["@angular/animations"] }, "sha512-0CyDeXLQixXAWRBq4vfwALo0a0/igtUH1bFkHBUy4u6Nku7S8K7GG/HDN0CGlpep9Xz9o0ghF1zfZHfmEQxlmg=="],
 
