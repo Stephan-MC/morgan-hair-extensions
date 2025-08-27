@@ -18,15 +18,16 @@ import { ShopFilterComponent } from "../common/components/shop-filter/shop-filte
 import { WigCardComponent } from "../common/components/wig-card/wig-card.component";
 import { WigService } from "../common/services/wig.service";
 import { CartStore } from "../common/stores/cart.store";
+import { MatPaginatorModule } from "@angular/material/paginator";
 
 @Component({
 	selector: "web-shop",
 	imports: [
 		FormsModule,
-		PaginationComponent,
 		ProductCardSkeletonComponent,
 		ShopFilterComponent,
 		WigCardComponent,
+		MatPaginatorModule,
 	],
 	templateUrl: "./shop.page.html",
 	styleUrl: "./shop.page.css",
@@ -39,7 +40,7 @@ export class ShopPage {
 	readonly viewPortScroller = inject(ViewportScroller);
 	private _route = inject(ActivatedRoute);
 	private _wigService = inject(WigService);
-	private _router = inject(Router);
+	readonly router = inject(Router);
 	wigs = this._wigService.wigsResource;
 	cart = inject(CartStore);
 	filterOpen = signal(false);
@@ -57,7 +58,7 @@ export class ShopPage {
 			)
 			.subscribe();
 
-		this._router.events
+		this.router.events
 			.pipe(
 				takeUntilDestroyed(),
 				filter((ev) => ev instanceof NavigationEnd),
@@ -75,5 +76,9 @@ export class ShopPage {
 
 	hasFilters() {
 		return Object.keys(this._wigService.getFilter()).length;
+	}
+
+	doSomthing(data: any) {
+		console.log(data);
 	}
 }

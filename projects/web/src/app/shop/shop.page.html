@@ -45,14 +45,10 @@
           }
           <!-- ! -->
         }
-        <!-- ! -->
-        @if (wigs.value() && wigs.value()!.meta.last_page > 1) {
-          <web-pagination
-            class="col-span-full"
-            [meta]="wigs.value()!.meta"
-            [page]="page() ?? wigs.value()!.meta.current_page"
-            (pageChange)="this.page.set($event)"
-          />
+
+        @if (wigs.value()) {
+          @let wigs_ = wigs.value()!;
+          <mat-paginator [length]="wigs_.meta.total" [pageIndex]="wigs_.meta.current_page - 1" [pageSize]="wigs_.meta.per_page" class="col-span-full" (page)="[router.navigate(['/shop'], { queryParams: { page: $event.pageIndex+1}, queryParamsHandling: 'merge' })]" />
         }
       </div>
     </div>
