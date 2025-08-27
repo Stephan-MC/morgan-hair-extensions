@@ -7,6 +7,6 @@
 		@apply absolute -top-2 -right-2;
 	}
 	&:not(.hide) .badge {
-		@apply h-4 aspect-square rounded-full bg-thistle  dark:text-slate-800 flex items-center justify-center text-xs;
+		@apply h-4 aspect-square rounded-full bg-(--mat-sys-primary) text-(--mat-sys-on-primary) flex items-center justify-center text-xs;
 	}
 }

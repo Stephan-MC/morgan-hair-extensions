@@ -37,6 +37,9 @@
       <button
         (click)="cart.add(wig)"
         class="z-auto text-lg max-tablet-sm:ms-auto"
+        i18n-matTooltip
+        matTooltip="Add to cart"
+        matTooltipShowDelay="400"
         [title]="
           wig.stock < 1 ||
           (cart.get(wig.id + ':' + wig.length.id)?.quantity ?? 0) >= wig.stock
@@ -69,7 +72,10 @@
     [class]="[
       wig.liked ? 'icon-[iconoir--heart-solid]' : 'icon-[iconoir--heart]',
     ]"
-    role="img"
+    i18n-matTooltip
+    [matTooltip]="wig.liked ? 'Unlike' : 'Like ' + wig.name"
+    matTooltipShowDelay="400"
+    role="button"
     aria-hidden="true"
   ></span>
 

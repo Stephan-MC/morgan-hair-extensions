@@ -26,25 +26,20 @@
   </a>
   <div class="flex flex-1 gap-3 justify-end items-center px-2 tablet-sm:gap-6">
     <span class="icon-[iconoir--search]" role="img" aria-hidden="true"></span>
-    <div class="flex items-center">
-      <web-badge
-        role="button"
-        class="flex items-center"
-        (click)="cart.open()"
-        [value]="cart.count() > 0 ? cart.count() : undefined"
-      >
+    <div class="flex items-center p-1 cursor-pointer" [matBadge]="cart.count()" matBadgeSize="medium" (click)="cart.open()" matTooltip="Your cart" i18n-matTooltip>
         <span
           class="text-lg icon-[solar--cart-4-linear]"
           role="img"
           aria-hidden="true"
         >
         </span>
-      </web-badge>
     </div>
     <span
       class="icon-[solar--user-rounded-outline]"
       role="img"
       aria-hidden="true"
+      i18n-matTooltip
+      matTooltip="Your account"
     ></span>
   </div>
 
