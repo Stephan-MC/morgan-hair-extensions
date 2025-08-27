@@ -51,6 +51,7 @@ import { ReviewListComponent } from "../common/components/review-list/review-lis
 import { ProductHelper } from "../common/helpers/product.helper";
 import { CartStore } from "../common/stores/cart.store";
 import { BadgeComponent } from "../common/components/badge/badge.component";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
 	selector: "web-wig",
@@ -65,6 +66,7 @@ import { BadgeComponent } from "../common/components/badge/badge.component";
 		RatingComponent,
 		ReviewFormComponent,
 		NumberInputComponent,
+		MatButtonModule,
 	],
 	templateUrl: "./wig.page.html",
 	styleUrl: "./wig.page.css",
