@@ -14,10 +14,17 @@ import { WigService } from "../../services/wig.service";
 import { CartStore } from "../../stores/cart.store";
 import { MatDialog } from "@angular/material/dialog";
 import { QuickLoginComponent } from "../dialogs/quick-login/quick-login.component";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @Component({
 	selector: "web-wig-card",
-	imports: [CurrencyPipe, PercentPipe, RouterLink, ImageComponent],
+	imports: [
+		CurrencyPipe,
+		PercentPipe,
+		RouterLink,
+		ImageComponent,
+		MatTooltipModule,
+	],
 	templateUrl: "./wig-card.component.html",
 	styleUrl: "./wig-card.component.css",
 	host: {

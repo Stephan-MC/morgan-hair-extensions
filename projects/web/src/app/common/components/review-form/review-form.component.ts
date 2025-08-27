@@ -5,6 +5,7 @@ import {
 	output,
 } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
+import { MatButtonModule } from "@angular/material/button";
 import { RouterLink } from "@angular/router";
 import { ClientStore, RatingComponent, TextAreaComponent } from "shared";
 
@@ -15,6 +16,7 @@ import { ClientStore, RatingComponent, TextAreaComponent } from "shared";
 		TextAreaComponent,
 		RatingComponent,
 		RouterLink,
+		MatButtonModule,
 	],
 	templateUrl: "./review-form.component.html",
 	styleUrl: "./review-form.component.css",
@@ -35,6 +37,7 @@ export class ReviewFormComponent {
 			validators: [Validators.minLength(3)],
 		}),
 	});
+
 	submit = output<{ rating: number; body: string }>();
 
 	handleReview(event: SubmitEvent) {
