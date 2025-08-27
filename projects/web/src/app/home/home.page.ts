@@ -15,11 +15,13 @@ import { WigCardComponent } from "../common/components/wig-card/wig-card.compone
 import { WigService } from "../common/services/wig.service";
 import { HeroComponent } from "./common/components/hero/hero.component";
 import { HairTypeListComponent } from "../common/components/hair-type-list/hair-type-list.component";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
 	selector: "web-home",
 	imports: [
 		RouterLink,
+		MatButtonModule,
 		WigCardComponent,
 		ProductCardSkeletonComponent,
 		HeroComponent,
