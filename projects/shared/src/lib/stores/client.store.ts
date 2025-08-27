@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpContext } from "@angular/common/http";
 import { computed, inject, InjectionToken, signal } from "@angular/core";
 import {
 	patchState,
@@ -14,6 +14,7 @@ import { catchError, switchMap, tap } from "rxjs/operators";
 import { DBInstance, DbService } from "../services/db.service";
 import { Client } from "../types";
 import { ENVIRONMENT } from "../types/environment";
+import { HTTP_SKIP_ON_SERVER } from "shared";
 
 export interface ClientStoreInterface {
 	client: Client | null;
@@ -112,7 +113,9 @@ export const ClientStore = signalStore(
 	withHooks({
 		onInit: (store) => {
 			store._http
-				.get<Client>(`${store._environment.url.api}/user`)
+				.get<Client>(`${store._environment.url.api}/user`, {
+					context: new HttpContext().set(HTTP_SKIP_ON_SERVER, true),
+				})
 				.pipe(
 					tap((client) => patchState(store, { client })),
 					catchError((error) => EMPTY),
