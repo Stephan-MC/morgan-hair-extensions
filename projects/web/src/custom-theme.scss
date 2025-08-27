@@ -12,7 +12,9 @@ html {
       primary: mat.$rose-palette,
       tertiary: mat.$red-palette,
     ),
-    typography: Roboto,
+    typography: (
+      plain-family: var(--default-font-family),
+    ),
     density: 0,
   ));
 }
