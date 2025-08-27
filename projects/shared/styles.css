@@ -21,9 +21,9 @@
 	html,
 	body {
 		@apply scroll-smooth;
-		@variant dark {
-			@apply bg-slate-800 text-white;
-		}
+		/* @variant dark { */
+		/* 	@apply bg-slate-800 text-white; */
+		/* } */
 	}
 
 	[role="button"],
