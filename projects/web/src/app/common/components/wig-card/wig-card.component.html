@@ -67,7 +67,7 @@
   </div>
 
   <span
-    class="absolute top-2 right-2 z-auto cursor-pointer tablet-sm:top-5 tablet-sm:right-5 tablet-sm:text-2xl text-navajo-white dark:text-geyser"
+    class="absolute top-2 right-2 z-auto cursor-pointer tablet-sm:top-5 tablet-sm:right-5 tablet-sm:text-2xl text-(--mat-sys-secondary)"
     (click)="likeWig()"
     [class]="[
       wig.liked ? 'icon-[iconoir--heart-solid]' : 'icon-[iconoir--heart]',
@@ -81,7 +81,7 @@
 
   @if (wig.discount; as discount) {
     <span
-      class="flex absolute top-2 left-2 items-center px-1 font-bold bg-amber-300 rounded-full animate-pulse dark:bg-amber-500 aspect-square dark:text-shadow-2xs dark:text-shadow-primary"
+      class="flex absolute top-2 left-2 items-center px-1 font-bold rounded-full animate-pulse bg-(--mat-sys-primary) text-(--mat-sys-on-primary) aspect-square dark:text-shadow-2xs dark:text-shadow-primary"
     >
       @if (discount.type == "percentage") {
         -{{ discount.value / 100 | percent }}
