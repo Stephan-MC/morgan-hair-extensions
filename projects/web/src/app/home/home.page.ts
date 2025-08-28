@@ -16,6 +16,7 @@ import { WigService } from "../common/services/wig.service";
 import { HeroComponent } from "./common/components/hero/hero.component";
 import { HairTypeListComponent } from "../common/components/hair-type-list/hair-type-list.component";
 import { MatButtonModule } from "@angular/material/button";
+import { MatExpansionModule } from "@angular/material/expansion";
 
 @Component({
 	selector: "web-home",
@@ -27,6 +28,7 @@ import { MatButtonModule } from "@angular/material/button";
 		HeroComponent,
 		TestimonialListComponent,
 		HairTypeListComponent,
+		MatExpansionModule,
 	],
 	templateUrl: "./home.page.html",
 	styleUrl: "./home.page.css",

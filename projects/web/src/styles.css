@@ -1,20 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
 @import "../../shared/styles.css";
 @import "./theme.css";
 
 @layer base {
+  html {
+    @include mat.theme((
+      color: (
+        primary: mat.$rose-palette,
+        tertiary: mat.$red-palette,
+      ),
+      typography: (
+        plain-family: var(--default-font-family),
+      ),
+      density: 0,
+    ));
+  }
 	body {
-		@apply bg-white dark:bg-slate-800;
+    font: var(--mat-sys-body-medium);
+
+		@apply scheme-light-dark bg-(--mat-sys-surface) text-(--mat-sys-on-surface);
 		/* font-weight: 600; */
 	}
 }
 
 @layer components {
 	.price-tag {
-		@apply bg-periwinkle dark:text-slate-800 rounded-r-sm px-1.5 py-0.5 relative isolate ms-2;
+		@apply bg-(--mat-sys-tertiary) text-(--mat-sys-on-tertiary) rounded-r-sm px-1.5 py-0.5 relative isolate ms-2;
 
 		@variant before {
-			@apply absolute right-full inset-y-0 aspect-square bg-periwinkle;
+			@apply absolute right-full inset-y-0 aspect-square bg-(--mat-sys-tertiary);
 
 			clip-path: polygon(50% 50%, 105% 0%, 105% 100%);
 		}
