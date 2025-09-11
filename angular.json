@@ -62,7 +62,10 @@
 								"input": "projects/web/public"
 							}
 						],
-						"styles": ["projects/web/src/styles.css"],
+						"styles": [
+              "projects/web/src/custom-theme.scss",
+              "projects/web/src/styles.css"
+            ],
 						"scripts": [],
 						"server": "projects/web/src/main.server.ts",
 						"outputMode": "server",
