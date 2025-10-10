@@ -3,8 +3,8 @@
 @import "swiper/element/css/effect-coverflow";
 @import "swiper/element/css/effect-fade";
 @import "swiper/element/css/pagination";
-@import "../../../../styles.css";
+@reference "../../../../styles.css";
 
 :host {
-  @apply block;
+	@apply block;
 }
