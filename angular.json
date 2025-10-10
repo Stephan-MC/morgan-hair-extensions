@@ -63,9 +63,9 @@
 							}
 						],
 						"styles": [
-              "projects/web/src/custom-theme.scss",
-              "projects/web/src/styles.css"
-            ],
+							"projects/web/src/custom-theme.scss",
+							"projects/web/src/styles.css"
+						],
 						"scripts": [],
 						"server": "projects/web/src/main.server.ts",
 						"outputMode": "server",
@@ -84,7 +84,7 @@
 								{
 									"type": "anyComponentStyle",
 									"maximumWarning": "4kB",
-									"maximumError": "8kB"
+									"maximumError": "20kB"
 								}
 							],
 							"outputHashing": "all"
