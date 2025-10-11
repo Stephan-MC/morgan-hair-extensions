@@ -1,0 +1,19 @@
+{
+	"version": 2,
+	"public": true,
+	"name": "morganhairextensions",
+	"installCommand": "bun install",
+	"buildCommand": "bun run build shared && bun run build web",
+	"devCommand": "bun dist/web/server/server.mjs",
+	"rewrites": [
+		{
+			"source": "/(.*)",
+			"destination": "/api"
+		}
+	],
+	"functions": {
+		"api/index.js": {
+			"includeFiles": "dist/web/browser/**"
+		}
+	}
+}
