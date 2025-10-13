@@ -15,3 +15,9 @@
 		@apply placeholder:text-primary;
 	}
 }
+
+.mat-mdc-standard-chip .mdc-evolution-chip__action--primary,
+.mat-mdc-standard-chip .mdc-evolution-chip__action--primary::before {
+	border-style: dashed !important;
+	border-radius: 9999px !important;
+}
