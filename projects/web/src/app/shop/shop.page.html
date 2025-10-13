@@ -48,7 +48,7 @@
 
         @if (wigs.value()) {
           @let wigs_ = wigs.value()!;
-          <mat-paginator [length]="wigs_.meta.total" [pageIndex]="wigs_.meta.current_page - 1" [pageSize]="wigs_.meta.per_page" class="col-span-full" (page)="[router.navigate(['/shop'], { queryParams: { page: $event.pageIndex+1}, queryParamsHandling: 'merge' })]" />
+          <mat-paginator [length]="wigs_.meta.total" [pageIndex]="wigs_.meta.current_page - 1" [pageSize]="wigs_.meta.per_page" class="col-span-full" (page)="[router.navigate(['/shop'], { queryParams: { page: $event.pageIndex+1}, queryParamsHandling: 'merge', state: {skipLoading: true} })]" />
         }
       </div>
     </div>

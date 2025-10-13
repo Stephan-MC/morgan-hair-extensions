@@ -28,11 +28,13 @@
   <div class="">
     <h4 class="text-lg font-bold">Filters</h4>
     <div class="flex gap-3 justify-end items-center">
+      <!-- class="py-1 px-3 text-white bg-red-400 rounded-full" -->
       <button
-        class="py-1 px-3 text-white bg-red-400 rounded-full"
+        class="rounded-none!"
         (click)="q.reset()"
         [routerLink]="['./']"
         [state]="{skipLoading: true}"
+        matButton="filled"
       >
         Reset Filters
       </button>
@@ -41,210 +43,161 @@
 
   <div class="">
     <h4 class="text-lg font-bold">hair type</h4>
-    <div class="flex flex-wrap gap-1.5">
-      <web-chip
-          [routerLink]="['./']"
-          [class.selected]="!queryParams()['hair_type']"
-          [queryParams]="{ hair_type: undefined, page: undefined }"
-          queryParamsHandling="merge"
-          [state]="{skipLoading: true}"
-      >
+    <mat-chip-listbox ariaLabel="Wig hair_type selection">
+      <mat-chip-option [selected]="!queryParams()['hair_type']" routerLink="./" [queryParams]="{hair_type: undefined, page: undefined}" [state]="{skipLoading: true}">
         all
-      </web-chip>
-      @for (hairType of hairTypes.value(); track hairType.id) {
-        <web-chip
-          [routerLink]="['./']"
-          routerLinkActive="selected"
-          [queryParams]="{ hair_type: hairType.name, page: undefined }"
+      </mat-chip-option>
+      @for (hair_type of hairTypes.value(); track hair_type.id) {
+        <mat-chip-option
+          routerLink="./"
+          [queryParams]="{ hair_type: hair_type.name, page: undefined }"
           queryParamsHandling="merge"
           [state]="{skipLoading: true}"
+          [selected]="queryParams()['hair_type'] == hair_type.name"
         >
-          <!-- (select)="updateFilter('hair_type', hairType.name)" -->
-          {{ hairType.name }}
-        </web-chip>
+          {{ hair_type.name }}
+        </mat-chip-option>
       }
-    </div>
+    </mat-chip-listbox>
   </div>
 
   <div class="">
     <h4 class="text-lg font-bold">Color</h4>
-    <div class="flex flex-wrap gap-1.5">
-      <web-chip
-        routerLink="./"
-          [class.selected]="!queryParams()['color']"
-        [queryParams]="{ color: undefined, page: undefined }"
-          queryParamsHandling="merge"
-          [state]="{skipLoading: true}"
-      >
+    <mat-chip-listbox ariaLabel="Wig color selection">
+      <mat-chip-option [selected]="!queryParams()['color']" routerLink="./" [queryParams]="{color: undefined, page: undefined}" [state]="{skipLoading: true}">
         all
-      </web-chip>
+      </mat-chip-option>
       @for (color of colors.value(); track color.id) {
-        <web-chip
-          [routerLink]="['./']"
-          routerLinkActive="selected"
+        <mat-chip-option
+          routerLink="./"
           [queryParams]="{ color: color.name, page: undefined }"
           queryParamsHandling="merge"
-          (click)="viewportScroller.scrollToPosition([0,0])"
           [state]="{skipLoading: true}"
+          [selected]="queryParams()['color'] == color.name"
         >
           {{ color.name }}
-        </web-chip>
+        </mat-chip-option>
       }
-    </div>
+    </mat-chip-listbox>
   </div>
 
   <div class="">
     <h4 class="text-lg font-bold">Length (inches)</h4>
-    <div class="flex flex-wrap gap-1.5">
-      <web-chip
-          [routerLink]="['./']"
-          [class.selected]="!queryParams()['length']"
-          [queryParams]="{ length: undefined, page: undefined }"
-          queryParamsHandling="merge"
-          [state]="{skipLoading: true}"
-      >
+    <mat-chip-listbox ariaLabel="Wig Length selection">
+      <mat-chip-option [selected]="!queryParams()['length']" routerLink="./" [queryParams]="{length: undefined, page: undefined}" [state]="{skipLoading: true}">
         all
-      </web-chip>
+      </mat-chip-option>
       @for (length of lengths.value(); track length.id) {
-        <web-chip
-          [routerLink]="['./']"
-          routerLinkActive="selected"
-          [queryParams]="{ length: length.value, page: undefined}"
+        <mat-chip-option
+          routerLink="./"
+          [queryParams]="{ length: length.value, page: undefined }"
           queryParamsHandling="merge"
           [state]="{skipLoading: true}"
+          [selected]="queryParams()['length'] == length.value"
         >
           {{ length.value }}
-        </web-chip>
+        </mat-chip-option>
       }
-    </div>
+    </mat-chip-listbox>
   </div>
 
   <div class="">
     <h4 class="text-lg font-bold">Texture</h4>
-    <div class="flex flex-wrap gap-1.5">
-      <web-chip
-        routerLink="./"
-          [class.selected]="!queryParams()['texture']"
-        [queryParams]="{ texture: undefined, page: undefined }"
-          queryParamsHandling="merge"
-          [state]="{skipLoading: true}"
-      >
+    <mat-chip-listbox ariaLabel="lace size selection">
+      <mat-chip-option [selected]="!queryParams()['texture']" routerLink="./" [queryParams]="{texture: undefined, page: undefined}" [state]="{skipLoading: true}">
         all
-      </web-chip>
+      </mat-chip-option>
       @for (texture of textures.value(); track texture.id) {
-        <web-chip
+        <mat-chip-option
           routerLink="./"
-          routerLinkActive="selected"
           [queryParams]="{ texture: texture.name, page: undefined }"
           queryParamsHandling="merge"
           [state]="{skipLoading: true}"
+          [selected]="queryParams()['texture'] == texture.name"
         >
           {{ texture.name }}
-        </web-chip>
+        </mat-chip-option>
       }
-    </div>
+    </mat-chip-listbox>
   </div>
 
   <div class="">
     <h4 class="text-lg font-bold">Lace type</h4>
-    <div class="flex flex-wrap gap-1.5">
-      <web-chip
-          routerLink="./"
-          [class.selected]="!queryParams()['lace']"
-          [queryParams]="{ lace: undefined, page: undefined }"
-          queryParamsHandling="merge"
-          [state]="{skipLoading: true}"
-      >
+    <mat-chip-listbox ariaLabel="lace size selection">
+      <mat-chip-option [selected]="!queryParams()['lace']" routerLink="./" [queryParams]="{lace: undefined, page: undefined}" [state]="{skipLoading: true}">
         all
-      </web-chip>
+      </mat-chip-option>
       @for (lace of laces.value(); track lace.id) {
-        <web-chip
+        <mat-chip-option
           routerLink="./"
           [queryParams]="{ lace: lace.name, page: undefined }"
-          routerLinkActive="selected"
           queryParamsHandling="merge"
           [state]="{skipLoading: true}"
+          [selected]="queryParams()['lace'] == lace.name"
         >
           {{ lace.name }}
-        </web-chip>
+        </mat-chip-option>
       }
-    </div>
+    </mat-chip-listbox>
   </div>
 
   <div class="">
     <h4 class="text-lg font-bold">Source</h4>
-    <div class="flex flex-wrap gap-1.5">
-      <web-chip
-          routerLink="./"
-          [class.selected]="!queryParams()['source']"
-          [queryParams]="{ source: undefined, page: undefined }"
-          queryParamsHandling="merge"
-          [state]="{skipLoading: true}"
-      >
+    <mat-chip-listbox ariaLabel="source size selection">
+      <mat-chip-option [selected]="!queryParams()['source']" routerLink="./" [queryParams]="{source: undefined, page: undefined}" [state]="{skipLoading: true}">
         all
-      </web-chip>
+      </mat-chip-option>
       @for (source of sources.value(); track source.id) {
-        <web-chip
+        <mat-chip-option
           routerLink="./"
-          routerLinkActive="selected"
           [queryParams]="{ source: source.name, page: undefined }"
           queryParamsHandling="merge"
           [state]="{skipLoading: true}"
+          [selected]="queryParams()['source'] == source.name"
         >
           {{ source.name }}
-        </web-chip>
+        </mat-chip-option>
       }
-    </div>
+    </mat-chip-listbox>
   </div>
 
   <div class="">
     <h4 class="text-lg font-bold">Parting</h4>
-    <div class="flex flex-wrap gap-1.5">
-      <web-chip
-          routerLink="./"
-          [class.selected]="!queryParams()['parting']"
-          [queryParams]="{ parting: undefined, page: undefined }"
-          queryParamsHandling="merge"
-          [state]="{skipLoading: true}"
-      >
+    <mat-chip-listbox ariaLabel="Wig parting selection">
+      <mat-chip-option [selected]="!queryParams()['parting']" routerLink="./" [queryParams]="{parting: undefined, page: undefined}" [state]="{skipLoading: true}">
         all
-      </web-chip>
+      </mat-chip-option>
       @for (parting of ['side', 'middle', 'free']; track parting) {
-        <web-chip
+        <mat-chip-option
           routerLink="./"
-          routerLinkActive="selected"
           [queryParams]="{ parting, page: undefined }"
           queryParamsHandling="merge"
           [state]="{skipLoading: true}"
+          [selected]="queryParams()['parting'] == parting"
         >
           {{ parting }}
-        </web-chip>
+        </mat-chip-option>
       }
-    </div>
+    </mat-chip-listbox>
   </div>
 
   <div class="">
     <h4 class="text-lg font-bold">Cap Size</h4>
-    <div class="flex flex-wrap gap-1.5">
-      <web-chip
-          routerLink="./"
-          [class.selected]="!queryParams()['cap']"
-          [queryParams]="{ cap: undefined, page: undefined }"
-          queryParamsHandling="merge"
-      >
+    <mat-chip-listbox ariaLabel="Cap size selection">
+      <mat-chip-option [selected]="!queryParams()['cap']" routerLink="./" [queryParams]="{cap: undefined, page: undefined}" [state]="{skipLoading: true}">
         all
-      </web-chip>
+      </mat-chip-option>
       @for (cap of [21, 22, 23, 24, 25]; track cap) {
-        <web-chip
+        <mat-chip-option
           routerLink="./"
-          routerLinkActive="selected"
           [queryParams]="{ cap, page: undefined }"
           queryParamsHandling="merge"
           [state]="{skipLoading: true}"
+          [selected]="queryParams()['cap'] == cap"
         >
           {{ cap }}
-        </web-chip>
+        </mat-chip-option>
       }
-    </div>
+    </mat-chip-listbox>
   </div>
 }

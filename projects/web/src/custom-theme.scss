@@ -6,6 +6,12 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
+:root {
+  @include mat.chips-overrides((
+    container-shape-radius: 9999px,
+  ));
+}
+
 html {
   @include mat.theme((
     color: (

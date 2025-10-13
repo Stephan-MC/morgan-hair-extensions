@@ -19,10 +19,17 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { RouterLink } from "@angular/router";
 import { ClientStore } from "shared";
 import { CartStore } from "../../stores/cart.store";
+import { MatMenuModule } from "@angular/material/menu";
 
 @Component({
 	selector: "web-navbar",
-	imports: [NgOptimizedImage, RouterLink, MatBadgeModule, MatTooltipModule],
+	imports: [
+		NgOptimizedImage,
+		RouterLink,
+		MatBadgeModule,
+		MatTooltipModule,
+		MatMenuModule,
+	],
 	templateUrl: "./navbar.component.html",
 	styleUrl: "./navbar.component.css",
 	animations: [

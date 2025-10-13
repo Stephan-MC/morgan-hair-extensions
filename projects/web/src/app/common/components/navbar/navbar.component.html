@@ -40,7 +40,18 @@
       aria-hidden="true"
       i18n-matTooltip
       matTooltip="Your account"
+      [matTooltipShowDelay]="800"
+      [matMenuTriggerFor]="menu"
     ></span>
+    <mat-menu #menu="matMenu" class="z-99999">
+      @if (clientStore.client() != null) {
+        <a routerLink="/profile" mat-menu-item>Profile</a>
+        <a routerLink="/wishlist" mat-menu-item>Wishlist</a>
+      }
+      @else {
+        <a routerLink="/login" mat-menu-item>Sign In</a>
+      }
+    </mat-menu>
   </div>
 
   <div class="absolute inset-x-0 top-[112%] tablet-lg:hidden px-6 bg-[url(/assets/images/texture.png)] bg-no-repeat bg-cover h-auto">

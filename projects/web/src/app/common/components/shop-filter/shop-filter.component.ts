@@ -20,13 +20,9 @@ import {
 	PristineChangeEvent,
 	ReactiveFormsModule,
 } from "@angular/forms";
-import {
-	ActivatedRoute,
-	NavigationEnd,
-	Router,
-	RouterLink,
-	RouterLinkActive,
-} from "@angular/router";
+import { MatButtonModule } from "@angular/material/button";
+import { MatChipsModule } from "@angular/material/chips";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { EMPTY } from "rxjs";
 import {
 	debounceTime,
@@ -37,24 +33,22 @@ import {
 	tap,
 	withLatestFrom,
 } from "rxjs/operators";
-import { TextInputComponent } from "shared";
+import { HairTypeService, TextInputComponent } from "shared";
 import { WigService } from "../../services/wig.service";
 import { ColorService } from "../../services/wig/color.service";
-import { HairTypeService } from "shared";
 import { LaceService } from "../../services/wig/lace.service";
 import { LengthService } from "../../services/wig/length.service";
 import { SourceService } from "../../services/wig/source.service";
 import { TextureService } from "../../services/wig/texture.service";
-import { ChipComponent } from "../chip/chip.component";
 
 @Component({
 	selector: "web-shop-filter",
 	imports: [
 		ReactiveFormsModule,
-		ChipComponent,
 		TextInputComponent,
 		RouterLink,
-		RouterLinkActive,
+		MatChipsModule,
+		MatButtonModule,
 	],
 	templateUrl: "./shop-filter.component.html",
 	styleUrl: "./shop-filter.component.css",
@@ -85,8 +79,8 @@ import { ChipComponent } from "../chip/chip.component";
 })
 export class ShopFilterComponent {
 	private _wigService = inject(WigService);
-	private _router = inject(Router);
-	private _route = inject(ActivatedRoute);
+	readonly router = inject(Router);
+	readonly route = inject(ActivatedRoute);
 	protected viewportScroller = inject(ViewportScroller);
 
 	open = input(false);
@@ -100,20 +94,17 @@ export class ShopFilterComponent {
 	hairTypes = inject(HairTypeService).hairTypesResource;
 	lengths = inject(LengthService).lengthsResource;
 	textures = inject(TextureService).texturesResource;
-	queryParams = toSignal(this._route.queryParams.pipe(), {
+	queryParams = toSignal(this.route.queryParams.pipe(), {
 		initialValue: {} as Record<string, string | undefined>,
 	});
-	q = new FormControl(this._route.snapshot.queryParamMap.get("q"));
+	q = new FormControl(this.route.snapshot.queryParamMap.get("q"));
 	show = linkedSignal(() => this.open());
 
 	constructor() {
-		this._router.events.pipe(
-			filter((event) => event instanceof NavigationEnd),
-			tap(() => {
-				console.log("tapping q");
-				this.q.setValue(this._route.snapshot.queryParams["q"], {
-					emitEvent: false,
-				});
+		this.route.queryParams.pipe(
+			tap((params) => {
+				console.log("tapping q", params["q"]);
+				// this.q.setValue(params["q"] ?? "", {});
 			}),
 		);
 
@@ -129,7 +120,7 @@ export class ShopFilterComponent {
 				),
 				exhaustMap(([value, ev]) =>
 					!ev.pristine
-						? this._router.navigate(["/shop"], {
+						? this.router.navigate(["/shop"], {
 								queryParamsHandling: "merge",
 								queryParams: { q: value },
 								state: { skipLoading: true },
