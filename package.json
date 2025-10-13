@@ -25,6 +25,7 @@
     "@angular/router": "^20.3.4",
     "@angular/ssr": "^20.3.5",
     "@iconify/tailwind4": "^1.0.6",
+    "@netlify/angular-runtime": "^3.0.0",
     "@ngrx/signals": "20.0.1",
     "@ngrx/store-devtools": "20.0.1",
     "date-fns": "^4.1.0",
