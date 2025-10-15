@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.1](https://github.com/Stephan-MC/morgan-hair-extensions/compare/v0.1.0...v0.1.1) (2025-10-15)
+
+
+### Bug Fixes
+
+* Added robots.txt file ([5739318](https://github.com/Stephan-MC/morgan-hair-extensions/commit/573931894d293828ec8f393d971961737fc2a43e))
+* Added title to home route ([ea56324](https://github.com/Stephan-MC/morgan-hair-extensions/commit/ea563241b4e5aa689117f953ae06e8b3eef1e331))
+* UI updates in component root ([5916767](https://github.com/Stephan-MC/morgan-hair-extensions/commit/5916767ced0b7e417708c612e4d2bdcbfb706b8f))
+
 ## [0.1.0](https://github.com/Stephan-MC/morgan-hair-extensions/compare/v0.0.4...v0.1.0) (2025-10-13)
 
 
