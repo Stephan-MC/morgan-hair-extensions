@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/Stephan-MC/morgan-hair-extensions/compare/v0.1.1...v0.1.2) (2025-10-15)
+
+
+### Bug Fixes
+
+* Moved robots.txt to appropriate location ([4f9cc60](https://github.com/Stephan-MC/morgan-hair-extensions/commit/4f9cc6078fec398fea756204c458a87727b9eb73))
+
 ## [0.1.1](https://github.com/Stephan-MC/morgan-hair-extensions/compare/v0.1.0...v0.1.1) (2025-10-15)
 
 
