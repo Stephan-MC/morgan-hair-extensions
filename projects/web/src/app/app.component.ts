@@ -76,7 +76,34 @@ export class AppComponent {
 	);
 
 	constructor(meta: Meta) {
-		meta.addTags([{ name: "author", content: "Juliet Morgan" }, {}]);
+		meta.addTags([
+			{ name: "author", content: "Juliet Morgan", id: "author" },
+			{
+				property: "title",
+				content: "Style without limits",
+			},
+			{
+				property: "description",
+				id: "description",
+				content:
+					"Morgan Hair Extensions is a hair extension company that offers a wide range of hair extensions. I am dedicated to providing the best hair extensions to fit your unique styles.",
+			},
+			{
+				property: "og:title",
+				content: "Style without limits",
+			},
+			{
+				property: "og:description",
+				id: "og:description",
+				content:
+					"Morgan Hair Extensions is a hair extension company that offers a wide range of hair extensionsn. I am dedicated to providing the best hair extensions to fit your unique styles.",
+			},
+			{
+				property: "og:image",
+				id: "og:image",
+				content: "/assets/images/morgan-hair-circular-flyer.jpeg",
+			},
+		]);
 	}
 
 	ngAfterViewInit() {
