@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/Stephan-MC/morgan-hair-extensions/compare/v0.2.0...v0.3.0) (2025-10-30)
+
+
+### Features
+
+* Added bunfig.toml for bun config ([64f3e1f](https://github.com/Stephan-MC/morgan-hair-extensions/commit/64f3e1f0ba1114058a091bab96e207cba4888ebd))
+
+
+### Bug Fixes
+
+* Package updates ([5ff2bc6](https://github.com/Stephan-MC/morgan-hair-extensions/commit/5ff2bc60c85fa1226ffb925a8c182da4c36cdf34))
+
 ## [0.2.0](https://github.com/Stephan-MC/morgan-hair-extensions/compare/v0.1.2...v0.2.0) (2025-10-30)
 
 
