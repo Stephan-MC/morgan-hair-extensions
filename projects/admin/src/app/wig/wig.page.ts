@@ -117,7 +117,7 @@ export class WigPage {
 
 	lengths = inject(LengthService).lengthsResource;
 	textures = inject(TextureService).texturesResource;
-	hairTypes = inject(HairTypeService).hairTypesResources;
+	hairTypes = inject(HairTypeService).hairTypesResource;
 	sources = inject(SourceService).sourcesResource;
 	colors = inject(ColorService).colorsResource;
 	laces = inject(LaceService).lacesResource;

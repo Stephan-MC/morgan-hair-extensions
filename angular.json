@@ -28,7 +28,7 @@
 					"builder": "@angular/build:karma",
 					"options": {
 						"tsConfig": "projects/shared/tsconfig.spec.json",
-						"polyfills": ["zone.js", "zone.js/testing"]
+						"polyfills": []
 					}
 				}
 			}
@@ -159,7 +159,10 @@
 								"input": "projects/admin/public"
 							}
 						],
-						"styles": ["projects/admin/src/styles.css"],
+						"styles": [
+              "projects/admin/src/custom-theme.scss",
+              "projects/admin/src/styles.css"
+            ],
 						"scripts": [],
 						"server": "projects/admin/src/main.server.ts",
 						"outputMode": "server",
@@ -199,6 +202,9 @@
 				},
 				"serve": {
 					"builder": "@angular/build:dev-server",
+					"options": {
+						"port": 6423
+					},
 					"configurations": {
 						"production": {
 							"buildTarget": "admin:build:production"
