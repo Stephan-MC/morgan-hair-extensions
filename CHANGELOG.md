@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.4.0](https://github.com/Stephan-MC/morgan-hair-extensions/compare/v0.3.0...v0.4.0) (2025-10-30)
+
+
+### Features
+
+* Added bunfig.toml for bun config ([04bf528](https://github.com/Stephan-MC/morgan-hair-extensions/commit/04bf528691a6699d07bb5ebeff25f7980c737880))
+* Added server function for the admin app. ([72f53b1](https://github.com/Stephan-MC/morgan-hair-extensions/commit/72f53b15166a752dcb4ba743ca17df4c1673b285))
+* **admin:** Added custom angular material theem ([ab51310](https://github.com/Stephan-MC/morgan-hair-extensions/commit/ab51310e4e51b2b067e3751354c186fc41bc975c))
+
+
+### Bug Fixes
+
+* **admin:** Added route rewrites ([4c2fa75](https://github.com/Stephan-MC/morgan-hair-extensions/commit/4c2fa754a32d3c2e25f57d88633d61c962ae0106))
+* **admin:** Adjusted server routes ([fab235c](https://github.com/Stephan-MC/morgan-hair-extensions/commit/fab235c999c6cecee23870831d20d92ec9bbe451))
+* **admin:** Changed angular default port ([48fd082](https://github.com/Stephan-MC/morgan-hair-extensions/commit/48fd0824486ec1eb7b56b998cef53313a741192c))
+* **admin:** Fixed typo issue in admin app ([2ff6e62](https://github.com/Stephan-MC/morgan-hair-extensions/commit/2ff6e62f3595086ad5ed20bfdb2ebbe11b70fbf6))
+* **admin:** Moved to zoneless change detection ([c70a2c4](https://github.com/Stephan-MC/morgan-hair-extensions/commit/c70a2c48ff1a762fe5975a1b99d824733dae61a7))
+* Package updates ([68cb4d9](https://github.com/Stephan-MC/morgan-hair-extensions/commit/68cb4d921b6e677db03eb7a10fdb95e2119ffd47))
+
 ## [0.3.0](https://github.com/Stephan-MC/morgan-hair-extensions/compare/v0.2.0...v0.3.0) (2025-10-30)
 
 
