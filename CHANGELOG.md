@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.0](https://github.com/Stephan-MC/morgan-hair-extensions/compare/v0.1.2...v0.2.0) (2025-10-30)
+
+
+### Features
+
+* Added images ([fd3bb44](https://github.com/Stephan-MC/morgan-hair-extensions/commit/fd3bb44ea68a56b961dd08a5c6e599a99d2447aa))
+* Fixed serverless function for vercel ([562bd7a](https://github.com/Stephan-MC/morgan-hair-extensions/commit/562bd7a67615cd41cdf3b6cdb78d3e7bd4aee62c))
+
+
+### Bug Fixes
+
+* Added some seo meta tags ([b004c3f](https://github.com/Stephan-MC/morgan-hair-extensions/commit/b004c3f53f00e5a1a6685c1e60b34720f9081ec1))
+* Adjusted input component in footer ([d5651da](https://github.com/Stephan-MC/morgan-hair-extensions/commit/d5651da26bfb3d596f1df183597b6c1a724d4c62))
+
 ## [0.1.2](https://github.com/Stephan-MC/morgan-hair-extensions/compare/v0.1.1...v0.1.2) (2025-10-15)
 
 
