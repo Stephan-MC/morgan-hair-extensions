@@ -159,7 +159,10 @@
 								"input": "projects/admin/public"
 							}
 						],
-						"styles": ["projects/admin/src/styles.css"],
+						"styles": [
+              "projects/admin/src/custom-theme.scss",
+              "projects/admin/src/styles.css"
+            ],
 						"scripts": [],
 						"server": "projects/admin/src/main.server.ts",
 						"outputMode": "server",
